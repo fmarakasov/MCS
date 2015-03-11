@@ -1,0 +1,1491 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6AC2E2D8-5B71-4053-A46C-113823B8A239}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MContracts</RootNamespace>
+    <AssemblyName>MContracts</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+    <Utf8Output>true</Utf8Output>
+    <ExpressionBlendVersion>4.0.20525.0</ExpressionBlendVersion>
+    <PublishUrl>http://mc.codeplex.com/releases/clickonce/</PublishUrl>
+    <Install>false</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>True</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>False</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRunCodeAnalysis>False</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>False</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>False</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>False</CodeContractsArithmeticObligations>
+    <CodeContractsRedundantAssumptions>False</CodeContractsRedundantAssumptions>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>False</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>False</CodeContractsCacheAnalysisResults>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
+    <CodeContractsContainerAnalysis>False</CodeContractsContainerAnalysis>
+    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
+    <CodeContractsEnumObligations>False</CodeContractsEnumObligations>
+    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeContractsInferRequires>False</CodeContractsInferRequires>
+    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
+    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
+    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
+    <CodeContractsSuggestRequires>True</CodeContractsSuggestRequires>
+    <CodeContractsSuggestEnsures>False</CodeContractsSuggestEnsures>
+    <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
+    <CodeContractsDisjunctiveRequires>False</CodeContractsDisjunctiveRequires>
+    <RunCodeAnalysis>false</RunCodeAnalysis>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>contract.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>C34546C271A0F0808762B1BA58BFF06156254F46</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Partisl Build|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Partisl Build\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Partial Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Partial Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Partisl Build|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Partisl Build\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Partial Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Partial Debug\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Devart.Data.Linq, Version=2.20.14.0, Culture=neutral, PublicKeyToken=09af7300eec23701, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files (x86)\Devart\dotConnect\Linq\Devart.Data.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception, Version=2.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Microsoft.Practices.Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net40\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="PostSharp, Version=2.1.0.0, Culture=neutral, PublicKeyToken=b13fd38b8f9c99d7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\PostSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework.Aero" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="TaskDialog, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\TaskDialog.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls, Version=2011.2.712.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Telerik.Windows.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Data, Version=2011.2.712.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Telerik.Windows.Controls.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.GridView, Version=2011.2.712.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Telerik.Windows.Controls.GridView.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Input, Version=2011.2.712.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Telerik.Windows.Controls.Input.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Navigation, Version=2011.2.712.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Telerik.Windows.Controls.Navigation.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.RibbonView, Version=2011.2.712.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Telerik.Windows.Controls.RibbonView.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Data, Version=2011.2.712.40, Culture=neutral, PublicKeyToken=5803cfa389c90ce7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Telerik.Windows.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="WPFToolkit.Extended, Version=1.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\WPFToolkit.Extended.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="AOP\INotifyPropertyChangedAttribute.cs" />
+    <Compile Include="AOP\LogAttribute.cs" />
+    <Compile Include="AppMessageBox.cs" />
+    <Compile Include="Classes\ActDocumentSetHolder.cs" />
+    <Compile Include="Classes\Aggregates\ContractFundsAggregator.cs" />
+    <Compile Include="Classes\Aggregates\ContractFundsAggregatorSelector.cs" />
+    <Compile Include="Classes\CatalogType.cs" />
+    <Compile Include="Classes\CatalogTypeEventsArgs.cs" />
+    <Compile Include="Classes\ContractDocumentSetHolder.cs" />
+    <Compile Include="Classes\Converters\ActConditionConverter.cs" />
+    <Compile Include="Classes\Converters\AggregateCollectionConverter.cs" />
+    <Compile Include="Classes\Converters\AgreementToImageConverter.cs" />
+    <Compile Include="Classes\Converters\AgreementToTextConverter.cs" />
+    <Compile Include="Classes\Converters\ActSignedToImageConverter.cs" />
+    <Compile Include="Classes\Converters\BooleanToGridHeightConverter.cs" />
+    <Compile Include="Classes\Converters\IntToColorObjectConverter.cs" />
+    <Compile Include="Classes\Converters\NullDateConverter.cs" />
+    <Compile Include="Classes\Converters\CollectionStatusConverter.cs" />
+    <Compile Include="Classes\Converters\ConditionalStyleSelector.cs" />
+    <Compile Include="Classes\Converters\ContractortypeToGridHeightConverter.cs" />
+    <Compile Include="Classes\Converters\ContractStateDataToBrush.cs" />
+    <Compile Include="Classes\Converters\ContractStatusToImage.cs" />
+    <Compile Include="Classes\Converters\ContractToSubContractConverter.cs" />
+    <Compile Include="Classes\Converters\IntToBrushConverter.cs" />
+    <Compile Include="Classes\Converters\NdsalgorithmToVisibilityConverter.cs" />
+    <Compile Include="Classes\Converters\NdsAlgorithmTypeToImage.cs" />
+    <Compile Include="Classes\Converters\SeverityToImageSourceConverter.cs" />
+    <Compile Include="Classes\Converters\StageMarginConverter.cs" />
+    <Compile Include="Classes\Converters\StringShrederConverter.cs" />
+    <Compile Include="Classes\Converters\TypeCheckConverter.cs" />
+    <Compile Include="Classes\Converters\VisibilityExtenions.cs" />
+    <Compile Include="Classes\DefaultTelerikLocalizationManager.cs" />
+    <Compile Include="Classes\ColumnCollection.cs" />
+    <Compile Include="Classes\ContractdocValidationRule.cs" />
+    <Compile Include="Classes\Converters\BooleanToStringConverter.cs" />
+    <Compile Include="Classes\Converters\BoolToBrushConverter.cs" />
+    <Compile Include="Classes\Converters\BoolToDoubleConverter.cs" />
+    <Compile Include="Classes\Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Classes\Converters\ContractdocConverter.cs" />
+    <Compile Include="Classes\Converters\ContrBoolToVisibilityConverter.cs" />
+    <Compile Include="Classes\Converters\ContractToBrushConverter.cs" />
+    <Compile Include="Classes\Converters\ContractStateToImageConverter.cs" />
+    <Compile Include="Classes\Converters\ContractConditionToImageConverter.cs" />
+    <Compile Include="Classes\Converters\ContractGeneralOrSubToImageConverter.cs" />
+    <Compile Include="Classes\Converters\ContractGeneralOrSubToTextConverter.cs" />
+    <Compile Include="Classes\Converters\ActionTypeToStringConverter.cs" />
+    <Compile Include="Classes\Converters\ContractToButtonImageConverter.cs" />
+    <Compile Include="Classes\Converters\ContractToButtonTextConverter.cs" />
+    <Compile Include="Classes\Converters\ContractToVisibilityConverter.cs" />
+    <Compile Include="Classes\Converters\NullToBoolConverter.cs" />
+    <Compile Include="Classes\Converters\CurrencyConverter.cs" />
+    <Compile Include="Classes\Converters\NullToVisibilityConverter.cs" />
+    <Compile Include="Classes\Converters\DoubleToBoolConverter.cs" />
+    <Compile Include="Classes\Converters\ComboBoxItemToBoolConverter.cs" />
+    <Compile Include="Classes\Converters\EnumDescriptionConverter.cs" />
+    <Compile Include="Classes\Converters\NegativeBoolConverter.cs" />
+    <Compile Include="Classes\Converters\RemoveExtraSpaceConverter.cs" />
+    <Compile Include="Classes\Converters\SingleConverter.cs" />
+    <Compile Include="Classes\Converters\StageConditionToImageConverter.cs" />
+    <Compile Include="Classes\Converters\StageConditionConverter.cs" />
+    <Compile Include="Classes\Converters\DateTimeToShortDateConverter.cs" />
+    <Compile Include="Classes\Converters\DateTimeToDateConverter.cs" />
+    <Compile Include="Classes\Converters\FilterConditionConverter.cs" />
+    <Compile Include="Classes\Converters\LevelToMarginConverter.cs" />
+    <Compile Include="Classes\Converters\PropertyContractConverter.cs" />
+    <Compile Include="Classes\Converters\SubOrGeneralHeaderStagesConverter.cs" />
+    <Compile Include="Classes\Converters\ValidToColorConverter.cs" />
+    <Compile Include="Classes\EditWindowShowedEventsArgs.cs" />
+    <Compile Include="Classes\EntitySetProxy.cs" />
+    <Compile Include="Classes\Filtering\ConditionTypes.cs" />
+    <Compile Include="Classes\Filtering\ContractsFilterGenerator.cs" />
+    <Compile Include="Classes\Filtering\FilterConditionResolver.cs" />
+    <Compile Include="Classes\Filtering\FilterItem.cs" />
+    <Compile Include="Classes\Filtering\FilterProperty.cs" />
+    <Compile Include="Classes\IBindingListExtansions.cs" />
+    <Compile Include="Classes\IPropertyCollection.cs" />
+    <Compile Include="Classes\OpenedCollectionViewGroup.cs" />
+    <Compile Include="Classes\Pager.cs" />
+    <Compile Include="Classes\PropertiesDecorator.cs" />
+    <Compile Include="Classes\RepositoryHolder.cs" />
+    <Compile Include="Classes\ActReportCreatorHelper.cs" />
+    <Compile Include="Classes\StagesQuickSorting.cs" />
+    <Compile Include="Classes\SelectedStage.cs" />
+    <Compile Include="Classes\VersionHelper.cs" />
+    <Compile Include="Classes\SubContractEventArgs.cs" />
+    <Compile Include="Classes\TrackedCollection.cs" />
+    <Compile Include="Controls\Components\PersistentRadGridView.cs" />
+    <Compile Include="Controls\Converters\SelectedPropertyConverter.cs" />
+    <Compile Include="Controls\Converters\PropertyToRussianConverter.cs" />
+    <Compile Include="Controls\Converters\ListSortDirectionToRussianConverter.cs" />
+    <Compile Include="Controls\Dialogs\ActDesignerDialog.xaml.cs">
+      <DependentUpon>ActDesignerDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\ApprovalStateEditor.xaml.cs">
+      <DependentUpon>ApprovalStateEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\ClosingStagesWizzard.xaml.cs">
+      <DependentUpon>ClosingStagesWizzard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\ContractorDesignerDialog.xaml.cs">
+      <DependentUpon>ContractorDesignerDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\ContractRelationsEditor.xaml.cs">
+      <DependentUpon>ContractRelationsEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\ContractSelectDialog.xaml.cs">
+      <DependentUpon>ContractSelectDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\DefaultLoginProvider.cs" />
+    <Compile Include="Controls\Dialogs\DialogShell.cs" />
+    <Compile Include="Controls\Dialogs\FilterActsDialog.xaml.cs">
+      <DependentUpon>FilterActsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\EditCatalogItemDialog.xaml.cs">
+      <DependentUpon>EditCatalogItemDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\LinkStageFromGeneralWindow.xaml.cs">
+      <DependentUpon>LinkStageFromGeneralWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\LinkStageFromSubcontractWindow.xaml.cs">
+      <DependentUpon>LinkStageFromSubcontractWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\PaymentDocumentsDialog.xaml.cs">
+      <DependentUpon>PaymentDocumentsDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\PropertyDialog.xaml.cs">
+      <DependentUpon>PropertyDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\CatalogEditorDialog.xaml.cs">
+      <DependentUpon>CatalogEditorDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\ReportParamsWindow.xaml.cs">
+      <DependentUpon>ReportParamsWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\Dialogs\SelectDateDialog.xaml.cs">
+      <DependentUpon>SelectDateDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\SelectTransferActDialog.xaml.cs">
+      <DependentUpon>SelectTransferActDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\StageImportWizzard.xaml.cs">
+      <DependentUpon>StageImportWizzard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\SaveSchemeDialog.xaml.cs">
+      <DependentUpon>SaveSchemeDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\ContributorsImporterDialog.xaml.cs">
+      <DependentUpon>ContributorsImporterDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\OraExpWindow.xaml.cs">
+      <DependentUpon>OraExpWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\SelectEmployeeWindow.xaml.cs">
+      <DependentUpon>SelectEmployeeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\AddOrderWindow.xaml.cs">
+      <DependentUpon>AddOrderWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\AutoBindAgreementOriginStagesDialog.xaml.cs">
+      <DependentUpon>AutoBindAgreementOriginStagesDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PaymentDocumentsViewControl.xaml.cs">
+      <DependentUpon>PaymentDocumentsViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TabControlMover.xaml.cs">
+      <DependentUpon>TabControlMover.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\FilterContractsViewModel.cs" />
+    <Compile Include="Controls\FilterContracts.xaml.cs">
+      <DependentUpon>FilterContracts.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ScrollableTabPanel.cs" />
+    <Compile Include="Controls\CellsGrid.xaml.cs">
+      <DependentUpon>CellsGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SingleCellControl.xaml.cs">
+      <DependentUpon>SingleCellControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ImportingSchemeColumnDefiner.xaml.cs">
+      <DependentUpon>ImportingSchemeColumnDefiner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\ImportDialog.xaml.cs">
+      <DependentUpon>ImportDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Dialogs\ServerConnectionDialog.xaml.cs">
+      <DependentUpon>ServerConnectionDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ResponsiblesListControl.xaml.cs">
+      <DependentUpon>ResponsiblesListControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\TextAdorner.cs" />
+    <Compile Include="Controls\TextBoxEx.cs" />
+    <Compile Include="DTO\ContractRepositoryDto.cs" />
+    <Compile Include="DTO\EfficientInformationDTO.cs" />
+    <Compile Include="DTO\EfparameterstageresultDto.cs" />
+    <Compile Include="DTO\HandingWorkDTO.cs" />
+    <Compile Include="DTO\StageresultDto.cs" />
+    <Compile Include="DTO\SchedulecontractDto.cs" />
+    <Compile Include="DTO\EntityDto.cs" />
+    <Compile Include="DTO\EntityDtoExtensions.cs" />
+    <Compile Include="DTO\ContractDto.cs" />
+    <Compile Include="DTO\QuarterPlanContractDTO.cs" />
+    <Compile Include="DTO\StageDto.cs" />
+    <Compile Include="DTO\ScheduleDto.cs" />
+    <Compile Include="DTO\SubContractsDTO.cs" />
+    <Compile Include="DTO\TroubleContractDto.cs" />
+    <Compile Include="DTO\YearPlanContractDTO.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectStartupInfo.cs" />
+    <Compile Include="SaveWorkspaceExceptionDescription.cs" />
+    <Compile Include="Service References\CBR\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Statistics\StatisticsUpdater.cs" />
+    <Compile Include="ViewModel\ActDesignerViewModel.cs" />
+    <Compile Include="ViewModel\ActDto.cs" />
+    <Compile Include="ViewModel\ActRepositoryViewBasedViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewModel\ActStatusArgs.cs" />
+    <Compile Include="ViewModel\ApprovalStateEditorViewModel.cs" />
+    <Compile Include="ViewModel\BasicCommandsAggregatorViewModel.cs" />
+    <Compile Include="ViewModel\CatalogViewModel.cs" />
+    <Compile Include="ViewModel\BaseImporterViewModel.cs" />
+    <Compile Include="ViewModel\AddDisposalViewModel.cs" />
+    <Compile Include="ViewModel\AddOrderViewModel.cs" />
+    <Compile Include="ViewModel\AutoBindAgreementOriginStagesDialogViewModel.cs" />
+    <Compile Include="ViewModel\ContractCardViewModel.cs" />
+    <Compile Include="ViewModel\ContractorsDesignerViewModel.cs" />
+    <Compile Include="ViewModel\ContractorsViewModel.cs" />
+    <Compile Include="ViewModel\ContractorsViewModelBase.cs" />
+    <Compile Include="ViewModel\ContractWorkspaceViewModel.cs" />
+    <Compile Include="ViewModel\DisposalContentViewModel.cs" />
+    <Compile Include="ViewModel\ContractArgs.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewModel\ContractRelationsEditorViewModel.cs" />
+    <Compile Include="ViewModel\DeleteContractArgs.cs" />
+    <Compile Include="ViewModel\DocumentImageViewModel.cs" />
+    <Compile Include="ViewModel\DocumentSetTransferViewModel.cs" />
+    <Compile Include="ViewModel\IContractCaption.cs" />
+    <Compile Include="ViewModel\IContractdocRefHolder.cs" />
+    <Compile Include="ViewModel\MainViewModelViewModelBase.cs" />
+    <Compile Include="ViewModel\MainViewModelWorkspace.cs" />
+    <Compile Include="ViewModel\OrderRepositoryViewModel.cs" />
+    <Compile Include="ViewModel\ContractRepositoryViewBasedViewModel.cs" />
+    <Compile Include="ViewModel\OraExpViewModel.cs" />
+    <Compile Include="ViewModel\DisposalsRepositoryViewModel.cs" />
+    <Compile Include="ViewModel\ContractApprovalViewModel.cs" />
+    <Compile Include="ViewModel\ContributorsImporterViewModel.cs" />
+    <Compile Include="ViewModel\ClosingStagesViewModel.cs" />
+    <Compile Include="ViewModel\Helpers\Commands.cs" />
+    <Compile Include="ViewModel\ContractsListViewModel.cs" />
+    <Compile Include="ViewModel\LinkStageFromSubcontractViewModel.cs" />
+    <Compile Include="ViewModel\LinkStageFromGeneralViewModel.cs" />
+    <Compile Include="ViewModel\EditCatalogViewModel.cs" />
+    <Compile Include="ViewModel\HierarchicalCatalogViewModel.cs" />
+    <Compile Include="ViewModel\ImporterViewModel.cs" />
+    <Compile Include="ViewModel\ActsViewModel.cs" />
+    <Compile Include="ViewModel\CompositeWorkspaceViewModel.cs" />
+    <Compile Include="ViewModel\ContractdocBaseViewModel.cs" />
+    <Compile Include="ViewModel\ContractdocCardViewModel.cs" />
+    <Compile Include="ViewModel\ContractFcViewModel.cs" />
+    <Compile Include="Classes\Converters\ContractConditionConverter.cs" />
+    <Compile Include="ViewModel\ContractViewModel.cs" />
+    <Compile Include="ViewModel\Helpers\IContractdocHolder.cs" />
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="Classes\Converters\PersonConverter.cs" />
+    <Compile Include="ViewModel\Helpers\NewContractdocParams.cs" />
+    <Compile Include="Classes\NotifyPropertyChangedBase.cs" />
+    <Compile Include="ViewModel\NtpProblemViewModel.cs" />
+    <Compile Include="ViewModel\Helpers\ObservablePropertyAttribute.cs" />
+    <Compile Include="ViewModel\PaymentDocumentsBaseViewModel.cs" />
+    <Compile Include="ViewModel\PaymentDocumentsViewModel.cs" />
+    <Compile Include="ViewModel\PrepaymentViewModel.cs" />
+    <Compile Include="ViewModel\Helpers\PropertyObserver.cs" />
+    <Compile Include="ViewModel\Helpers\RequestRepository.cs" />
+    <Compile Include="ViewModel\DocumentTransferActsRepositoryViewModel.cs" />
+    <Compile Include="ViewModel\SaveWorkspaceException.cs" />
+    <Compile Include="ViewModel\ScheduleViewModel.cs" />
+    <Compile Include="ViewModel\SelectContractDialogViewModel.cs" />
+    <Compile Include="ViewModel\SelectContractdocArgs.cs" />
+    <Compile Include="ViewModel\SelectTransferActDialogViewModel.cs" />
+    <Compile Include="ViewModel\StageResultsViewModel.cs" />
+    <Compile Include="ViewModel\SubmitChangesFailed.cs" />
+    <Compile Include="ViewModel\TransferActSelector.cs" />
+    <Compile Include="ViewModel\WrappedObjectCommandArgs.cs" />
+    <Compile Include="View\ActRepositoryViewBasedView.xaml.cs">
+      <DependentUpon>ActRepositoryViewBasedView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ActsView.xaml.cs">
+      <DependentUpon>ActsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ApprovalsView.xaml.cs">
+      <DependentUpon>ApprovalsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CatalogView.xaml.cs">
+      <DependentUpon>CatalogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\SelectEmployeeViewModel.cs" />
+    <Compile Include="View\ContractdocCardView.xaml.cs">
+      <DependentUpon>ContractdocCardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContractFcView.xaml.cs">
+      <DependentUpon>ContractFcView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContractListView.xaml.cs">
+      <DependentUpon>ContractListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="View\ContractorsView.xaml.cs">
+      <DependentUpon>ContractorsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContractRepositoryViewBasedView.xaml.cs">
+      <DependentUpon>ContractRepositoryViewBasedView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DocumentSetTransferView.xaml.cs">
+      <DependentUpon>DocumentSetTransferView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DocumentTransActRepositoryView.xaml.cs">
+      <DependentUpon>DocumentTransActRepositoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ContractView.xaml.cs">
+      <DependentUpon>ContractView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DisposalContentView.xaml.cs">
+      <DependentUpon>DisposalContentView.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="View\DocumentImageView.xaml.cs">
+      <DependentUpon>DocumentImageView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NtpProblemView.xaml.cs">
+      <DependentUpon>NtpProblemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ObjectSelector.cs" />
+    <Compile Include="View\ObjectSelectorArgs.cs" />
+    <Compile Include="View\ObjectIdentifierSelector.cs" />
+    <Compile Include="View\PaymentsView.xaml.cs">
+      <DependentUpon>PaymentsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PrepaymentView.xaml.cs">
+      <DependentUpon>PrepaymentView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RadGridViewSettings.cs" />
+    <Compile Include="View\ResponsibilitiesView.xaml.cs">
+      <DependentUpon>ResponsibilitiesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ScheduleView.xaml.cs">
+      <DependentUpon>ScheduleView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SimpleMoneyViewer.xaml.cs">
+      <DependentUpon>SimpleMoneyViewer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StageResultsView.xaml.cs">
+      <DependentUpon>StageResultsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DisposalsRepositoryView.xaml.cs">
+      <DependentUpon>DisposalsRepositoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\OrderRepositoryView.xaml.cs">
+      <DependentUpon>OrderRepositoryView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Controls\Dialogs\ActDesignerDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Dialogs\ApprovalStateEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\ClosingStagesWizzard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\ContractorDesignerDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\ContractRelationsEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\ContractSelectDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\FilterActsDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Dialogs\EditCatalogItemDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Dialogs\LinkStageFromGeneralWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\LinkStageFromSubcontractWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\PaymentDocumentsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\PropertyDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\CatalogEditorDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\ReportParamsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\SelectDateDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\SelectTransferActDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\StageImportWizzard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\SaveSchemeDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\ContributorsImporterDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\OraExpWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\SelectEmployeeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\AddOrderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\AutoBindAgreementOriginStagesDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PaymentDocumentsViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\TabControlMover.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\FilterContracts.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CellsGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SingleCellControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ImportingSchemeColumnDefiner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\ImportDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Dialogs\ServerConnectionDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ResponsiblesListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Styles\ContractViewResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\DataGridCustomizations.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\MainWindowResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Styles\WorkspacesTabControlStyle.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ActRepositoryViewBasedView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ActsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ApprovalsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CatalogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ContractdocCardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ContractFcView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ContractListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ContractorsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ContractRepositoryViewBasedView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DocumentSetTransferView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DocumentTransActRepositoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ContractView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DisposalContentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DocumentImageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NtpProblemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PaymentsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PrepaymentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ResponsibilitiesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ScheduleView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SimpleMoneyViewer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\StageResultsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\DisposalsRepositoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\OrderRepositoryView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="App.config">
+      <LastGenOutput>App.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
+    <None Include="MContracts_TemporaryKey.pfx" />
+    <None Include="Properties\DataSources\System.Data.DataSet.datasource" />
+    <None Include="Properties\DataSources\System.Xml.XmlNode.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <None Include="Templates\1_YearPlanReport.xlt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\2_ContractInformation.xlt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\3_ContractQuarterInformation.xlt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\4_ContractQuarterPlanReport.xlt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\5_SubContractRegisterReport.xlt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\6_HandingWorkReport.xlt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\9_Act.dot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\Act1.dot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Service References\CBR\DailyInfo.wsdl" />
+    <Compile Include="ViewModel\MainWindowViewModel.Reports.cs" />
+    <None Include="Templates\Act2.dot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\Act3.dot">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\Act4.dot">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\ContractInActionYearRegister.xlt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\EconEffectNIOKRReport.xlt" />
+    <None Include="Templates\InformationConcludedContracts.xlt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\NIOKREconEfficiencyReport.xlt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\NIOKRImplementationReport.xlt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\TroubleNIOKRReport.xlt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Templates\WorkProgressReport.xlt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Add_16.png" />
+    <Resource Include="Images\Document_Text.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AppExceptions\AppExceptions.csproj">
+      <Project>{9AE4C273-A775-45F0-B7C0-B2A0205B1C87}</Project>
+      <Name>AppExceptions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommonBase\CommonBase.csproj">
+      <Project>{4e41ddd6-86fa-4b0b-9062-241187e456f8}</Project>
+      <Name>CommonBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MCDomain\MCDomain.csproj">
+      <Project>{D21BB05A-0366-4123-8AB1-D433E494C00E}</Project>
+      <Name>MCDomain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\McReports\McReports.csproj">
+      <Project>{05e9b516-6438-48c5-b334-3e8b2256e355}</Project>
+      <Name>McReports</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\McUIBase\McUIBase.csproj">
+      <Project>{f08cdd18-a933-4d28-9388-9ba2208e6894}</Project>
+      <Name>McUIBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MediatorLib\MediatorLib.csproj">
+      <Project>{47500C2E-F8E7-4A5D-AA31-BAA2BF68D875}</Project>
+      <Name>MediatorLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIShared\UIShared.csproj">
+      <Project>{672e3bb7-35e3-43f0-95d1-3a0e15e6e502}</Project>
+      <Name>UIShared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UOW\UOW.csproj">
+      <Project>{CE8FA354-321F-4EA1-933A-5444520D000E}</Project>
+      <Name>UOW</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Generic_Document.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Delete_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Trash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\new_document.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\New_document.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\CBR\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CBR\DailyInfo.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CBR\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CBR\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\CBR\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\disposal-edit.png" />
+    <Resource Include="Resources\General.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\fonfont.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\star.icl.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\stargreen.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\subcontract.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\openHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Signed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\NotSigned.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Alert.png" />
+    <Resource Include="Resources\Apply.png" />
+    <Resource Include="Resources\Redo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Equipment.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Boss.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Play.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ico_sign_here.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\ico-terms.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\config_date.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\text_editor.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\company_dnd.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\back %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\contract.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\forward.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\personal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="contract.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Back.png" />
+    <Resource Include="Resources\Forvard.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Trackback.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Hourglass.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Outdent.png" />
+    <Resource Include="Resources\Indent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Down.png" />
+    <Resource Include="Resources\Up.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\calculator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\FillDownHS.png" />
+    <Resource Include="Resources\FillUpHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\money_calculator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\agt_update_critical.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\condition_catalog.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\stock_people.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\buy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Flag_red.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\stock_draw-dimension-line.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\view_bottom.png" />
+    <Resource Include="Resources\view_right.png" />
+    <Resource Include="Resources\window_new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\stock_group-cells.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\emblem-work.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\bank.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\keyboard_layout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Degree.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\importdocument.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\calendar_add.png" />
+    <Resource Include="Resources\calendar_delete.png" />
+    <Resource Include="Resources\calendar_link.png" />
+    <Resource Include="Resources\chart_organisation_add.png" />
+    <Resource Include="Resources\chart_organisation_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\importmail.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Result_Add.png" />
+    <Resource Include="Resources\Result_Delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Prepaimentdocuments.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\loginmanager.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\x-office-document.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\emblem-documents.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\persons.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\stock_save.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\States.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\condition_catalog.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\bmicon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Trouble.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\User group.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Types.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\money_safe1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\archive_add.png" />
+    <Resource Include="Resources\archive_remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\frontrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\frontrow_person.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\NDS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\edu_mathematics.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\table-money.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Properties.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\gaz_sotr.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\document-edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\OrgChartHS.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\act_add.png" />
+    <Resource Include="Resources\act_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\act_edit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\insert-link.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\link-top.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\document-import.png" />
+    <Resource Include="Resources\document-save-as.png" />
+    <Resource Include="Resources\page_excel.png" />
+    <Resource Include="Resources\page_word.png" />
+    <Resource Include="Resources\save_all.png" />
+    <Resource Include="Resources\table.png" />
+    <Resource Include="Resources\table_save.png" />
+    <Resource Include="Resources\undo.png" />
+    <Resource Include="Resources\window-close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\fileopen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Contractor_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Acttype_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\cancel_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\deletedcontract.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\filter.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\MultiEditAct.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\automated.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\disconnect.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\agreement_dicts.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\document-new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\disposal-new.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\disposal-delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\document.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\broken.png" />
+    <Resource Include="Resources\gnome_mime_application_x_archive.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\gnome_dialog_question.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\sum.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\symbol_add.png" />
+    <Resource Include="Resources\symbol_delete.png" />
+    <Resource Include="Resources\symbol_remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\error2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\current_work.png" />
+    <Resource Include="Resources\finished_work.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Promgaz.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Promgaz1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Relations.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\document_microsoft_excel_01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\export.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Controls\ViewModels\" />
+    <Folder Include="Controls\Views\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\arrows_back.png" />
+    <Resource Include="Resources\arrows_fwd.png" />
+    <Resource Include="Resources\arrow_back.png" />
+    <Resource Include="Resources\arrow_fwd.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\duplicate.png" />
+    <Resource Include="Resources\employee.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\file_locked.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\edit-list-order.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\bulb_green.png" />
+    <Resource Include="Resources\bulb_red.png" />
+    <Resource Include="Resources\bulb_yellow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\bulb_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\hyperlink_blue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\database_download.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\upload.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\edit_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\deleteresp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\purge.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\copyresp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\showhide.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\arrow_refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\stock_signature.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\date_add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Unstocked.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\folder_actions_setup.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Lock.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,109 @@
+﻿<Window x:Class="MContracts.Controls.Dialogs.AddDisposalWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:converters="clr-namespace:MContracts.Classes.Converters" 
+        xmlns:Dialogs="clr-namespace:MContracts.Controls.Dialogs"
+        xmlns:MControls="clr-namespace:MContracts.Controls" xmlns:View="clr-namespace:MContracts.View"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" Title="Добавление распоряжения" Height="600" Width="725" 
+        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+
+    <Window.Resources>
+
+        <converters:DateTimeToShortDateConverter x:Key="DateTimeToShortDateConverter"/>
+        <converters:StageConditionConverter x:Key="StageConditionConverter"/>
+        <converters:StageConditionToImageConverter x:Key="StageConditionToImageConverter"/>
+        <converters:LevelToMarginConverter x:Key="LevelToMarginConverter" LeftMargin="8" OtherMargin="0" />
+        <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="3"></Setter>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value >
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock DockPanel.Dock="Right" Foreground="Red" FontSize="12" Margin="2, 0, 0, 0" FontWeight="Bold" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">!</TextBlock>
+                            <Border BorderBrush="Red" BorderThickness="1" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+                                <AdornedElementPlaceholder x:Name="adornedPlaceHolder"></AdornedElementPlaceholder>
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="3"></Setter>
+            <Setter Property="Width" Value="250"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+        </Style>
+
+        <Style TargetType="DatePicker">
+            <Setter Property="Margin" Value="3"></Setter>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="3"></Setter>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="3"></Setter>
+            <Setter Property="Width" Value="24"></Setter>
+            <Setter Property="Height" Value="24"></Setter>
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value >
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock DockPanel.Dock="Right" Foreground="Red" FontSize="12" Margin="2, 0, 0, 0" FontWeight="Bold" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">!</TextBlock>
+                            <Border BorderBrush="Red" BorderThickness="1" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+                                <AdornedElementPlaceholder x:Name="adornedPlaceHolder"></AdornedElementPlaceholder>
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+    <DockPanel x:Name="LayoutRoot" LastChildFill="True">
+
+        <DockPanel LastChildFill="False" Margin="2" DockPanel.Dock="Bottom" MinHeight="34">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                <Button Width="100" Content="OK" Margin="5" Click="Button_Click" Command="{Binding OkPressedAction}"/>
+                <Button Width="100" Content="Отмена" Margin="5" Click="Button_Click_1"/>
+            </StackPanel>
+        </DockPanel>
+
+        <StackPanel>
+
+            <Expander Header="Общие" IsExpanded="True" Background="FloralWhite" BorderThickness="1" BorderBrush="Black" Margin="2" VerticalAlignment="Top">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="3*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="№ распоряжения" VerticalAlignment="Bottom" Height="19" />
+                    <TextBox  x:Name="txtDisposalnum" Text="{Binding Path=Disposal.Num, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsSigned}" Grid.Column="1" Grid.Row="0" Width="150" HorizontalAlignment="Left"/>
+                    <TextBlock Text="Дата распоряжения" Grid.Column="0" Grid.Row="1"/>
+                    <DatePicker Grid.Column="1" Grid.Row="1" SelectedDate="{Binding Path=Disposal.Approveddate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" Width="150" HorizontalAlignment="Left" x:Name="dtmDisposalDate"/>
+                </Grid>
+            </Expander>
+
+
+            <Expander Header="Назначения" IsExpanded="True" Background="FloralWhite" VerticalAlignment="Stretch" BorderThickness="1" BorderBrush="Black" Margin="2">
+                <View:DisposalContentView x:Name="disposalContentView1" VerticalAlignment="Stretch" />
+            </Expander >
+        </StackPanel>
+    </DockPanel>
+</Window>

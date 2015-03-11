@@ -1,0 +1,918 @@
+﻿<Window x:Class="MContracts.Dialogs.EditCatalogItemDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen" WindowStyle="ToolWindow"
+        ResizeMode="NoResize" MinWidth="400" BorderThickness="4" 
+        mc:Ignorable="d" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:ViewModel="clr-namespace:MContracts.ViewModel"
+        xmlns:PlaceHolder="clr-namespace:MContracts.Controls.PlaceHolder"         
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:extToolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit/extended"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        xmlns:Converters="clr-namespace:MContracts.Classes.Converters" BorderBrush="Navy" Opacity="1" Loaded="Window_Loaded"
+        Width="640">
+
+    
+        <Window.Resources>
+            <Converters:RemoveExtraSpaceConverter x:Key="RemoveExtraSpaceConverter1" />
+            <Converters:IntToColorObjectConverter x:Key="StateColorConverter" />
+            <Style TargetType="extToolkit:MaskedTextBox">
+                <Setter Property="Background" Value="Ivory"></Setter>
+                <Setter Property="Validation.ErrorTemplate">
+                    <Setter.Value >
+                        <ControlTemplate>
+                            <DockPanel LastChildFill="True">
+                                <TextBlock DockPanel.Dock="Right" Foreground="Red" Margin="2, 0, 2, 0" FontSize="18" FontWeight="Bold" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">!</TextBlock>
+                                <Border BorderBrush="Red" BorderThickness="1" CornerRadius="1">
+                                    <AdornedElementPlaceholder x:Name="adornedPlaceHolder"></AdornedElementPlaceholder>
+                                </Border>
+                            </DockPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="MinWidth" Value="200"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Width" Value="300"/>
+                <Setter Property="Margin" Value="10"/>
+            </Style>
+
+            <Style TargetType="TextBox">
+                <Setter Property="Background" Value="Ivory"></Setter>
+                <Setter Property="Validation.ErrorTemplate">
+                    <Setter.Value >
+                        <ControlTemplate>
+                            <DockPanel LastChildFill="True">
+                                <TextBlock DockPanel.Dock="Right" Foreground="Red" Margin="2, 0, 2, 0" FontSize="18" FontWeight="Bold" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">!</TextBlock>
+                                <Border BorderBrush="Red" BorderThickness="1" CornerRadius="1">
+                                    <AdornedElementPlaceholder x:Name="adornedPlaceHolder"></AdornedElementPlaceholder>
+                                </Border>
+                            </DockPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="MinWidth" Value="200"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Width" Value="300"/>
+                <Setter Property="Margin" Value="10"/>
+            </Style>
+
+            <Style TargetType="CheckBox">
+                <Setter Property="Background" Value="Ivory"></Setter>
+                <Setter Property="Validation.ErrorTemplate">
+                    <Setter.Value >
+                        <ControlTemplate>
+                            <DockPanel LastChildFill="True">
+                                <TextBlock DockPanel.Dock="Right" Foreground="Red" Margin="2, 0, 2, 0" FontSize="18" FontWeight="Bold" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">!</TextBlock>
+                                <Border BorderBrush="Red" BorderThickness="1" CornerRadius="1">
+                                    <AdornedElementPlaceholder x:Name="adornedPlaceHolder"></AdornedElementPlaceholder>
+                                </Border>
+                            </DockPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Margin" Value="14"/>
+            </Style>
+
+            <Converters:ComboBoxItemToBoolConverter TrueMessage="Мужской" FalseMessage="Женский" DefaultMessage="Не задано" x:Key="ComboBoxItemToBoolConverter"/>
+            <Converters:BooleanToStringConverter TrueMessage="Мужской" FalseMessage="Женский"  DefaultMessage="Не задано" x:Key="SexToStringConverter"/>
+            <Converters:DoubleToBoolConverter x:Key="DoubleToBoolConverter"/>
+
+            <Style TargetType="DatePicker">
+                <Setter Property="Background" Value="Ivory"></Setter>
+                <Setter Property="Validation.ErrorTemplate">
+                    <Setter.Value >
+                        <ControlTemplate>
+                            <DockPanel LastChildFill="True">
+                                <TextBlock DockPanel.Dock="Right" Foreground="Red" Margin="2, 0, 2, 0" FontSize="18" FontWeight="Bold" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">!</TextBlock>
+                                <Border BorderBrush="Red" BorderThickness="1" CornerRadius="1">
+                                    <AdornedElementPlaceholder x:Name="adornedPlaceHolder"></AdornedElementPlaceholder>
+                                </Border>
+                            </DockPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="MinWidth" Value="200"/>
+                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="Width" Value="300"/>
+                <Setter Property="Margin" Value="10"/>
+            </Style>
+
+            <Style TargetType="ComboBox">
+                <Setter Property="Background" Value="White"></Setter>
+                <Setter Property="Width" Value="300"/>
+                <Setter Property="Height" Value="24"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="10"/>
+                <Setter Property="Validation.ErrorTemplate">
+                    <Setter.Value >
+                        <ControlTemplate>
+                            <DockPanel LastChildFill="True">
+                                <TextBlock DockPanel.Dock="Right" Foreground="Red" FontSize="18" FontWeight="Bold" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">!</TextBlock>
+                                <Border BorderBrush="Red" BorderThickness="1" CornerRadius="1">
+                                    <AdornedElementPlaceholder x:Name="adornedPlaceHolder"></AdornedElementPlaceholder>
+                                </Border>
+                            </DockPanel>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="Button">
+                <Setter Property="Margin" Value="4"/>
+                <Setter Property="MinWidth" Value="75"/>
+            </Style>
+
+            <ControlTemplate x:Key="ContractType">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}}" FontSize="12" Width="300" Margin="10"/>
+                    <Label Content="Позиция в отчёте" Margin="10"/>
+                    <TextBox Margin="10" Text="{Binding Reportorder, Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}}" FontSize="12" Width="300"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Contractstate">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}}" FontSize="12" Width="300" Margin="10"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Enterpriseauthority">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Content="Основание" Margin="5"/>
+                    <ComboBox SelectedItem="{Binding Path=Authority, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Authorities, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="0"/>
+
+                    <Label Grid.Row="1" Content="Сотрудник" Margin="5"/>
+                    <ComboBox SelectedItem="{Binding Path=Employee, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Employees, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="1"/>
+
+                    <Label Grid.Row="2"  Content="Номер" Margin="5"/>
+                    <TextBox Grid.Row="2"  Text="{Binding Path=Num, Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}}" Grid.Column="1"/>
+
+                    <Label Grid.Row="3" Content="Действует с" Margin="5"/>
+                    <DatePicker Grid.Column="1" Grid.Row="3"  SelectedDate="{Binding Path=Validfrom, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Margin="10"/>
+
+                    <Label Grid.Row="4" Content="Действует до" Margin="5"/>
+                    <DatePicker Grid.Column="1" Grid.Row="4"  SelectedDate="{Binding Path=Validto, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Margin="10"/>
+
+                    <Label Grid.Row="5" Content="Действителен" Margin="5"/>
+                    <CheckBox Grid.Column="1" Grid.Row="5"  IsChecked="{Binding Path=Isvalid, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Margin="10"/>
+
+                </Grid>
+            </ControlTemplate>
+
+
+            <ControlTemplate x:Key="Nds">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Процент" Margin="10" />
+                    <TextBox Text="{Binding Path=Percents, Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}}" Grid.Column="1"/>
+                    <Label Content="Год" Margin="10" Grid.Row="1"/>
+                    <TextBox Text="{Binding Path=Year, Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}}" Grid.Column="1" Grid.Row="1"/>
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Ndsalgorithm">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Наименование" Margin="10" />
+                    <TextBox Text="{Binding Path=Name, Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}}" Grid.Column="1"/>
+                    <Label Content="Посказка" Margin="10" Grid.Row="1"/>
+                    <TextBox Text="{Binding Path=Pricetooltip, Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}}" Grid.Column="1" Grid.Row="1"/>
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Worktype">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Grid.Column="1" Text="{Binding Path=Name, Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}}" FontSize="12" Width="300" Margin="10"/>
+                    <Label Grid.Row="1" Content="Краткое наименование" Margin="10"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Path=Shortname, Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}}" FontSize="12" Margin="10" Width="300"/>
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Currency">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Наименование" Margin="10" />
+                    <TextBox Text="{Binding Path=Name, Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}}" Grid.Column="1"/>
+                    <Label Content="Культура" Margin="10" Grid.Row="1"/>
+                    <TextBox Text="{Binding Path=Culture, Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}}" Grid.Column="1" Grid.Row="1"/>
+                    <Label Content="Код единицы валюты" Margin="10" Grid.Row="2"/>
+                    <TextBox Text="{Binding Path=Code, Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}}" Grid.Column="1" Grid.Row="2"/>
+                    <Label Content="Аббревиатура единицы валюты" Margin="10" Grid.Row="3"/>
+                    <TextBox Text="{Binding Path=Highsmallname, Mode=TwoWay, Converter={StaticResource RemoveExtraSpaceConverter1}, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="3"/>
+                    <Label Content="Аббревиатура минимальной единицы валюты" Margin="10" Grid.Row="4"/>
+                    <TextBox Text="{Binding Path=Lowsmallname, Mode=TwoWay, Converter={StaticResource RemoveExtraSpaceConverter1}, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="4"/>
+                    <Label Content="Склонение валюты в именительном падеже единственном числе" Margin="10" Grid.Row="5"/>
+                    <TextBox Text="{Binding Path=Currencyi, Mode=TwoWay, Converter={StaticResource RemoveExtraSpaceConverter1}, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="5"/>
+                    <Label Content="Склонение валюты в родительном падеже единственном числе" Margin="10" Grid.Row="6"/>
+                    <TextBox Text="{Binding Path=Currencyr, Mode=TwoWay, Converter={StaticResource RemoveExtraSpaceConverter1}, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="6"/>
+                    <Label Content="Склонение валюты в родительном падеже множественном числе" Margin="10" Grid.Row="7"/>
+                    <TextBox Text="{Binding Path=Currencym, Mode=TwoWay, Converter={StaticResource RemoveExtraSpaceConverter1}, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="7"/>
+                    <Label Content="Склонение минимальной единицы валюты в именительном падеже единственном числе" Margin="10" Grid.Row="8"/>
+                    <TextBox Text="{Binding Path=Smalli, Mode=TwoWay, Converter={StaticResource RemoveExtraSpaceConverter1}, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="8"/>
+                    <Label Content="Склонение минимальной единицы валюты в родительном падеже единственном числе" Margin="10" Grid.Row="9"/>
+                    <TextBox Text="{Binding Path=Smallr, Mode=TwoWay, Converter={StaticResource RemoveExtraSpaceConverter1}, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="9"/>
+                    <Label Content="Склонение минимальной единицы валюты в родительном падеже множественном числе" Margin="10" Grid.Row="10"/>
+                    <TextBox Text="{Binding Path=Smallm, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="10"/>
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Degree">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10"/>
+                </StackPanel>
+            </ControlTemplate>
+
+
+
+            <ControlTemplate x:Key="Authority">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Prepaymentdocumenttype">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Economefficiencytype">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Economefficiencyparameter">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Efficienceparametertype">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Тип" Margin="10" />
+                    <ComboBox SelectedItem="{Binding Path=Economefficiencytype, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Economefficiencytypes, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1"/>
+                    <Label Content="Параметр" Margin="10" Grid.Row="1"/>
+                    <ComboBox SelectedItem="{Binding Path=Economefficiencyparameter, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Economefficiencyparameters, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="1"/>
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Ntpview">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Position">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Property">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Region">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Role">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Functionalcustomertype">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Ntpsubview">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Наименование" Margin="10" />
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10" Grid.Column="1"/>
+                    <Label Content="Краткое наименование" Margin="10" Grid.Row="1"/>
+                    <TextBox Text="{Binding Path=Shortname, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10" Grid.Column="1" Grid.Row="1"/>
+                    <Label Content="Вид НТП" Margin="10" Grid.Row="2"/>
+                    <ComboBox SelectedItem="{Binding Path=Ntpview, Mode=TwoWay, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Ntpviews, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="2"/>
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Sightfuncpersonscheme">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Номер" Margin="10" />
+                    <TextBox Text="{Binding Path=Num, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Margin="10" Grid.Column="1"/>
+                    <Label Content="Представитель функционального заказчика" Margin="10" Grid.Row="1"/>
+                    <ComboBox SelectedItem="{Binding Path=Funccustomerperson, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Funccustomerpersons, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="1"/>
+                    <Label Content="Признак активности" Margin="10" Grid.Row="2"/>
+                    <CheckBox IsThreeState="True" IsChecked="{Binding Path=Active, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="2"/>
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Currencymeasure">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Наименование" Margin="10" />
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10" Grid.Column="1"/>
+                    <Label Content="Кратность" Margin="10" Grid.Row="1"/>
+                    <TextBox Text="{Binding Path=Factor, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10" Grid.Column="1" Grid.Row="1"/>
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Contractortype">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10"/>
+                    <Label Content="Позиция в отчёте" Margin="10"/>
+                    <TextBox Margin="10" Text="{Binding Reportorder, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Troublesregistry">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Наименование" Margin="10" />
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1"/>
+                    <Label Content="Краткое наименование" Margin="10" Grid.Row="1"/>
+                    <TextBox Text="{Binding Path=Shortname, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="1"/>
+                    <Label Content="Дата утверждения" Margin="10" Grid.Row="2"/>
+                    <DatePicker SelectedDate="{Binding Path=Approvedat, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="2"/>
+                    <Label Content="Номер приказа" Margin="10" Grid.Row="3"/>
+                    <TextBox Text="{Binding Path=Ordernum, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="3"/>
+                    <Label Content="Дата начала действия" Margin="10" Grid.Row="4"/>
+                    <DatePicker SelectedDate="{Binding Path=Validfrom, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="4"/>
+                    <Label Content="Дата окончания действия" Margin="10" Grid.Row="5"/>
+                    <DatePicker SelectedDate="{Binding Path=Validto, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="5"/>
+                </Grid>
+            </ControlTemplate>
+
+
+        <ControlTemplate x:Key="Contractor">
+            <Grid Margin="5" x:Name="gridControl">
+                <Grid.Resources>
+                    <Style TargetType="{x:Type ComboBox}" x:Key="{x:Type ComboBox}">
+                        <Setter Property="Margin" Value="5,2,5,2"/>
+                    </Style>
+
+                    <Style TargetType="{x:Type Control}" x:Key="{x:Type Control}">
+                        <Setter Property="Margin" Value="5,2,5,2"/>
+                    </Style>
+
+                    <Style TargetType="{x:Type DatePicker}" x:Key="{x:Type DatePicker}">
+                        <Setter Property="Margin" Value="5,2,5,2"/>
+                        <Setter Property="Width" Value="150"/>
+                    </Style>
+
+                    <Style  TargetType="{x:Type PlaceHolder:TextBoxEx}" BasedOn="{StaticResource {x:Type Control}}">
+                        <Setter Property="FontSize" Value="12"/>
+                        <!--<Setter Property="Background" Value="LightGray"/>-->
+                        <Setter Property="PlaceHolderText" Value="{Binding RelativeSource={RelativeSource Self}, Path=ToolTip}"/>
+
+                    </Style>
+
+                    <Style TargetType="{x:Type Label}">
+                        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                    </Style>
+
+                    <Converters:ContractortypeToGridHeightConverter x:Key="ContractortypeToGridHeight" DecisionContractorType="Individual" Operator="Equals" />
+                    <Converters:ContractortypeToGridHeightConverter x:Key="NonIndividualContractortypeToGridHeight" DecisionContractorType="Individual"  Operator="NotEquals"/>
+
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="600"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="{Binding DataContext.SelectedContractortype, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource ContractortypeToGridHeight}}" />
+
+                    <RowDefinition Height="{Binding DataContext.SelectedContractortype, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource ContractortypeToGridHeight}}"/>
+                    <RowDefinition Height="{Binding DataContext.SelectedContractortype, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource ContractortypeToGridHeight}}"/>
+                    <RowDefinition Height="{Binding DataContext.SelectedContractortype, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource ContractortypeToGridHeight}}"/>
+                    <RowDefinition Height="{Binding DataContext.SelectedContractortype, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource ContractortypeToGridHeight}}"/>
+
+                    <RowDefinition Height="{Binding DataContext.SelectedContractortype, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource NonIndividualContractortypeToGridHeight}}"/>
+                    <RowDefinition Height="{Binding DataContext.SelectedContractortype, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource NonIndividualContractortypeToGridHeight}}"/>
+
+                </Grid.RowDefinitions>
+
+                <AdornerDecorator>
+                    <DockPanel Name="mainPane">
+
+                    </DockPanel>
+                </AdornerDecorator>
+
+                <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
+                    <ComboBox HorizontalAlignment="Left"  VerticalAlignment="Stretch" Width="200" ItemsSource="{Binding Path=DataContext.Contractortypes, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" SelectedItem="{Binding DataContext.SelectedContractortype, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=Window}}" />
+                </StackPanel>
+                <Label Grid.Row="1" Content="Адрес"/>
+                <WrapPanel Grid.Row="1" Grid.Column="1">
+                    <PlaceHolder:TextBoxEx  ToolTip="Адрес" Width="400" Text="{Binding Address}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="WrapWithOverflow"/>
+                    <PlaceHolder:TextBoxEx  ToolTip="Индекс" Width="70"  Text="{Binding Zip}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="WrapWithOverflow"/>
+                </WrapPanel>
+                <Label Grid.Row="2" Content="ИНН" />
+                <PlaceHolder:TextBoxEx Grid.Row="2" Grid.Column="1" ToolTip="ИНН"  Text="{Binding Inn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="WrapWithOverflow"/>
+
+
+                <Label Grid.Row="3">ФИО</Label>
+                <WrapPanel Grid.Row="3" Grid.Column="1" d:LayoutOverrides="GridBox">
+                    <PlaceHolder:TextBoxEx ToolTip="Фамилия" Text="{Binding Familyname}" Width="150" TextWrapping="WrapWithOverflow"/>
+
+                    <PlaceHolder:TextBoxEx ToolTip="Имя" Text="{Binding Firstname}" Width="150" TextWrapping="WrapWithOverflow"/>
+                    <PlaceHolder:TextBoxEx ToolTip="Отчество"  Text="{Binding Middlename}" Width="150" TextWrapping="WrapWithOverflow"/>
+                </WrapPanel>
+                <Label Grid.Row="4">Паспорт</Label>
+                <WrapPanel Grid.Row="4" Grid.Column="1" d:LayoutOverrides="GridBox">
+                    <PlaceHolder:TextBoxEx ToolTip="Серия" Text="{Binding Pasportseries}" Width="50" TextWrapping="WrapWithOverflow"/>
+
+                    <PlaceHolder:TextBoxEx ToolTip="Номер" Text="{Binding Pasportnumber}" Width="100" TextWrapping="WrapWithOverflow"/>
+                    <PlaceHolder:TextBoxEx ToolTip="Паспорт выдан"  Text="{Binding Pasportauthority}" Width="250" TextWrapping="WrapWithOverflow"/>
+                    <DatePicker ToolTip="Дата выдачи паспорта"  Text="{Binding Pasportdate}" />
+                </WrapPanel>
+
+                <Label Grid.Row="5">Место рожд.</Label>
+                <WrapPanel Grid.Row="5" Grid.Column="1" d:LayoutOverrides="GridBox">
+                    <PlaceHolder:TextBoxEx ToolTip="Место рождения" Text="{Binding Birthplace}" Width="250" TextWrapping="WrapWithOverflow"/>
+                    <DatePicker ToolTip="Дата рождения"  Text="{Binding Birthdate}" />
+
+                </WrapPanel>
+                <Label Grid.Row="6">Страховое св-о</Label>
+
+
+                <PlaceHolder:TextBoxEx Grid.Row="6" Grid.Column="1" ToolTip="Страховое св-о"  Text="{Binding Insurance}" TextWrapping="WrapWithOverflow" />
+
+                <Label Grid.Row="7" d:LayoutOverrides="GridBox">Образование</Label>
+
+
+                <ComboBox Grid.Row="7" Grid.Column="1"  HorizontalAlignment="Left" Width="200" ItemsSource="{Binding Path=DataContext.Educations, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" SelectedItem="{Binding Education}" Margin="5,2,0,2"/>
+                <Label Grid.Row="8">Наименование</Label>
+                <StackPanel Orientation="Horizontal" Grid.Row="8"   Grid.Column="1" Grid.ColumnSpan="2">
+                    <PlaceHolder:TextBoxEx Width="250" Text="{Binding Name}" ToolTip="Имя контрагента"/>
+                    <PlaceHolder:TextBoxEx Width="150" Text="{Binding Shortname}" ToolTip="Короткое имя"/>
+                </StackPanel>
+                <Label Grid.Row="9">Реквизиты</Label>
+                <WrapPanel x:Name="panelWrapped" Grid.Row="9" Grid.Column="1" d:LayoutOverrides="GridBox">
+                    <PlaceHolder:TextBoxEx ToolTip="Банк" Text="{Binding Bank}" Width="250" TextWrapping="WrapWithOverflow"/>
+                    <PlaceHolder:TextBoxEx ToolTip="Расчётный счёт" Text="{Binding Account}" Width="150" TextWrapping="WrapWithOverflow"/>
+                    <PlaceHolder:TextBoxEx ToolTip="БИК" Text="{Binding Bik}" Width="90" TextWrapping="WrapWithOverflow"/>
+                    <PlaceHolder:TextBoxEx ToolTip="КПП" Text="{Binding Kpp}" Width="80" TextWrapping="WrapWithOverflow"/>
+                    <PlaceHolder:TextBoxEx ToolTip="Корреспондентский счёт" Text="{Binding Correspaccount}" Width="150" TextWrapping="WrapWithOverflow"/>
+                    <PlaceHolder:TextBoxEx ToolTip="ОКПО" Text="{Binding Okpo}" Width="70" TextWrapping="WrapWithOverflow"/>
+                    <PlaceHolder:TextBoxEx ToolTip="ОКОНХ" Text="{Binding Okonh}" Width="50" TextWrapping="WrapWithOverflow"/>
+                    <PlaceHolder:TextBoxEx ToolTip="ОГРН" Text="{Binding Ogrn}" Width="95" TextWrapping="WrapWithOverflow"/>
+                    <PlaceHolder:TextBoxEx ToolTip="ОКАТО" Text="{Binding Okato}" Width="90" TextWrapping="WrapWithOverflow"/>
+                    <PlaceHolder:TextBoxEx ToolTip="ОКВЭД" Text="{Binding Okved}" Width="100" TextWrapping="WrapWithOverflow"/>
+                </WrapPanel>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate x:Key="Acttype">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Наименование" Margin="10" />
+                    <TextBox Text="{Binding Path=Typename, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1"/>
+                    <Label Content="Контрагент" Margin="10" Grid.Row="1"/>
+                    <ComboBox SelectedItem="{Binding Path=Contractor, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Contractors, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="1"/>
+                    <Label Content="Признак активности" Margin="10" Grid.Row="2"/>
+                    <CheckBox IsThreeState="True" IsChecked="{Binding Path=Active, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="2"/>
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Contractorpropertiy">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Контрагент" Margin="10"/>
+                    <ComboBox SelectedItem="{Binding Path=Contractor, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Contractors, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1"/>
+                    <Label Content="Свойство" Margin="10" Grid.Row="1"/>
+                    <ComboBox SelectedItem="{Binding Path=Property, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Properties, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="1"/>
+                    <Label Content="Значение" Margin="10" Grid.Row="2"/>
+                    <TextBox Text="{Binding Path=Value, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="2"/>
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Person">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Фамилия" Margin="10" />
+                    <TextBox Text="{Binding Path=Family, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1"/>
+                    <Label Content="Имя" Margin="10" Grid.Row="1"/>
+                    <TextBox Text="{Binding Path=Firstname, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="1"/>
+                    <Label Content="Отчество" Margin="10" Grid.Row="2"/>
+                    <TextBox Text="{Binding Path=Middlename, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="2"/>
+                    <Label Content="Пол" Margin="10" Grid.Row="3"/>
+                    <StackPanel Grid.Column="1" Grid.Row="3" Margin="10">
+                        <RadioButton Checked="RadioButton_Checked" GroupName="1" x:Name="ManRB" Content="Мужской" Margin="2" Loaded="ManRB_Loaded"/>
+                        <RadioButton Checked="RadioButton_Checked_1" GroupName="1" x:Name="WomanRB" Content="Женский" Margin="2" Loaded="WomanRB_Loaded"/>
+                    </StackPanel>
+                    <Label Content="Должность контрагента" Margin="10" Grid.Row="4"/>
+                    <ComboBox SelectedItem="{Binding Path=Contractorposition, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Contractorpositions, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="4" Grid.Row="4"/>
+                    <Label Content="Степень" Margin="10" Grid.Row="5" />
+                    <ComboBox SelectedItem="{Binding Path=Degree, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Degrees, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="5"/>
+                    <Label Content="Право подписи от первого лица" Margin="10" Grid.Row="6"/>
+                    <CheckBox IsChecked="{Binding Path=Contractheadauthority, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="6"/>
+                    <Label Content="Право подписи актов" Margin="10" Grid.Row="7"/>
+                    <CheckBox IsChecked="{Binding Path=Actsignauthority, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="7"/>
+                    <Label Content="Актуальные данные" Margin="10" Grid.Row="8"/>
+                    <CheckBox IsChecked="{Binding Path=Valid, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="8"/>
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Employee">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Фамилия" Margin="10" />
+                    <TextBox Text="{Binding Path=Familyname, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1"/>
+                    <Label Content="Имя" Margin="10" Grid.Row="1"/>
+                    <TextBox Text="{Binding Path=Firstname, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="1"/>
+                    <Label Content="Отчество" Margin="10" Grid.Row="2"/>
+                    <TextBox Text="{Binding Path=Middlename, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="2"/>
+                    <Label Content="Пол" Margin="10" Grid.Row="3"/>
+                    <StackPanel Grid.Column="1" Grid.Row="3" Margin="10">
+                        <RadioButton Checked="ManRB_Checked" GroupName="1" x:Name="ManRB" Content="Мужской" Margin="2" Loaded="ManRB_Loaded_1"/>
+                        <RadioButton Checked="WomanRB_Checked" GroupName="1" x:Name="WomanRB" Content="Женский" Margin="2" Loaded="WomanRB_Loaded_1"/>
+                    </StackPanel>
+
+                    <Label Content="Отдел" Margin="10" Grid.Row="4"/>
+                    <ComboBox SelectedItem="{Binding Path=Department, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Departments, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="4"/>
+
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Contractorposition">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Контрагент" Margin="10"/>
+                    <ComboBox SelectedItem="{Binding Path=Contractor, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Contractors, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="0"/>
+                    <Label Content="Должность" Margin="10" Grid.Row="1"/>
+                    <ComboBox SelectedItem="{Binding Path=Position, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Positions, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="1"/>
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Functionalcustomer">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10" Grid.Column="1"/>
+                    <Label Content="Организация" Margin="10" Grid.Row="1"/>
+                    <ComboBox SelectedItem="{Binding Path=Contractor, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Contractors, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="1" SelectionChanged="ComboBox_SelectionChanged" />
+                    <Label Content="Тип" Margin="10" Grid.Row="2"/>
+                    <ComboBox SelectedItem="{Binding Path=Functionalcustomertype, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Functionalcustomertypes, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="2"/>
+                    <Label Content="Старший" Margin="10" Grid.Row="3"/>
+                    <ComboBox SelectedItem="{Binding Path=Parent, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.ParentFunctionalcustomers, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="3"/>
+
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Trouble">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="№" Margin="10"/>
+                    <TextBox Text="{Binding Path=Num, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="0"/>
+                    <Label Content="Наименование" Margin="10" Grid.Row="1"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" Grid.Column="1" Grid.Row="1"/>
+                    <Label Content="Реестр проблем" Margin="10" Grid.Row="2"/>
+                    <ComboBox SelectedItem="{Binding Path=Troublesregistry, Mode=TwoWay}" ItemsSource="{Binding Path=DataContext.TroublesRegistry, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="2"/>
+                    <Label Content="Надпроблема" Margin="10" Grid.Row="3"/>
+                    <ComboBox SelectedItem="{Binding Path=Parent, Mode=TwoWay}" ItemsSource="{Binding Path=Troublesregistry.TopLevelTroubles}" Grid.Column="1" Grid.Row="3"/>
+
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Document">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Transferacttype">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Transferacttypedocument">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Тип" Margin="10"/>
+                    <ComboBox SelectedItem="{Binding Path=Transferacttype, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Transferacttypes, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1"/>
+                    <Label Content="Документ" Margin="10" Grid.Row="1"/>
+                    <ComboBox SelectedItem="{Binding Path=Document, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Documents, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="1"/>
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Funccustomerperson">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Функциональный заказчик" Margin="10"/>
+                    <ComboBox SelectedItem="{Binding Path=Functionalcustomer, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Functionalcustomers, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1"/>
+                    <Label Content="Представитель" Margin="10" Grid.Row="1"/>
+                    <ComboBox SelectedItem="{Binding Path=Person, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Persons, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="1"/>
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Location">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="MissiveType">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="ApprovalGoal">
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10"/>
+                </StackPanel>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="ApprovalState">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Наименование" Margin="10" />
+                    <TextBox Grid.Column="1" x:Name="txtApprovalState" Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10" Initialized="txtApprovalState_Initialized"/>
+                    <Label Grid.Row="1" Content="Цвет" Margin="10" />
+                    <extToolkit:ColorPicker Grid.Row="1" Grid.Column="1" SelectedColor="{Binding Path=Color, Mode=TwoWay, Converter={StaticResource StateColorConverter}}" Width="300" Margin="10" SelectedColorChanged="RadColorPicker_OnSelectedColorChanged" />
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Yearreportcolor">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Квартал" Margin="10" />
+                    <ComboBox Grid.Column="1" x:Name="cbxQuarter"  SelectedItem="{Binding Path=UserQuarter, Mode=TwoWay}" ItemsSource="{Binding Path=DataContext.Quarters, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}" FontSize="12" Width="300" Margin="10" Initialized="cbxQuarter_Initialized"/>
+                    <Label Grid.Row="1" Content="Цвет закрытого этапа" Margin="10" />
+                    <extToolkit:ColorPicker Grid.Row="1" Grid.Column="1" SelectedColor="{Binding Path=Color, Mode=TwoWay, Converter={StaticResource StateColorConverter}}" Width="300" Margin="10" SelectedColorChanged="RadColorPicker_OnSelectedColorChanged1" />
+                    <Label Grid.Row="2" Content="Цвет закрытого этапа (соисполнители)" Margin="10" />
+                    <extToolkit:ColorPicker Grid.Row="2" Grid.Column="1" SelectedColor="{Binding Path=Coworkerscolor, Mode=TwoWay, Converter={StaticResource StateColorConverter}}" Width="300" Margin="10" />
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="Department">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Наименование" Margin="10"/>
+                    <TextBox Text="{Binding Path=Name, Converter={StaticResource RemoveExtraSpaceConverter1}, Mode=TwoWay, ValidatesOnDataErrors=True}" FontSize="12" Width="300" Margin="10" Grid.Column="1"/>
+                    <Label Content="Заместитель директора" Margin="10" Grid.Row="1"/>
+                    <ComboBox SelectedItem="{Binding Path=Director, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Employees, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="1"/>
+
+                    <Label Content="Руководитель" Margin="10" Grid.Row="2"/>
+                    <ComboBox SelectedItem="{Binding Path=Manager, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Employees, Mode=OneTime, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="2"/>
+
+                    <Label Content="Старший" Margin="10" Grid.Row="3"/>
+                    <ComboBox SelectedItem="{Binding Path=Parent, Mode=TwoWay, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.ParentDepartments, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Window}}" Grid.Column="1" Grid.Row="3"/>
+
+                </Grid>
+            </ControlTemplate>
+
+
+        </Window.Resources>
+
+        <Grid>
+
+            <StackPanel>
+
+                <Control x:Name="ObjectForEdit" DataContext="{Binding ObjectForEdit}"/>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="5" HorizontalAlignment="Right" Height="Auto">
+                    <Button Content="ОК" IsDefault="True" Click="Button_Click_1"/>
+                    <Button Content="Отмена" Click="Button_Click"/>
+                </StackPanel>
+
+            </StackPanel>
+
+        </Grid>
+</Window>

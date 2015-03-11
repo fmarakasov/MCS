@@ -1,0 +1,109 @@
+﻿<UserControl x:Class="MContracts.View.PrepaymentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:View="clr-namespace:MContracts.View" mc:Ignorable="d" 
+             d:DesignHeight="314" d:DesignWidth="408">
+    <UserControl.Resources>
+    <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+	
+	</UserControl.Resources>
+
+	<Border>
+        <!--HeaderTemplate="{Binding Path={StaticResource ResourceKey=GroupBoxHeaderTemplate}}">-->
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"></ColumnDefinition>
+                <ColumnDefinition Width="150"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>                
+            </Grid.RowDefinitions>
+            <Border Grid.Row="1" Grid.ColumnSpan="3" Background="LightGray" Margin="0,5,0,5">
+                <WrapPanel DataContext="{Binding PrepaymentMoneyInfo}" VerticalAlignment="Center">
+                    <WrapPanel.Resources>
+                        <Style x:Key="MoneyText" TargetType="Label">
+                            <Setter Property="Foreground" Value="Black"></Setter>
+                            <Setter Property="FontWeight" Value="Bold"></Setter>
+                        </Style>
+                    </WrapPanel.Resources>                    
+                    <Label Margin="5,0,0,0" Content="{Binding Path=PricePure}" Style="{StaticResource MoneyText}"/>                    
+                    <Label Margin="5,0,0,0" Content="{Binding Path=PriceNds}" Style="{StaticResource MoneyText}"/>                    
+                    <Label Margin="5,0,0,0" Content="{Binding Path=PriceWithNds}" Style="{StaticResource MoneyText}"/>
+                </WrapPanel>
+            </Border>
+
+            <StackPanel Grid.Row="0">
+                <Label Content="{Binding PrepaymentSumHeader}"></Label>
+                <DockPanel LastChildFill="True" IsEnabled="{Binding SumEnabled}">
+                    <TextBox Text="{Binding Path=Sum, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, StringFormat=N3}" Margin="0,0,0,0" Width="100" HorizontalContentAlignment="Stretch" >
+                    </TextBox>
+                    <Button DockPanel.Dock="Right" HorizontalAlignment="Left" Command="{Binding CalcSumCommand}" HorizontalContentAlignment="Right" Height="20" Width="20" Visibility="Hidden">
+                        <Image Source="/MContracts;component/Images/calculator.png" ToolTip="Рассчитать" Stretch="UniformToFill" Visibility="Visible"></Image>
+                    </Button>
+                </DockPanel>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Grid.Row="0">
+                <!--<WrapPanel>-->
+                    <Label>Процент аванса</Label>
+                    <!--<CheckBox Margin="0,0,0,0" IsChecked="{Binding CalcPrepaymentFromPurePrice}" VerticalAlignment="Center">от </CheckBox>-->
+                <!--</WrapPanel>-->                
+                <DockPanel IsEnabled="{Binding PercentsEnabled}">
+                    <TextBox Text="{Binding Path=Percents,  ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,0" Width="100"></TextBox>
+                    <Button DockPanel.Dock="Right" HorizontalAlignment="Left"  Command="{Binding CalcPercentsCommand}" HorizontalContentAlignment="Right" Height="20" Width="20" Visibility="Collapsed">
+                        <Image Source="/MContracts;component/Images/calculator.png" ToolTip="Рассчитать" Stretch="UniformToFill"></Image>
+                     </Button>                    
+                </DockPanel>                
+            </StackPanel>
+            <StackPanel Grid.Column="2" Grid.Row="0" Visibility="{Binding NdsAlgorithmEnabled, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Label>НДС</Label>
+                <ComboBox  MinWidth="150" HorizontalAlignment="Left" ItemsSource="{Binding Path=NdsAlgorithms, ValidatesOnDataErrors=True}" Margin="5,0,0,0"  SelectedItem="{Binding Path=ContractObject.Prepaymentndsalgorithm}"   Width="25"></ComboBox>
+            </StackPanel>
+            
+            <!--</StackPanel>
+            <Button Content="Распределить" Command="{Binding AutoSpreadCommand}"></Button>
+            -->
+            <StackPanel Grid.Row="2" Grid.ColumnSpan="3">
+                <WrapPanel>
+                    <Button Click="Button_Click">
+                        <Image Source="/MContracts;component/Images/Add_16.png" Width="16" Height="16"></Image>
+                    </Button>
+                    <Button Click="Button_Click_1">
+                        <Image Source="/MContracts;component/Images/Delete_16.png" Width="16" Height="16"></Image>
+                    </Button>
+                </WrapPanel>
+            <DataGrid  x:Name="prepaymentsGrid" ItemsSource="{Binding PrepaymentsList}" AutoGenerateColumns="False" MinHeight="100" Margin="0,5,0,0" CanUserReorderColumns="True" CanUserAddRows="False" CanUserDeleteRows="False" SelectionMode="Single">
+                    <DataGrid.Columns>
+                    <DataGridTextColumn Width="120" Binding="{Binding Year, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}">
+                            <DataGridTextColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding ElementName=prepaymentsGrid, Path=DataContext.PrepaymentYearHeader}" />
+                                </DataTemplate>
+                            </DataGridTextColumn.HeaderTemplate>
+                        </DataGridTextColumn>
+                    <DataGridTextColumn Width="*" Binding="{Binding Sum, ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}">
+                            <DataGridTextColumn.HeaderTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding ElementName=prepaymentsGrid, Path=DataContext.PrepaymentSumHeader}" />
+                                </DataTemplate>
+                            </DataGridTextColumn.HeaderTemplate>
+                        </DataGridTextColumn>
+                    <DataGridTextColumn Header="Цена без НДС" Width="120" Binding="{Binding PricePure, StringFormat=N, Mode=OneWay}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="НДС" Width="120" Binding="{Binding PriceNds, StringFormat=N, Mode=OneWay}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Цена c НДС" Width="120" Binding="{Binding PriceWithNds, StringFormat=N, Mode=OneWay}"></DataGridTextColumn>
+                    
+                    <DataGridTextColumn Header="Процент" Width="70" Binding="{Binding AutoPercent, StringFormat=N, Mode=OneWay}"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+            <TextBlock Grid.Row="3" Grid.ColumnSpan="3" Text="{Binding SpreadedInfo}" HorizontalAlignment="Right" Foreground="Black"/>
+        </Grid>
+    </Border>
+</UserControl>
+
+    

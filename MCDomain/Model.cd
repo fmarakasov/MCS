@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="MCDomain.Model.Contractdoc">
+    <Position X="2" Y="1.75" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>gZq3IrkD5zm5bU/XeqMpwdlh3qRa/+jNepSYpB62PPE=</HashCode>
+      <FileName>Model\Contractdoc.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.398" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

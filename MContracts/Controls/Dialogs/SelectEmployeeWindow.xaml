@@ -1,0 +1,59 @@
+﻿<Window x:Class="MContracts.Controls.Dialogs.SelectEmployeeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Model="clr-namespace:MCDomain.Model;assembly=MCDomain"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" Title="Выбрать сотрудника" 
+        Height="600" Width="600" 
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
+    
+    <Window.Resources>
+        <HierarchicalDataTemplate x:Key="DepartmentTreeViewItemTemplate" DataType="{x:Type Model:Department}" ItemsSource="{Binding Path=Departments}">
+            <Border BorderBrush="Cornsilk" BorderThickness="2" CornerRadius="4" Width="330">
+                <StackPanel>
+                    <TextBlock FontWeight="Medium" Text="{Binding Name, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="WrapWithOverflow" />
+                </StackPanel>
+            </Border>
+
+        </HierarchicalDataTemplate>
+
+    </Window.Resources>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="390" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            
+        <Label Grid.Column="0" Grid.Row="0">Подразделения</Label>
+        <telerik:RadTreeView Margin ="2"  HorizontalAlignment="Stretch"  Name="DepartmentsTreeView" 
+                      VerticalAlignment="Stretch" ItemsSource="{Binding Departments, Mode=OneTime}"
+                      ItemTemplate="{StaticResource DepartmentTreeViewItemTemplate}" IsTextSearchEnabled="True" 
+                      SelectedItem="{Binding SelectedDepartment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="0" Grid.Row="1"
+                      Focusable="True" Loaded="DepartmentsTreeView_Loaded" SelectionChanged="DepartmentsTreeView_SelectionChanged"  BorderThickness="1" IsExpandOnSingleClickEnabled="True" BorderBrush="Black">
+
+            <telerik:RadTreeView.ItemContainerStyle>
+                <Style TargetType="{x:Type telerik:RadTreeViewItem}">
+                    <EventSetter Event="Selected" Handler="TreeViewSelectedItemChanged" />
+                </Style>
+            </telerik:RadTreeView.ItemContainerStyle>
+
+        </telerik:RadTreeView> 
+            
+        
+        <Label Grid.Column="1" Grid.Row="0">Сотрудники</Label>
+            <ListBox Grid.Column="1" Grid.Row="1" Margin ="2,2,2,2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding SelectedDepartment.Employees}" SelectedItem="{Binding SelectedEmployee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="DepartmentsTreeView_MouseDoubleClick" BorderBrush="Black" />
+
+            
+        <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Right"> 
+            <Button Content="Выбрать" Width="100" x:Name="btnOk" Click="ButtonClick" HorizontalAlignment="Right" Margin="2"/>
+            <Button Content="Закрыть " Width="100" x:Name="btnCancel" Click="BtnCancelClick" Margin="2" HorizontalAlignment="Right"/>
+        </StackPanel>
+    </Grid>
+</Window>

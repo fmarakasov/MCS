@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{05E9B516-6438-48C5-B334-3E8B2256E355}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>McReports</RootNamespace>
+    <AssemblyName>McReports</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Partisl Build|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Partisl Build\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Partial Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Partial Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Partisl Build|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Partisl Build\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Partial Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Partial Debug\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Devart.Data.Linq, Version=3.2.82.0, Culture=neutral, PublicKeyToken=09af7300eec23701, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Devart.Data.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\NoReportDataException.cs" />
+    <Compile Include="Common\InputParameterAttribute.cs" />
+    <Compile Include="Common\IObjectDataProvider.cs" />
+    <Compile Include="Common\IUIQueryParametersProvider.cs" />
+    <Compile Include="DTO\ContractInActionDTO.cs" />
+    <Compile Include="DTO\WorkProgressDTO.cs" />
+    <Compile Include="DTO\ContractDto.cs" />
+    <Compile Include="DTO\ContractRepositoryDto.cs" />
+    <Compile Include="DTO\EfficientInformationDTO.cs" />
+    <Compile Include="DTO\EfparameterstageresultDto.cs" />
+    <Compile Include="DTO\EntityDto.cs" />
+    <Compile Include="DTO\EntityDtoExtensions.cs" />
+    <Compile Include="DTO\HandingWorkDTO.cs" />
+    <Compile Include="DTO\QuarterPlanContractDTO.cs" />
+    <Compile Include="DTO\SchedulecontractDto.cs" />
+    <Compile Include="DTO\ScheduleDto.cs" />
+    <Compile Include="DTO\StageDto.cs" />
+    <Compile Include="DTO\StageresultDto.cs" />
+    <Compile Include="DTO\SubContractsDTO.cs" />
+    <Compile Include="DTO\TroubleContractDto.cs" />
+    <Compile Include="DTO\YearPlanContractDTO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReportBuilder.cs" />
+    <Compile Include="ReportFactory.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModel\Act1ReportViewModel.cs" />
+    <Compile Include="ViewModel\ActTransferReportViewModel.cs" />
+    <Compile Include="ViewModel\BaseActReportViewModel.cs" />
+    <Compile Include="ViewModel\Act2ReportViewModel.cs" />
+    <Compile Include="ViewModel\Act3ReportViewModel.cs" />
+    <Compile Include="ViewModel\Act4ReportViewModel.cs" />
+    <Compile Include="ViewModel\EconEfficiencyTypeNIOKRReportViewModel.cs" />
+    <Compile Include="ViewModel\TroubleNIOKRReportViewModel.cs" />
+    <Compile Include="ViewModel\NIOKREconomicEffectReportViewModel.cs" />
+    <Compile Include="ViewModel\ContractInActionYearRegisterReport.cs" />
+    <Compile Include="ViewModel\NIOKRImplementationReportViewModel.cs" />
+    <Compile Include="ViewModel\ContractPeriodReportViewModel.cs" />
+    <Compile Include="ViewModel\ContractQuarterPlanRepotViewModel.cs" />
+    <Compile Include="ViewModel\ContractRegisterReportViewModel.cs" />
+    <Compile Include="ViewModel\ContractYearPlanReportViewModel.cs" />
+    <Compile Include="ViewModel\DateRangeReportViewModel.cs" />
+    <Compile Include="Common\DefaultTemplateProvider.cs" />
+    <Compile Include="ViewModel\EfficientInformationReportViewModel.cs" />
+    <Compile Include="ViewModel\ExcelReportViewModel.cs" />
+    <Compile Include="ViewModel\HandingWorkReportViewModel.cs" />
+    <Compile Include="Common\IReportSourceProvider.cs" />
+    <Compile Include="Common\ITemplateProvider.cs" />
+    <Compile Include="ViewModel\InformationConcludedContracts_ViewModel.cs" />
+    <Compile Include="ViewModel\ReportParameter.cs" />
+    <Compile Include="ViewModel\BaseReportViewModel.cs" />
+    <Compile Include="ViewModel\SubContractRegisterReportViewModel.cs" />
+    <Compile Include="ViewModel\WordReportViewModel.cs" />
+    <Compile Include="ViewModel\WorkProgressReportViewModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommonBase\CommonBase.csproj">
+      <Project>{4e41ddd6-86fa-4b0b-9062-241187e456f8}</Project>
+      <Name>CommonBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MCDomain\MCDomain.csproj">
+      <Project>{d21bb05a-0366-4123-8ab1-d433e494c00e}</Project>
+      <Name>MCDomain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\McUIBase\McUIBase.csproj">
+      <Project>{f08cdd18-a933-4d28-9388-9ba2208e6894}</Project>
+      <Name>McUIBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UIShared\UIShared.csproj">
+      <Project>{672e3bb7-35e3-43f0-95d1-3a0e15e6e502}</Project>
+      <Name>UIShared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UOW\UOW.csproj">
+      <Project>{CE8FA354-321F-4EA1-933A-5444520D000E}</Project>
+      <Name>UOW</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

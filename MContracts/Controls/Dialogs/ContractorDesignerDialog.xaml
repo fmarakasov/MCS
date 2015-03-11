@@ -1,0 +1,128 @@
+﻿<Dialogs:DialogShell
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:Dialogs="clr-namespace:MContracts.Controls.Dialogs" 
+				 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+				 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+				  x:Class="MContracts.Controls.Dialogs.ContractorDesignerDialog"
+				  xmlns:Controls="clr-namespace:MContracts.Controls"
+      xmlns:Converters="clr-namespace:MContracts.Classes.Converters"
+        xmlns:PlaceHolder="clr-namespace:MContracts.Controls.PlaceHolder" Height="480" Width="640" Title="{Binding Caption}" WindowStartupLocation="CenterOwner">
+    <Border>
+        <Grid Margin="5" x:Name="gridControl">
+            <Grid.Resources>
+                <Style TargetType="{x:Type ComboBox}" x:Key="{x:Type ComboBox}">
+                    <Setter Property="Margin" Value="5,2,5,2"/>
+                </Style>
+                <Style TargetType="{x:Type DatePicker}" x:Key="{x:Type DatePicker}">
+                    <Setter Property="Margin" Value="5,2,5,2"/>
+                    <Setter Property="Width" Value="90"/>
+                </Style>
+
+                <Style TargetType="{x:Type Control}" x:Key="{x:Type Control}">
+                    <Setter Property="Margin" Value="5,2,5,2"/>
+                </Style>
+
+                <Style  TargetType="{x:Type PlaceHolder:TextBoxEx}" BasedOn="{StaticResource {x:Type Control}}">
+                    <Setter Property="FontSize" Value="12"/>
+                    <!--<Setter Property="Background" Value="LightGray"/>-->
+                    <Setter Property="PlaceHolderText" Value="{Binding RelativeSource={RelativeSource Self}, Path=ToolTip}"/>
+
+                </Style>
+
+                <Style TargetType="{x:Type Label}">
+                    <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                </Style>
+
+                <Converters:ContractortypeToGridHeightConverter x:Key="ContractortypeToGridHeight" DecisionContractorType="Individual" Operator="Equals" />
+                <Converters:ContractortypeToGridHeightConverter x:Key="NonIndividualContractortypeToGridHeight" DecisionContractorType="Individual"  Operator="NotEquals"/>
+
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.156*"/>
+                <ColumnDefinition Width="0.844*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="{Binding SelectedContractortype, Converter={StaticResource ContractortypeToGridHeight}}" />
+
+                <RowDefinition Height="{Binding SelectedContractortype, Converter={StaticResource ContractortypeToGridHeight}}"/>
+                <RowDefinition Height="{Binding SelectedContractortype, Converter={StaticResource ContractortypeToGridHeight}}"/>
+                <RowDefinition Height="{Binding SelectedContractortype, Converter={StaticResource ContractortypeToGridHeight}}"/>
+                <RowDefinition Height="{Binding SelectedContractortype, Converter={StaticResource ContractortypeToGridHeight}}"/>
+                <RowDefinition Height="{Binding SelectedContractortype, Converter={StaticResource NonIndividualContractortypeToGridHeight}}"/>
+                <RowDefinition Height="{Binding SelectedContractortype, Converter={StaticResource NonIndividualContractortypeToGridHeight}}"/>
+
+            </Grid.RowDefinitions>
+
+            <AdornerDecorator>
+                <DockPanel Name="mainPane">
+
+                </DockPanel>
+            </AdornerDecorator>
+
+            <StackPanel Orientation="Horizontal" Grid.ColumnSpan="2">
+                <ComboBox HorizontalAlignment="Left"  VerticalAlignment="Stretch" Width="200" ItemsSource="{Binding Contractortypes}" SelectedItem="{Binding SelectedContractortype}"/>
+            </StackPanel>
+            <Label Grid.Row="1" Content="Адрес"/>
+            <WrapPanel Grid.Row="1" Grid.Column="1">
+                <PlaceHolder:TextBoxEx  ToolTip="Адрес" Width="400" Text="{Binding ContractorObject.Address}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="WrapWithOverflow"/>
+                <PlaceHolder:TextBoxEx  ToolTip="Индекс" Width="70"  Text="{Binding ContractorObject.Zip}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="WrapWithOverflow"/>
+            </WrapPanel>
+            <Label Grid.Row="2" Content="ИНН" />
+            <PlaceHolder:TextBoxEx Grid.Row="2" Grid.Column="1" ToolTip="ИНН"  Text="{Binding ContractorObject.Inn}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="WrapWithOverflow"/>
+
+
+            <Label Grid.Row="3">ФИО</Label>
+            <WrapPanel Grid.Row="3" Grid.Column="1" d:LayoutOverrides="GridBox">
+                <PlaceHolder:TextBoxEx ToolTip="Фамилия" Text="{Binding ContractorObject.Familyname}" Width="150" TextWrapping="WrapWithOverflow"/>
+
+                <PlaceHolder:TextBoxEx ToolTip="Имя" Text="{Binding ContractorObject.Firstname}" Width="150" TextWrapping="WrapWithOverflow"/>
+                <PlaceHolder:TextBoxEx ToolTip="Отчество"  Text="{Binding ContractorObject.Middlename}" Width="150" TextWrapping="WrapWithOverflow"/>
+            </WrapPanel>
+            <Label Grid.Row="4">Паспорт</Label>
+            <WrapPanel Grid.Row="4" Grid.Column="1" d:LayoutOverrides="GridBox">
+                <PlaceHolder:TextBoxEx ToolTip="Серия" Text="{Binding ContractorObject.Pasportseries}" Width="50" TextWrapping="WrapWithOverflow"/>
+
+                <PlaceHolder:TextBoxEx ToolTip="Номер" Text="{Binding ContractorObject.Pasportnumber}" Width="100" TextWrapping="WrapWithOverflow"/>
+                <PlaceHolder:TextBoxEx ToolTip="Паспорт выдан"  Text="{Binding ContractorObject.Pasportauthority}" Width="250" TextWrapping="WrapWithOverflow"/>
+                <DatePicker ToolTip="Дата выдачи паспорта"  Text="{Binding ContractorObject.Pasportdate}" />
+            </WrapPanel>
+
+            <Label Grid.Row="5">Место рожд.</Label>
+            <WrapPanel Grid.Row="5" Grid.Column="1" d:LayoutOverrides="GridBox">
+                <PlaceHolder:TextBoxEx ToolTip="Место рождения" Text="{Binding ContractorObject.Birthplace}" Width="250" TextWrapping="WrapWithOverflow"/>
+                <DatePicker ToolTip="Дата рождения"  Text="{Binding ContractorObject.Birthdate}" />
+
+            </WrapPanel>
+            <Label Grid.Row="6">Страховое св-о</Label>
+
+
+            <PlaceHolder:TextBoxEx Grid.Row="6" Grid.Column="1" ToolTip="Страховое св-о"  Text="{Binding ContractorObject.Insurance}" TextWrapping="WrapWithOverflow" />
+
+            <Label Grid.Row="7" d:LayoutOverrides="GridBox">Образование</Label>
+            <ComboBox Grid.Row="7" Grid.Column="1"  HorizontalAlignment="Left" Width="200" ItemsSource="{Binding Educations}" SelectedItem="{Binding ContractorObject.Education}" Margin="5,2,0,2"/>
+            <Label Grid.Row="8">Наименование</Label>
+            <StackPanel Orientation="Horizontal" Grid.Row="8"   Grid.Column="1" Grid.ColumnSpan="2">
+                <PlaceHolder:TextBoxEx Width="250" Text="{Binding ContractorObject.Name}" ToolTip="Имя контрагента"/>
+                <PlaceHolder:TextBoxEx Width="150" Text="{Binding ContractorObject.Shortname}" ToolTip="Короткое имя"/>
+            </StackPanel>
+            
+            <Label Grid.Row="9">Реквизиты</Label>
+            <WrapPanel x:Name="panelWrapped" Grid.Row="9" Grid.Column="1" d:LayoutOverrides="GridBox">
+                <PlaceHolder:TextBoxEx ToolTip="Банк" Text="{Binding ContractorObject.Bank}" Width="250" TextWrapping="WrapWithOverflow"/>
+                <PlaceHolder:TextBoxEx ToolTip="Расчётный счёт" Text="{Binding ContractorObject.Account}" Width="150" TextWrapping="WrapWithOverflow"/>
+                <PlaceHolder:TextBoxEx ToolTip="БИК" Text="{Binding ContractorObject.Bik}" Width="90" TextWrapping="WrapWithOverflow"/>
+                <PlaceHolder:TextBoxEx ToolTip="КПП" Text="{Binding ContractorObject.Kpp}" Width="80" TextWrapping="WrapWithOverflow"/>
+                <PlaceHolder:TextBoxEx ToolTip="Корреспондентский счёт" Text="{Binding ContractorObject.Correspaccount}" Width="150" TextWrapping="WrapWithOverflow"/>
+                <PlaceHolder:TextBoxEx ToolTip="ОКПО" Text="{Binding ContractorObject.Okpo}" Width="70" TextWrapping="WrapWithOverflow"/>
+                <PlaceHolder:TextBoxEx ToolTip="ОКОНХ" Text="{Binding ContractorObject.Okonh}" Width="50" TextWrapping="WrapWithOverflow"/>
+                <PlaceHolder:TextBoxEx ToolTip="ОГРН" Text="{Binding ContractorObject.Ogrn}" Width="95" TextWrapping="WrapWithOverflow"/>
+                <PlaceHolder:TextBoxEx ToolTip="ОКАТО" Text="{Binding ContractorObject.Okato}" Width="90" TextWrapping="WrapWithOverflow"/>
+                <PlaceHolder:TextBoxEx ToolTip="ОКВЭД" Text="{Binding ContractorObject.Okved}" Width="100" TextWrapping="WrapWithOverflow"/>
+            </WrapPanel>
+        </Grid>
+    </Border>
+</Dialogs:DialogShell>

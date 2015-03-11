@@ -1,0 +1,660 @@
+﻿<UserControl x:Class="MContracts.View.ScheduleView" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:Controls="clr-namespace:MContracts.Controls"
+    xmlns:converters="clr-namespace:MContracts.Classes.Converters" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             DataContextChanged="ScheduleView_DataContextChanged"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:Controls1="clr-namespace:UIShared.Controls;assembly=UIShared"
+             xmlns:Model="clr-namespace:MCDomain.Model;assembly=MCDomain"
+         
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="600">
+
+    <UserControl.Resources>
+
+        <converters:LevelToMarginConverter x:Key="LevelToMarginConverter" LeftMargin="8" OtherMargin="0" />
+        <converters:StageConditionConverter x:Key="StageConditionConverter" />
+        <converters:StageConditionToImageConverter x:Key="StageConditionToImageConverter" />
+        <converters:NegativeBoolConverter x:Key="NegativeBoolConverter" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" FalseVisibility="Collapsed" TrueVisibility="Visible" />
+        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" NotNullVisibility="Visible" NullVisibility="Collapsed" />
+        <converters:IntToBrushConverter x:Key="StateColorConverter" />
+        <converters:DateTimeToShortDateConverter x:Key="NullDateConverter" />
+
+
+        <Style x:Key="ActionButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="Width" Value="24" />
+            <Setter Property="Height" Value="24" />
+        </Style>
+
+
+        <Style TargetType="TextBox">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock DockPanel.Dock="Right" Margin="2, 0, 0, 0" FontSize="12" FontWeight="Bold" Foreground="Red" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">!</TextBlock>
+                            <Border BorderBrush="Red" BorderThickness="1" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+                                <AdornedElementPlaceholder x:Name="adornedPlaceHolder"></AdornedElementPlaceholder>
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock DockPanel.Dock="Right" Margin="2, 0, 0, 0" FontSize="12" FontWeight="Bold" Foreground="Red" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">!</TextBlock>
+                            <Border BorderBrush="Red" BorderThickness="1">
+                                <AdornedElementPlaceholder x:Name="adornedPlaceHolder"></AdornedElementPlaceholder>
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock DockPanel.Dock="Right" Margin="2, 0, 0, 0" FontSize="12" FontWeight="Bold" Foreground="Red" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">!</TextBlock>
+                            <Border BorderBrush="Red" BorderThickness="1">
+                                <AdornedElementPlaceholder x:Name="adornedPlaceHolder"></AdornedElementPlaceholder>
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <converters:RemoveExtraSpaceConverter x:Key="RemoveExtraSpaceConverter1" />
+    </UserControl.Resources>
+    <DockPanel LastChildFill="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <Controls1:CommandsControl x:Name="commandsControl" DockPanel.Dock="Top" Margin="3"></Controls1:CommandsControl>
+        <telerik:RadGridView x:Name="ScheduleDataGrid" Margin="3"  DockPanel.Dock="Top" AutoGenerateColumns="False" CanUserInsertRows="False" CellEditEnded="ScheduleDataGrid_CellEditEnded" ItemsSource="{Binding Path=SchedulesBindingList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}" RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedSchedule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" ShowColumnHeaders="True" ShowGroupPanel="False" IsReadOnly="{Binding Path=IsReadOnly}">
+            <telerik:RadGridView.Columns>
+
+
+                <telerik:GridViewDataColumn Width="Auto" IsReadOnly="True" IsVisible="{Binding Path=DataContext.IsAgreement, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Height="25" Margin="2" Width="25" Visibility="{Binding Path=IsOtherScheduleAsInOriginalContractdoc, Converter={StaticResource BoolToVisibilityConverter}}" Source="/MContracts;component/Resources/disconnect.png" ToolTip="Открепленный КП"  />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" Header="№ приложения">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="2, 2, 2, 2" MinWidth="50"  FontSize="12" Text="{Binding Path=Appnum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <TextBox Margin="2, 2, 2, 2" FontSize="12" Text="{Binding Path=Appnum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" Header="Единица измерения">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Margin="2, 2, 2, 2"  MinWidth="100" Content="{Binding Path=Schedule.Currencymeasure, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <ComboBox Margin="2,2,2,2" ClipToBounds="False" FontSize="12" ItemsSource="{Binding Path=DataContext.Units, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectedItem="{Binding Path=Schedule.Currencymeasure, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="ComboBox_SelectionChanged" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" Header="Вид работ">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label  MinWidth="150" Margin="2, 2, 2, 2" Content="{Binding Path=Schedule.Worktype, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <ComboBox Margin="2,2,2,2" FontSize="12" ItemsSource="{Binding Path=DataContext.Worktypes, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectedItem="{Binding Path=Schedule.Worktype, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                </telerik:GridViewDataColumn>
+
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+
+        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+            <Button Style="{StaticResource ActionButtonStyle}" x:Name="CreateStateButton" Command="{Binding CreateStageCommand}">
+                <Image Source="/MContracts;component/Resources/chart_organisation_add.png" ToolTip="Создать этап" />
+            </Button>
+            <Button Style="{StaticResource ActionButtonStyle}" x:Name="RemoveStateButton" Command="{Binding SimpleDeleteStageCommand}">
+                <Image Source="/MContracts;component/Resources/chart_organisation_delete.png" ToolTip="Удалить этап" />
+            </Button>
+            <Separator />
+            <Button Style="{StaticResource ActionButtonStyle}" x:Name="OutdentButton" Command="{Binding OutdentStageCommand}" ToolTip="На уровень вниз">
+                <Image Source="/MContracts;component/Resources/Outdent.png" />
+            </Button>
+            <Button Style="{StaticResource ActionButtonStyle}" x:Name="IndentButton" Command="{Binding IndentStageCommand}" ToolTip="На уровень вверх">
+                <Image Source="/MContracts;component/Resources/Indent.png" />
+            </Button>
+            <Separator />
+            <Button Style="{StaticResource ActionButtonStyle}" x:Name="UpButton" Command="{Binding UpStageCommand}" ToolTip="Переместить вверх">
+                <Image Source="/MContracts;component/Resources/Up.png" />
+            </Button>
+            <Button Style="{StaticResource ActionButtonStyle}" x:Name="DownButton" Command="{Binding DownStageCommand}" ToolTip="Переместить вниз">
+                <Image Source="/MContracts;component/Resources/Down.png" />
+            </Button>
+
+            <Separator  />
+
+            <Button Style="{StaticResource ActionButtonStyle}" Margin="3" Command="{Binding LinkStageCommandSubcontracts}" ToolTip="Связать с этапами договора с соисполнителем" Visibility="{Binding IsGeneralContract, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Image Source="/MContracts;component/Resources/insert-link.png" />
+            </Button>
+            <Button Style="{StaticResource ActionButtonStyle}" Margin="3" Command="{Binding LinkStageCommandGeneral}" ToolTip="Связать с этапами генерального договора" Visibility="{Binding IsSubContract, Converter={StaticResource BoolToVisibilityConverter}}">
+                <Image Source="/MContracts;component/Resources/link-top.png" />
+            </Button>
+            
+            <Button Style="{StaticResource ActionButtonStyle}" x:Name="CloseButton" ToolTip="Закрыть этап актом" Visibility="Collapsed">
+                <Image Source="/MContracts;component/Resources/document-edit.png" />
+            </Button>
+
+            <Separator />
+
+            <Button Style="{StaticResource ActionButtonStyle}" x:Name="ShowImporterDialog" Command="{Binding ShowImporterDialogCommand}">
+                <Image Source="/MContracts;component/Resources/importmail.png" ToolTip="Импортировать этапы" />
+            </Button>
+            <Button Style="{StaticResource ActionButtonStyle}" x:Name="ShowContributorsImporterDialog" Command="{Binding ShowContributorsImporterDialogCommand}">
+                <Image Source="/MContracts;component/Resources/importdocument.png" ToolTip="Импортировать распределение работ между соисполнителями" />
+            </Button>
+        </StackPanel>
+
+
+        <telerik:RadGridView x:Name="StageDataGrid" Margin="3" AutoGenerateColumns="False" CanUserDeleteRows="False" 
+                                                     CanUserInsertRows="False" CanUserSortColumns="True"
+                                                     IsReadOnly="{Binding Path=IsReadOnly, Mode=OneWay, NotifyOnSourceUpdated=True}" 
+                                                     ItemsSource="{Binding Path=StagesBindingList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                     KeyDown="StageDataGrid_KeyDown" RowDetailsVisibilityMode="Collapsed" 
+                                                     RowIndicatorVisibility="Collapsed" SelectedItem="{Binding Path=SelectedStage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, 
+                                                     NotifyOnTargetUpdated=True}"
+                                                     
+                                                     SelectionMode="Single" SelectionUnit="FullRow" ShowGroupPanel="False" ShowColumnFooters="True" Filtered="StageDataGrid_Filtered">
+
+            <telerik:RadGridView.RowDetailsTemplate>
+                <DataTemplate>
+                    <Border>
+                        <GroupBox Margin="3" Header="Результаты работ по этапу">
+                            <StackPanel>
+                                <DockPanel LastChildFill="True">
+                                    <StackPanel DockPanel.Dock="Left" Width="1" />
+                                    <StackPanel DockPanel.Dock="Right" Width="1" />
+
+                                    <telerik:RadGridView Margin="3" AutoGenerateColumns="False" CanUserInsertRows="False" IsReadOnly="{Binding IsReadonly}" ItemsSource="{Binding Path=ResultsBindingList}" RowIndicatorVisibility="Collapsed" SelectedItem="{Binding Path=DataContext.SelectedResult, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectionMode="Single" SelectionUnit="FullRow" ShowColumnHeaders="True" ShowGroupPanel="False">
+
+                                        <telerik:RadGridView.Columns>
+                                            <telerik:GridViewDataColumn Header="Состояние" IsReadOnly="True">
+                                                <telerik:GridViewDataColumn.CellTemplate>
+                                                    <DataTemplate>
+
+                                                        <Button Content="&#x2026;" Height="25" Width="25" Background="{Binding Model:Approvalstate.Color, Converter={StaticResource StateColorConverter}}" BorderBrush="Black" BorderThickness="2" Command="{Binding Path=DataContext.ShowStageResultApprovalStateEditor, RelativeSource={RelativeSource AncestorType=UserControl}}">
+
+                                                            <Button.ToolTip>
+                                                                <StackPanel>
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <TextBlock Text="{Binding Statedate, StringFormat=d}" />
+                                                                        <TextBlock Margin="3,0,0,0" Text="{Binding Approvalstate}" />
+
+                                                                    </StackPanel>
+                                                                    <TextBlock Margin="5,10,0,0" MaxWidth="300" Text="{Binding Statedescription}" TextWrapping="WrapWithOverflow" />
+
+                                                                </StackPanel>
+                                                            </Button.ToolTip>
+
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </telerik:GridViewDataColumn.CellTemplate>
+
+                                            </telerik:GridViewDataColumn>
+
+                                            <telerik:GridViewDataColumn Width="300" Header="Наименование">
+                                                <telerik:GridViewDataColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Margin="2, 0, 12, 0" Text="{Binding Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}, Path=Name, UpdateSourceTrigger=PropertyChanged}" TextWrapping="WrapWithOverflow" />
+                                                    </DataTemplate>
+                                                </telerik:GridViewDataColumn.CellTemplate>
+                                                <telerik:GridViewDataColumn.CellEditTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox Margin="2, 0, 12, 0" Text="{Binding Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}, Path=Name, UpdateSourceTrigger=PropertyChanged}" TextWrapping="WrapWithOverflow" />
+                                                    </DataTemplate>
+                                                </telerik:GridViewDataColumn.CellEditTemplate>
+                                            </telerik:GridViewDataColumn>
+
+                                            <telerik:GridViewDataColumn Width="Auto" Header="Подвид НТП">
+                                                <telerik:GridViewDataColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Label Margin="2, 0, 12, 0" Content="{Binding Ntpsubview, ValidatesOnDataErrors=True}" />
+                                                    </DataTemplate>
+                                                </telerik:GridViewDataColumn.CellTemplate>
+                                                <telerik:GridViewDataColumn.CellEditTemplate>
+                                                    <DataTemplate>
+                                                        <ComboBox x:Name="TypeComboBox" Margin="2,2,2,2" FontSize="12" ItemsSource="{Binding Path=DataContext.Ntpsubviews, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectedItem="{Binding Path=DataContext.SelectedResult.Ntpsubview, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                                    </DataTemplate>
+                                                </telerik:GridViewDataColumn.CellEditTemplate>
+                                            </telerik:GridViewDataColumn>
+
+                                            <telerik:GridViewDataColumn Width="Auto" Header="Тип экономической эффективности">
+                                                <telerik:GridViewDataColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Label Margin="2, 0, 12, 0" Content="{Binding Economefficiencytype, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" />
+                                                    </DataTemplate>
+                                                </telerik:GridViewDataColumn.CellTemplate>
+                                                <telerik:GridViewDataColumn.CellEditTemplate>
+                                                    <DataTemplate>
+                                                        <ComboBox x:Name="TypeComboBox" Margin="2,2,2,2" FontSize="12" ItemsSource="{Binding Path=DataContext.Economefficiencytypes, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectedItem="{Binding Path=DataContext.SelectedResult.Economefficiencytype, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectionChanged="TypeComboBox_SelectionChanged_1" />
+                                                    </DataTemplate>
+                                                </telerik:GridViewDataColumn.CellEditTemplate>
+                                            </telerik:GridViewDataColumn>
+
+                                            <telerik:GridViewDataColumn Width="200" Header="Параметры" IsReadOnly="True">
+                                                <telerik:GridViewDataColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <DataGrid Margin="3" AutoGenerateColumns="False" CanUserAddRows="False" HeadersVisibility="None" HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding ParametersBindingList}" SelectionMode="Single" SelectionUnit="FullRow">
+                                                            <DataGrid.Columns>
+                                                                <DataGridTextColumn Width="Auto" Binding="{Binding Economefficiencyparameter, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Header="Параметр" IsReadOnly="True" />
+                                                                <DataGridTextColumn Width="Auto" Binding="{Binding Value, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Header="Значение" />
+                                                            </DataGrid.Columns>
+                                                        </DataGrid>
+                                                    </DataTemplate>
+                                                </telerik:GridViewDataColumn.CellTemplate>
+                                            </telerik:GridViewDataColumn>
+
+                                            <telerik:GridViewDataColumn Width="Auto"  Header="Акт внедрения">
+                                                <telerik:GridViewDataColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Vertical">
+                                                            <Label Content="№ акта внедрения"/>
+                                                            <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Right" Margin="2, 2, 2, 2" FontSize="12" Text="{Binding Path=Actintroductionnum, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="WrapWithOverflow" />
+                                                            <Label Content="Дата акта"/>
+                                                            <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Right" Margin="2, 2, 2, 2" FontSize="12" Text="{Binding Path=Actintroductiondate, StringFormat=d, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="WrapWithOverflow" />
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </telerik:GridViewDataColumn.CellTemplate>
+
+                                                <telerik:GridViewDataColumn.CellEditTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Vertical">
+                                                            <Label Content="№ акта внедрения"/>
+                                                            <TextBox DockPanel.Dock="Top" HorizontalAlignment="Right" Margin="2, 2, 2, 2" FontSize="12" Text="{Binding Path=Actintroductionnum,  UpdateSourceTrigger=PropertyChanged}" TextWrapping="WrapWithOverflow" />
+                                                            <Label Content="Дата акта"/>
+                                                            <DatePicker DockPanel.Dock="Top" HorizontalAlignment="Right" Margin="2, 2, 2, 2" FontSize="12" SelectedDate="{Binding Path=Actintroductiondate, UpdateSourceTrigger=PropertyChanged}"  />
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </telerik:GridViewDataColumn.CellEditTemplate>
+                                            </telerik:GridViewDataColumn>
+                                            
+                                            <telerik:GridViewDataColumn Width="100" Header="Комментарий">
+                                                <telerik:GridViewDataColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Margin="2, 0, 12, 0" Text="{Binding Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}, Path=Efficiencycomment, UpdateSourceTrigger=PropertyChanged}" TextWrapping="WrapWithOverflow" />
+                                                    </DataTemplate>
+                                                </telerik:GridViewDataColumn.CellTemplate>
+                                                <telerik:GridViewDataColumn.CellEditTemplate>
+                                                    <DataTemplate>
+                                                        <TextBox Margin="2, 0, 12, 0" Text="{Binding Mode=TwoWay, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}, Path=Efficiencycomment, UpdateSourceTrigger=PropertyChanged}" TextWrapping="WrapWithOverflow" />
+                                                    </DataTemplate>
+                                                </telerik:GridViewDataColumn.CellEditTemplate>
+                                            </telerik:GridViewDataColumn>
+                                        </telerik:RadGridView.Columns>
+                                        
+
+                                    </telerik:RadGridView>
+
+                                </DockPanel>
+
+                                <StackPanel Margin="3" Orientation="Horizontal">
+                                    <Button Style="{StaticResource ActionButtonStyle}" Command="{Binding DataContext.CreateResultCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" ToolTip="Создать результат">
+                                        <Image Source="/MContracts;component/Resources/Result_Add.png" />
+                                    </Button>
+                                    <Button Style="{StaticResource ActionButtonStyle}" Margin="3" Command="{Binding DataContext.DeleteResultCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" ToolTip="Удалить результат">
+                                        <Image Source="/MContracts;component/Resources/Result_Delete.png" />
+                                    </Button>
+                                </StackPanel>
+
+                            </StackPanel>
+                        </GroupBox>
+                    </Border>
+                </DataTemplate>
+            </telerik:RadGridView.RowDetailsTemplate>
+
+            <telerik:RadGridView.Columns>
+
+                <telerik:GridViewDataColumn Width="Auto" Header="№" IsReadOnly="True">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <DockPanel LastChildFill="True">
+                                <StackPanel DockPanel.Dock="Left" Width="1" />
+                                <StackPanel DockPanel.Dock="Right" Width="1" />
+                                <TextBox DockPanel.Dock="Top" Margin="{Binding Path=Level, Converter={StaticResource LevelToMarginConverter}}" FontSize="12" IsReadOnly="{Binding Path=DataContext.IsReadOnly, RelativeSource={RelativeSource AncestorType=UserControl}}" Text="{Binding Path=Num, Mode=TwoWay, Converter={StaticResource RemoveExtraSpaceConverter1}, ValidatesOnDataErrors=True}" TextWrapping="WrapWithOverflow" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" IsReadOnly="True">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Height="16" Width="16" Click="Button_Click" ToolTip="Показать/скрыть результаты">
+                                <Image Source="/MContracts;component/Resources/FillDownHS.png" />
+                                <Button.LayoutTransform>
+                                    <RotateTransform x:Name="rotateTransform" Angle="0" />
+                                </Button.LayoutTransform>
+                                <Button.Triggers>
+                                    <EventTrigger RoutedEvent="Button.Click">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetName="rotateTransform" Storyboard.TargetProperty="Angle" Duration="0:0:0.1" From="0" IsAdditive="True" RepeatBehavior="1x" To="180" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </Button.Triggers>
+                            </Button>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" IsReadOnly="True" Header="Сост." DataMemberBinding="{Binding Stagecondition, Converter={StaticResource StageConditionConverter}}">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Command="{Binding Path=DataContext.ShowApprovalStateEditor, RelativeSource={RelativeSource AncestorType=UserControl}}" Background="{Binding Approvalstate.Color, Converter={StaticResource StateColorConverter}}" BorderThickness="2">
+                                <Image Height="25" Margin="2" Width="25" Source="{Binding Path=Stagecondition, Converter={StaticResource StageConditionToImageConverter}}" ToolTip="{Binding Path=Stagecondition, Converter={StaticResource StageConditionConverter}}" />
+
+                                <Button.ToolTip>
+                                    <StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Statedate, StringFormat=d}" />
+                                            <TextBlock Margin="3,0,0,0" Text="{Binding Approvalstate}" />
+
+                                        </StackPanel>
+                                        <TextBlock Margin="5,10,0,0" MaxWidth="300" Text="{Binding Statedescription}" TextWrapping="WrapWithOverflow" />
+                                    </StackPanel>
+                                </Button.ToolTip>
+                            </Button>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="200" Header="Содержание этапа" DataMemberBinding="{Binding Subject}">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <DockPanel LastChildFill="True">
+                                <TextBlock DockPanel.Dock="Top" Margin="2, 2, 2, 2" FontSize="12" Text="{Binding Path=Subject, Mode=TwoWay, Converter={StaticResource RemoveExtraSpaceConverter1}, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" TextWrapping="WrapWithOverflow" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <DockPanel LastChildFill="True">
+                                <TextBox DockPanel.Dock="Top" Margin="2, 2, 2, 2" FontSize="12" IsReadOnly="False" Text="{Binding Path=Subject, Mode=TwoWay, Converter={StaticResource RemoveExtraSpaceConverter1}, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" TextWrapping="WrapWithOverflow" />
+                            </DockPanel>
+                        </DataTemplate>
+
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Path=Startsat, Converter={StaticResource NullDateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,  StringFormat=d}" Header="Начало" />
+                <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Path=Endsat, Converter={StaticResource NullDateConverter}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=d}" Header="Окончание">
+                    <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <telerik:RadDatePicker SelectedValue="{Binding Endsat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></telerik:RadDatePicker>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="3">
+                                    <TextBox Text="{Binding Delta, StringFormat=N0, TargetNullValue={x:Static System:String.Empty}}" Width="30"  ToolTip="Количество дней с даты старта работ" />
+                                    <TextBlock Margin="2,0,0,0">д.</TextBlock>
+                                </StackPanel>
+                                <TextBox Margin="3,0,3,3" Text="{Binding Deltacomment}" MaxLength="150" TextWrapping="WrapWithOverflow" ToolTip="Описание" HorizontalAlignment="Stretch"/>
+
+                            </StackPanel>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn x:Name="StageSumColumn" Width="Auto" TextWrapping="WrapWithOverflow">
+                    <telerik:GridViewColumn.Header>
+                        <Binding Path="StagePriceColumnTitle" />
+                    </telerik:GridViewColumn.Header>
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Margin="2, 2, 2, 2" FontSize="12" Text="{Binding Path=Price, StringFormat=N2, ConverterCulture=ru-ru,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                <TextBlock Margin="2, 2, 2, 2" Text="{Binding Path=Ndsalgorithm, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" TextWrapping="WrapWithOverflow" VerticalAlignment="Center" />
+                                <TextBlock Margin="2, 2, 2, 2" Text="{Binding Path=Nds, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" TextWrapping="WrapWithOverflow" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBox Margin="2, 2, 2, 2" FontSize="12" IsReadOnly="{Binding IsReadonly}" Text="{Binding Path=Price,   Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" />
+                                <ComboBox Margin="2,2,2,2" FontSize="12" IsEnabled="{Binding IsReadonly, Converter={StaticResource NegativeBoolConverter}}" ItemsSource="{Binding Path=DataContext.Ndsalgorithms, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectedItem="{Binding Path=DataContext.SelectedStage.Ndsalgorithm, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <DockPanel LastChildFill="True">
+                                                <StackPanel DockPanel.Dock="Left" Width="1" />
+                                                <StackPanel DockPanel.Dock="Right" Width="1" />
+                                                <TextBlock Margin="1" FontSize="12" Text="{Binding}" TextWrapping="WrapWithOverflow" />
+                                            </DockPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <ComboBox Margin="2,2,2,2" FontSize="12" IsEnabled="{Binding IsReadonly, Converter={StaticResource NegativeBoolConverter}}" ItemsSource="{Binding Path=DataContext.Ndses, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectedItem="{Binding Path=DataContext.SelectedStage.Nds, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Margin="1" FontSize="12" Text="{Binding}" TextWrapping="WrapWithOverflow" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction SourceField="TerminalStagePrice" ResultFormatString="{}{0:N2}"/>
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+
+
+
+                <telerik:GridViewDataColumn Width="Auto" IsReadOnly="True" TextWrapping="WrapWithOverflow">
+                    <telerik:GridViewColumn.Header>
+                        <Binding Path="StagePriceWithNoNDSColumnTitle" />
+                    </telerik:GridViewColumn.Header>
+
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="2" Text="{Binding Path=StageMoneyModel.PureValue, StringFormat=N2, ConverterCulture=ru-ru, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction SourceField="TerminalStagePureValue" ResultFormatString="{}{0:N2}"/>
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" IsReadOnly="True" TextWrapping="WrapWithOverflow">
+                    <telerik:GridViewColumn.Header>
+                        <Binding Path="NDSColumnTitle" />
+                    </telerik:GridViewColumn.Header>
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="2" Text="{Binding Path=StageMoneyModel.NdsValue, StringFormat=N2, ConverterCulture=ru-ru,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction SourceField="TerminalStageNdsValue" ResultFormatString="{}{0:N2}"/>
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" IsReadOnly="True" TextWrapping="WrapWithOverflow">
+                    <telerik:GridViewColumn.Header>
+                        <Binding Path="OverallColumnTitle" />
+
+                    </telerik:GridViewColumn.Header>
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="2" Text="{Binding Path=StageMoneyModel.PriceWithNdsValue, StringFormat=N2, ConverterCulture=ru-ru,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" VerticalAlignment="Center" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction SourceField="TerminalStagePriceWithNdsValue" ResultFormatString="{}{0:N2}"/>
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" Header="Ген&lt;->Суб" IsVisible ="{Binding Path=DataContext.IsSubContractOrHasSubcontracts, RelativeSource={RelativeSource AncestorType=UserControl}}"  IsReadOnly="True" MaxWidth="400">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="2" Orientation="Horizontal">
+
+                                <StackPanel Orientation="Horizontal" Visibility="{Binding Path=HasGeneralStage, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Договор № " />
+                                        <TextBlock Text="{Binding GeneralStage.ContractNum, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Text=" - этап № " />
+                                        <TextBlock Text="{Binding GeneralStage.Schedulecontract.Appnum, UpdateSourceTrigger=PropertyChanged}" />
+                                        <TextBlock Text="/" />
+                                        <TextBlock Text="{Binding GeneralStage.Num, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <ListBox Margin="2" BorderBrush="Transparent" BorderThickness="0" ItemsSource="{Binding Path=SubContractsStages, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding Path=DataContext.IsGeneralContract, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Договор № " />
+                                                <TextBlock Text="{Binding ContractNum, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock Text=" - этап № " />
+                                                <TextBlock Text="{Binding Schedulecontract.Appnum, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock Text="/" />
+                                                <TextBlock Text="{Binding Num, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+
+
+                            </StackPanel>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" IsVisible="{Binding Path=DataContext.IsGeneralContractAndHasCoworkers, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}" IsReadOnly="True">
+                    <telerik:GridViewDataColumn.Header>
+                        <Binding Path="CoworkersColumnTitle" />
+                    </telerik:GridViewDataColumn.Header>
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Всего"/>
+                                <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Right" Margin="2, 2, 2, 2" FontSize="12" Text="{Binding Path=SubcontractStagesSum, StringFormat=N2, ConverterCulture=ru-ru, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="WrapWithOverflow" />
+                                <Label Content="Закрыто"/>
+                                <TextBlock DockPanel.Dock="Top" HorizontalAlignment="Right" Margin="2, 2, 2, 2" FontSize="12" Text="{Binding Path=SubcontractActTransferedFunds, StringFormat=N2, ConverterCulture=ru-ru, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="WrapWithOverflow" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction SourceField="SubcontractStagesSum"  ResultFormatString="{}{0:N2}" Caption="Всего"/>
+                        <telerik:SumFunction SourceField="SubcontractActTransferedFunds" ResultFormatString="{}{0:N2}" Caption="Закрыто"/>
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" Header="Код стройки">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock DockPanel.Dock="Top" Margin="2, 2, 2, 2" FontSize="12" Text="{Binding Path=Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RemoveExtraSpaceConverter1}, ValidatesOnDataErrors=True}" TextWrapping="WrapWithOverflow" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <TextBox DockPanel.Dock="Top" Margin="2, 2, 2, 2" FontSize="12" IsReadOnly="False" Text="{Binding Path=Code, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RemoveExtraSpaceConverter1}, ValidatesOnDataErrors=True}" TextWrapping="WrapWithOverflow" />
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" MaxWidth="250" Header="ДС->Ориг" IsVisible="{Binding DataContext.IsAgreement, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <DockPanel LastChildFill="True">
+                                <StackPanel DockPanel.Dock="Left" Width="1" />
+                                <StackPanel DockPanel.Dock="Right" Width="1" />
+                                <TextBlock Margin="2, 2, 2, 2" Text="{Binding Path=ClosedGeneralStage, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" TextWrapping="WrapWithOverflow" VerticalAlignment="Center" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                            <ComboBox Margin="2,2,2,2" FontSize="12" IsEnabled="True" IsTextSearchEnabled="True" ItemsSource="{Binding Path=DataContext.MainStages, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectedItem="{Binding Path=DataContext.SelectedStage.ClosedGeneralStage, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel LastChildFill="True">
+                                            <StackPanel DockPanel.Dock="Left" Width="1" />
+                                            <StackPanel DockPanel.Dock="Right" Width="1" />
+                                            <TextBlock Margin="1" FontSize="12" Text="{Binding UpdateSourceTrigger=PropertyChanged}" TextWrapping="WrapWithOverflow" />
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" Header="Ориг->ДС" IsVisible ="{Binding Path=DataContext.HasAgreements, RelativeSource={RelativeSource AncestorType=UserControl}}"  IsReadOnly="True" MaxWidth="400">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="2" Orientation="Horizontal">
+
+                                <ListBox Margin="2" BorderBrush="Transparent" BorderThickness="0" ItemsSource="{Binding Path=AgreementStages, UpdateSourceTrigger=PropertyChanged}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="Договор № " />
+                                                <TextBlock Text="{Binding ContractNum, UpdateSourceTrigger=PropertyChanged}" />
+                                                <TextBlock Text=" - этап № " />
+                                                <TextBlock Text="{Binding Num, UpdateSourceTrigger=PropertyChanged}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+
+
+                            </StackPanel>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                </telerik:GridViewDataColumn>
+                
+
+                <telerik:GridViewDataColumn Header="Ответственные по договору" IsReadOnly="True">
+                    <telerik:GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Margin="2,2,2,2" Text="{Binding Path=DirectorEmployee, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <TextBlock Margin="2,2,2,2" Text="{Binding Path=ManagerEmployee, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                           Visibility="{Binding IsManagerVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                <TextBlock Margin="2,2,2,2" Text="{Binding Path=ChiefEmployee, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </telerik:GridViewColumn.CellTemplate>
+                </telerik:GridViewDataColumn>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+    </DockPanel>
+</UserControl>

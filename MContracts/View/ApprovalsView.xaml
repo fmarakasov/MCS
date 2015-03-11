@@ -1,0 +1,69 @@
+﻿<UserControl x:Class="MContracts.View.ApprovalsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:MContracts.Classes.Converters"
+             xmlns:Controls="clr-namespace:MContracts.Controls" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:Controls1="clr-namespace:UIShared.Controls;assembly=UIShared" mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <Expander IsExpanded="{Binding IsMaximized, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource Expander-Background-Approvals-Brush}">
+        <Expander.Resources>
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueVisibility="Visible" FalseVisibility="Collapsed" />
+        </Expander.Resources>
+
+        <Expander.Header>
+            <WrapPanel>
+                <Image Source="/MContracts;component/Images/text_editor.png" Width="30"></Image>
+                <Label>Согласование</Label>
+                <Controls1:CommandsControl x:Name="commandsControl" Visibility="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType=Expander}, Converter={StaticResource BoolToVisibilityConverter}}"></Controls1:CommandsControl>
+            </WrapPanel>
+        </Expander.Header>
+        <Expander.Content>
+            <Border BorderThickness="4" CornerRadius="4" Padding="2" Background="{StaticResource ResourceKey=Expander-Background-Brush}">
+
+                <StackPanel>
+                    <DockPanel LastChildFill="True">
+                        <telerik:RadGridView CanUserInsertRows="False" 
+                                             SelectionMode="Single" SelectedItem="{Binding SelectedApproval, Mode=TwoWay}" SelectionUnit="FullRow"
+                                             CanUserDeleteRows="False" MaxHeight="600" Margin="3" 
+                                             ItemsSource="{Binding Path=Approvals}" 
+                                             CanUserSortColumns="False"
+                                             ShowColumnHeaders="True" RowIndicatorVisibility="Collapsed" 
+                                             AutoGenerateColumns="False" x:Name="approvalsDataGrid"
+                                             ShowGroupPanel="True">
+                            <telerik:RadGridView.Columns>
+                                <telerik:GridViewDataColumn Header="Дата ввода" Width="Auto" DataMemberBinding="{Binding Path=Enteringdate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=d}" />
+                                <telerik:GridViewDataColumn Header="Когда получили" Width="Auto" DataMemberBinding="{Binding Path=Enterstateat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=d}" />
+                                <telerik:GridViewDataColumn Header="Когда передали" Width="Auto" DataMemberBinding="{Binding Path=Transferstateat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=d}"/>
+                                <telerik:GridViewComboBoxColumn Header="От кого" Width="Auto" DataMemberBinding="{Binding Path=FromLocation, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" ItemsSource="{Binding Path=DataContext.Locations, RelativeSource={RelativeSource AncestorType=UserControl}}"/>
+                                <telerik:GridViewComboBoxColumn Header="Кому" Width="Auto" DataMemberBinding="{Binding Path=ToLocation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                ItemsSource="{Binding Path=DataContext.Locations, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                <telerik:GridViewComboBoxColumn Header="Цель" Width="Auto" DataMemberBinding="{Binding Path=Approvalgoal, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                                                ItemsSource="{Binding Path=DataContext.Approvalgoals, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                                <telerik:GridViewComboBoxColumn Header="Состояние" Width="Auto" DataMemberBinding="{Binding Path=Approvalstate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                ItemsSource="{Binding Path=DataContext.ApprovalStates, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+
+                                <telerik:GridViewComboBoxColumn Header="Тип" Width="Auto" DataMemberBinding="{Binding Path=Missivetype, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"              
+                                                                ItemsSource="{Binding Path=DataContext.Missivetypes, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+
+                                <telerik:GridViewDataColumn Header="№" DataMemberBinding="{Binding Missiveid, UpdateSourceTrigger=PropertyChanged}" Width="Auto"/>
+                                <telerik:GridViewDataColumn Header="Дата письма" Width="Auto" DataMemberBinding="{Binding Path=Missivedate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=d}" />
+
+
+                                <telerik:GridViewDataColumn Header="Дней" DataMemberBinding="{Binding ConsiderationTime.Days, UpdateSourceTrigger=PropertyChanged}" Width="Auto" IsReadOnly="True"/>
+                                <telerik:GridViewDataColumn Header="Примечание" DataMemberBinding="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Width="Auto" TextWrapping="WrapWithOverflow"/>
+                            </telerik:RadGridView.Columns>
+                        </telerik:RadGridView>
+
+
+
+                    </DockPanel>
+                </StackPanel>
+
+            </Border>
+        </Expander.Content>
+    </Expander>
+</UserControl>

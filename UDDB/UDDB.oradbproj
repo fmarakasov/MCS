@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration>Default</Configuration>
+    <ProjectGuid>{B5E25DDF-AA7B-4AEC-9021-7A78AE68795E}</ProjectGuid>
+    <ProductVersion>4.121.1.2</ProductVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <AssemblyName>UDDB</AssemblyName>
+    <Name>UDDB</Name>
+    <RootNamespace>UDDB</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Partisl Build' ">
+    <OutputPath>bin\Partisl Build\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Partial Debug' ">
+    <OutputPath>bin\Partial Debug\</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Functions\" />
+    <Folder Include="Packages\" />
+    <Folder Include="Packages\AQ\" />
+    <Folder Include="Packages\AQ\Queue Tables\" />
+    <Folder Include="Packages\AQ\Queues\" />
+    <Folder Include="Procedures\" />
+    <Folder Include="Releases\" />
+    <Folder Include="Scripts\" />
+    <Folder Include="Security\" />
+    <Folder Include="Security\Permissions\" />
+    <Folder Include="Security\Roles\" />
+    <Folder Include="Security\Users\" />
+    <Folder Include="Sequences\" />
+    <Folder Include="Synonyms\" />
+    <Folder Include="Tables\" />
+    <Folder Include="Tables\Triggers\" />
+    <Folder Include="Test Scripts\" />
+    <Folder Include="User Defined Types\" />
+    <Folder Include="User Defined Types\Nested Tables\" />
+    <Folder Include="User Defined Types\Objects\" />
+    <Folder Include="User Defined Types\VARRAYs\" />
+    <Folder Include="Views\" />
+    <Folder Include="Views\Triggers\" />
+    <Folder Include="XML Schemas\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Procedures\UpdateContractStatistics.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD-09-04-13.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD-03-03-2013-01-sql.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD-14-04-2013-sql.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD_06_12_12.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD-04-12-12.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD-10-12-12.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD-19-11-12.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD-15-10-12.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD-13-09-12.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD-26-08-12.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD-10-07-2012-1-sql.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD-26-11-2012.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD-27-11-2012.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD-30-11-12.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD_03_05_12.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD-25-04-12.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD-16-04-12.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD_Contract_Department.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\UD_08_03_2012.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Releases\Drop_Objs_Older_1_5.sql" />
+    <Content Include="Releases\Model 1.0.0.19.sql" />
+    <Content Include="Releases\SetOraWin1251.sql" />
+    <Content Include="Releases\TestData.sql" />
+    <Content Include="Releases\UD-01-04-11-01-sql.sql" />
+    <Content Include="Releases\UD-02-03-11-01-sql.sql" />
+    <Content Include="Releases\UD-02-12-11-01-sql.sql" />
+    <Content Include="Releases\UD-03-29-11-01-sql.sql" />
+    <Content Include="Releases\UD-05-03-11-01-sql.sql" />
+    <Content Include="Releases\UD-05-07-11-01-sql.sql" />
+    <Content Include="Releases\UD-05-12-11-01-sql.sql" />
+    <Content Include="Releases\UD-06-12-11-sql.sql" />
+    <Content Include="Releases\UD-08-07-11-01-sql.sql" />
+    <Content Include="Releases\UD-08-08-11-01-sql.sql" />
+    <Content Include="Releases\UD-1.0.0.24-sql.sql" />
+    <Content Include="Releases\UD-10-05-11-01 (1.0.0.23)-sql.sql" />
+    <Content Include="Releases\UD-11-04-11-01 (1.0.0.17)-sql.sql" />
+    <Content Include="Releases\UD-14-02-11-01-sql.sql" />
+    <Content Include="Releases\UD-15-02-11-01-sql.sql" />
+    <Content Include="Releases\UD-17-08-11-sql.sql" />
+    <Content Include="Releases\ud-17-10-11.txt" />
+    <Content Include="Releases\UD-19-08-11-sql.sql" />
+    <Content Include="Releases\UD-20-01-11-01-sql.sql" />
+    <Content Include="Releases\UD-20-01-11-02-sql.sql" />
+    <Content Include="Releases\UD-20-06-11-01-sql.sql" />
+    <Content Include="Releases\UD-21-03-11-01-sql.sql" />
+    <Content Include="Releases\UD-24-02-11-01-sql.sql" />
+    <Content Include="Releases\UD-25-03-11-01-sql.sql" />
+    <Content Include="Releases\UD-25-10-11.sql" />
+    <Content Include="Releases\UD-26-04-11-01-sql.sql" />
+    <Content Include="Releases\ud-27-09-11-SQL.txt" />
+    <Content Include="Releases\UD-29-03-11-02-sql.sql" />
+    <Content Include="Releases\UD-31-08-11-sql.sql" />
+    <Content Include="Releases\UD_07_11_11.sql" />
+    <Content Include="Releases\UD_09_11_11.sql" />
+    <Content Include="Releases\UpdateContractType(01.08.11).sql" />
+    <Content Include="Releases\UpdateEFStageParameterValue.sql" />
+    <Content Include="Scripts\DumpData.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Scripts\PreDump.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Scripts\Модель_Debug_Sequences.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Scripts\Модель_fk.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Scripts\Модель_index.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Scripts\Модель_pk.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Scripts\Модель_procedure.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Scripts\Модель_sample.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Scripts\Модель_sequence.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Scripts\Модель_table.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Scripts\Модель_views.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Security\Users\UDUsers.sql" />
+    <Content Include="Tables\Triggers\XE.UD.CONTRACTHIERARCHY_PRECALCS.sql" />
+    <Content Include="Test Scripts\ActualContractsTest.sql" />
+    <Content Include="Test Scripts\dump 15-11-11.sql" />
+    <Content Include="Test Scripts\dump 25-10-11.sql" />
+    <Content Include="Test Scripts\InsertManyContracts.sql" />
+    <Content Include="Test Scripts\InsertManyStages.sql" />
+    <Content Include="Test Scripts\Scheme but constraints.sql" />
+    <Content Include="Views\XE.UD.ACTREPOSITORYVIEW.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Views\XE.UD.CONTRACTREPOSITORYVIEW.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <DBRefs Include="Database References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <DBRef Include="Database References\UD.XE\">
+      <IsDefault>true</IsDefault>
+      <ConnectionString>DATA SOURCE=XE;USER ID=UD</ConnectionString>
+    </DBRef>
+  </ItemGroup>
+</Project>

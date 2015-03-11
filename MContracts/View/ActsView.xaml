@@ -1,0 +1,190 @@
+﻿<UserControl x:Class="MContracts.View.ActsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:MContracts.Classes.Converters"
+             xmlns:Controls="clr-namespace:MContracts.Controls" mc:Ignorable="d" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:Controls1="clr-namespace:UIShared.Controls;assembly=UIShared"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib" d:DesignHeight="300" d:DesignWidth="800" 
+             DataContextChanged="UserControl_DataContextChanged">
+
+    <UserControl.Resources>
+
+        <converters:ActConditionConverter x:Key="ActCondition" />
+        <converters:BooleanToStringConverter x:Key="ActSignedToImageConverter" DefaultMessage="/MContracts;component/Resources/NotSigned.png" TrueMessage="/MContracts;component/Resources/Signed.png" FalseMessage="/MContracts;component/Resources/NotSigned.png" />
+        <converters:BooleanToStringConverter x:Key="SignedToolTipConverter"  TrueMessage="Подписано" FalseMessage="Не подписано" DefaultMessage="Не указано"/>
+        <converters:BoolToVisibilityConverter x:Key="CanEditVisibilityConverter" TrueVisibility="Hidden" FalseVisibility="Visible"></converters:BoolToVisibilityConverter>
+
+
+        <Style x:Key="ActualConditionStyle" TargetType="telerik:GridViewRow">
+            <!--<Setter Property="Foreground" Value="Green" />-->
+        </Style>
+
+        <Style x:Key="UnactualConditionStyle" TargetType="telerik:GridViewRow">
+            <Setter Property="Foreground" Value="Maroon" />
+        </Style>
+
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueVisibility="Visible" FalseVisibility="Collapsed" />
+        <converters:ConditionalStyleSelector x:Key="selector" ConditionConverter="{StaticResource ActCondition}">
+            <converters:ConditionalStyleSelector.Rules>
+                <converters:ConditionalStyleRule Style="{StaticResource ActualConditionStyle}">
+                    <converters:ConditionalStyleRule.Value>
+                        <sys:Boolean>True</sys:Boolean>
+                    </converters:ConditionalStyleRule.Value>
+                </converters:ConditionalStyleRule>
+                <converters:ConditionalStyleRule Style="{StaticResource UnactualConditionStyle}">
+                    <converters:ConditionalStyleRule.Value>
+                        <sys:Boolean>False</sys:Boolean>
+                    </converters:ConditionalStyleRule.Value>
+                </converters:ConditionalStyleRule>
+            </converters:ConditionalStyleSelector.Rules>
+        </converters:ConditionalStyleSelector>
+
+    </UserControl.Resources>
+
+    <!--<Expander IsExpanded="{Binding IsMaximized, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource Expander-Background-Act-Brush}">
+    <Expander IsExpanded="true" Background="{StaticResource Expander-Background-Act-Brush}">
+    <Expander IsExpanded="{Binding IsMaximized, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        <Expander.Resources>
+        </Expander.Resources>
+        
+        <Expander.Header>
+            <WrapPanel>
+                <Image Source="/MContracts;component/Images/text_editor.png" Width="30"></Image>
+                <Label>Акты</Label>
+                </WrapPanel>
+        </Expander.Header>
+        <Expander.Content>-->
+    <DockPanel LastChildFill="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+
+        <!--<Border BorderThickness="4" CornerRadius="4" Padding="2">
+                <Border BorderThickness="4" CornerRadius="4" Padding="2" Background="{StaticResource ResourceKey=Expander-Background-Brush}">-->
+
+
+
+        <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
+            <Label Content="Календарный план" />
+            <ComboBox Margin="3,0,3,0" ItemsSource="{Binding Schedulecontracts}" SelectedItem="{Binding SelectedSchedule, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="ComboBox_SelectionChanged" />
+            <Controls1:CommandsControl x:Name="commandsControl" Visibility="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType=Expander}, Converter={StaticResource BoolToVisibilityConverter}}"></Controls1:CommandsControl>
+            <StackPanel DockPanel.Dock="Top">
+                <CheckBox Content="автоматически увеличивать на единицу номер акта" IsChecked="{Binding AutoIncNums, Mode=TwoWay}" Margin="5,7"/>
+            </StackPanel>
+        </StackPanel>
+
+        <telerik:RadGridView CanUserInsertRows="False" SelectionMode="Extended" 
+                                                 ItemsSource="{Binding Acts, UpdateSourceTrigger=PropertyChanged}" 
+                                                 SelectedItem="{Binding SelectedAct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionUnit="FullRow" 
+                                                 CanUserDeleteRows="False" Margin="3" 
+                                                 CanUserSortColumns="True" ShowColumnHeaders="True" 
+                                                 AutoGenerateColumns="False" x:Name="ActsDg" ShowGroupPanel="False" 
+                                                 ShowColumnFooters="True" RowIndicatorVisibility="Collapsed" 
+                                                 IsReadOnly="True" RowStyleSelector="{StaticResource selector}"
+                                                 MouseDoubleClick="ActsDG_OnMouseDoubleClick" DockPanel.Dock="Top">
+            <telerik:RadGridView.SortDescriptors>
+                <telerik:SortDescriptor Member="Signdate" SortDirection="Descending">
+
+                </telerik:SortDescriptor>
+            </telerik:RadGridView.SortDescriptors>
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Width="Auto" IsReadOnly="True" >
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <WrapPanel>
+                                <Image Width="20" Height="20" Margin="2" ToolTip="{Binding Issigned, Converter={StaticResource SignedToolTipConverter}}" Source="{Binding Issigned, Converter={StaticResource ActSignedToImageConverter}}"/>
+                                <Image Width="16" Height="16" Margin="2" Source="/MContracts;component/Resources/Lock.png"  ToolTip="Закрыт для изменений" Visibility="{Binding CanEdit, Converter={StaticResource CanEditVisibilityConverter}}"></Image>
+                            </WrapPanel>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Num, Mode=OneTime}" Header="№">
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:CountFunction Caption="Актов:" />
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Signdate, StringFormat='{}{0:d}', Mode=OneTime}" Header="Дата подписания"/>
+                <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Stages, Mode=OneTime}" Header="Этапы"/>
+                <telerik:GridViewDataColumn Width="Auto" TextAlignment="Right"  UniqueName="PricePure" FooterTextAlignment="Right">
+                    <telerik:GridViewColumn.Header>
+                        <Binding Path="StagePriceWithNoNDSColumnTitle"/>
+                    </telerik:GridViewColumn.Header>
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="2" Text="{Binding TotalSumWithNoNds, Mode=OneTime, ConverterCulture=ru-ru, StringFormat=N2, TargetNullValue=0, FallbackValue=0}"  VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Right"/>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction SourceField="TotalSumWithNoNds" ResultFormatString="{}{0:N2}"/>
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" TextAlignment="Right"  FooterTextAlignment="Right"  >
+                    <telerik:GridViewDataColumn.Header>
+                        <Binding Path="StagePriceWithNDSColumnTitle"/>
+                    </telerik:GridViewDataColumn.Header>
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="2" Text="{Binding TotalSumWithNds, Mode=OneTime, ConverterCulture=ru-ru, StringFormat=N2, TargetNullValue=0, FallbackValue=0}"   VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Right"/>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction SourceField="TotalSumWithNds" ResultFormatString="{}{0:N2}"/>
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" TextAlignment="Right"  FooterTextAlignment="Right">
+                    <telerik:GridViewDataColumn.Header>
+                        <Binding Path="NDSColumnTitle" />
+                    </telerik:GridViewDataColumn.Header>
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="2" Text="{Binding TotalSumNds, Mode=OneTime, StringFormat=N2,  ConverterCulture=ru-ru, TargetNullValue=0, FallbackValue=0}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Right"/>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction SourceField="TotalSumNds" ResultFormatString="{}{0:N}"/>
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+
+
+                <telerik:GridViewDataColumn Width="Auto" TextAlignment="Right"  FooterTextAlignment="Right">
+                    <telerik:GridViewDataColumn.Header>
+                        <Binding Path="PrepaymentColumnTitle" />
+                    </telerik:GridViewDataColumn.Header>
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="2" Text="{Binding PrepaymentWithNds, Mode=OneTime, StringFormat=N2, TargetNullValue=0, FallbackValue=0}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Right"/>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction SourceField="PrepaymentWithNds" ResultFormatString="{}{0:C}" />
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" TextAlignment="Right"   FooterTextAlignment="Right">
+                    <telerik:GridViewDataColumn.Header>
+                        <Binding Path="TransferColumnTitle" />
+                    </telerik:GridViewDataColumn.Header>
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="2" Text="{Binding TransferSum, Mode=OneTime, StringFormat=N2, TargetNullValue=0, FallbackValue=0}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Right"/>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction SourceField="TransferSum" ResultFormatString="{}{0:C}" />
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Header="Тип акта" DataMemberBinding="{Binding Acttype}"></telerik:GridViewDataColumn>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+
+
+
+
+    </DockPanel>
+    <!-- </Expander.Content>
+    </Expander> -->
+</UserControl>

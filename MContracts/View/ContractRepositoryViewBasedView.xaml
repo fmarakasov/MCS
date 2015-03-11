@@ -1,0 +1,512 @@
+﻿<UserControl x:Class="MContracts.View.ContractRepositoryViewBasedView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+             xmlns:converters="clr-namespace:MContracts.Classes.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:Data="clr-namespace:Telerik.Windows.Data;assembly=Telerik.Windows.Data" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:sys="clr-namespace:System;assembly=mscorlib" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:aggregates="clr-namespace:MContracts.Classes.Aggregates"
+             xmlns:components="clr-namespace:MContracts.Controls.Components"
+             DataContextChanged="RepositoryDataContextChanged"
+             Initialized="ContractRepositoryViewBasedViewOnInitialized"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" 
+             d:DesignWidth="300">
+
+    <UserControl.Resources>
+        <converters:ContractGeneralOrSubToTextConverter x:Key="ContractGeneralOrSubToTextConverter" />
+        <converters:ContractGeneralOrSubToImageConverter x:Key="ContractGeneralOrSubToImageConverter" />
+
+        <converters:AgreementToTextConverter x:Key="AgreementToTextConverter" />
+        <converters:AgreementToImageConverter x:Key="AgreementToImageConverter" />
+        <converters:ContractStateToImageConverter x:Key="ContractStateToImageConverter" />
+        <converters:AggregateCollectionConverter x:Key="AggregatePriceConverter" Property="Price" />
+        <converters:AggregateCollectionConverter x:Key="AggregateDisbursedConverter" Property="FundsDisbursed" />
+        <converters:AggregateCollectionConverter x:Key="AggregateLeftConverter" Property="FundsLeft" />
+        <converters:NdsAlgorithmTypeToImage x:Key="NdsAlgorithmTypeToImage" />
+        <!--<converters:CollectionStatusToVisibilityConverter x:Key="CollectionStatusToVisibilityConverter" />-->
+
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" FalseVisibility="Visible" TrueVisibility="Collapsed" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterStraight" FalseVisibility="Collapsed" TrueVisibility="Visible" />
+        <converters:StringShrederConverter x:Key="SubjectShreder" MaxLength="50" />
+        <converters:BooleanToStringConverter x:Key="ErrorStateToString" DefaultMessage="Нет ошибок" FalseMessage="Содержат ошибки" TrueMessage="Нет ошибок" />
+        <converters:BooleanToStringConverter x:Key="IsGeneralStateToString" DefaultMessage="-" FalseMessage="Договор с соисполнителями" TrueMessage="Генеральный договор" />
+        <converters:BooleanToStringConverter x:Key="IsAgreementStateToString" DefaultMessage="-" FalseMessage="Оригинальная версия договора" TrueMessage="Дополнительное соглашение" />
+        <converters:ContractConditionConverter x:Key="ConditionContractConverter"></converters:ContractConditionConverter>
+        <converters:ContractStateDataToBrush x:Key="ContractStateDataToForeground" OverdueBrush="Red" HealthyBrush="Black"/>
+        <Style x:Key="GroupHeaderStyle" TargetType="{x:Type GroupItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                        <Expander Background="#B9D1EA" BorderBrush="CadetBlue" BorderThickness="0, 1, 0, 0" Foreground="#FF10257F" IsExpanded="True">
+                            <Expander.Header>
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                    <Image Height="16" Margin="5,0,0,0" Width="16" Source="/MContracts;component/Resources/error2.png" ToolTip="Договора группы имеют ошибки. Данные могут быть не полными." Visibility="{Binding Items, Converter={StaticResource CollectionStatusToVisibilityConverter}}"></Image>
+                                    <TextBlock x:Name="PropertyTextBlock" Margin="5, 0, 0, 0" FontSize="12" FontWeight="Bold" Text="{Binding Name}" />
+                                    <StackPanel Margin="5, 0, 0, 0" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Image Height="16" Margin="5,0,0,0" Width="16" Source="/MContracts;component/Resources/sum.png" ToolTip="Итого по группе"></Image>
+                                        <TextBlock Margin="2,0,0,0" FontSize="12" FontWeight="DemiBold" Text="{Binding Items, Converter={StaticResource AggregatePriceConverter}, IsAsync=True}" />
+                                        <Image Height="16" Margin="5,0,0,0" Width="16" Source="/MContracts;component/Resources/finished_work.png" ToolTip="Итого выполнено по группе"></Image>
+                                        <TextBlock Margin="2,0,0,0" FontSize="12" FontWeight="DemiBold" Text="{Binding Items, Converter={StaticResource AggregateDisbursedConverter}, IsAsync=True}" />
+                                        <Image Height="16" Margin="5,0,0,0" Width="16" Source="/MContracts;component/Resources/current_work.png" ToolTip="Итого остатки по группе"></Image>
+                                        <TextBlock Margin="2,0,0,0" FontSize="12" FontWeight="DemiBold" Text="{Binding Items, Converter={StaticResource AggregateLeftConverter}, IsAsync=True}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Expander.Header>
+                            <ItemsPresenter />
+                        </Expander>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </UserControl.Resources>
+    <Grid>
+        <telerik:RadBusyIndicator IsBusy="{Binding IsBusy}" IsIndeterminate="True">
+
+        </telerik:RadBusyIndicator>
+
+        <DockPanel LastChildFill="True">
+            <DockPanel.Resources>
+                <Style x:Key="alternatingWithTriggers" TargetType="{x:Type DataGridRow}">
+                    <Setter Property="Background" Value="Lavender" />
+                    <Setter Property="Foreground" Value="Black" />
+                    <Style.Triggers>
+                        <Trigger Property="DataGrid.AlternationIndex" Value="1">
+                            <Setter Property="Background" Value="White" />
+                            <!--<Setter Property="Foreground" Value="Black" />-->
+                        </Trigger>
+                        <Trigger Property="DataGrid.AlternationIndex" Value="2">
+                            <Setter Property="Background" Value="LightCyan" />
+                            <!--<Setter Property="Foreground" Value="Black" />-->
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+
+                <DataTemplate x:Key="SubcontractGridTemplate">
+                    <telerik:RadGridView x:Name="contractsDataGrid" AlternationCount="3" 
+                                         AutoGenerateColumns="False" CanUserDeleteRows="False" CanUserFreezeColumns="False" 
+                                         IsReadOnly="True" ItemContainerStyle="{StaticResource alternatingWithTriggers}" 
+                                         ItemsSource="{Binding Subcontractview, Mode=OneWay}" RowIndicatorVisibility="Collapsed" 
+                                         SelectedItem="{Binding CurrentContractRepositoryView, Mode=OneWayToSource}" 
+                                         SelectionMode="Single" SelectionUnit="FullRow" AutoExpandGroups="True">
+
+
+                        <telerik:RadGridView.Columns>
+
+
+                            <telerik:GridViewDataColumn Width="Auto">
+                                <telerik:GridViewDataColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Height="16" Margin="3" Width="16" Source="/MContracts;component/Resources/error2.png" ToolTip="{Binding Error}" Visibility="{Binding Status, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                            <Image Height="16" Margin="3" Width="16" Source="{Binding Converter={StaticResource ContractGeneralOrSubToImageConverter}}" ToolTip="{Binding  Converter={StaticResource ContractGeneralOrSubToTextConverter}}" />
+                                            <Image Height="16" Margin="3" Width="16" Source="{Binding Converter={StaticResource AgreementToImageConverter}}" ToolTip="{Binding  Converter={StaticResource AgreementToTextConverter}}" />
+                                            <Image Height="16" Margin="3" Width="16" Source="{Binding Converter={StaticResource ContractStateToImageConverter}}" ToolTip="{Binding  Statename}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </telerik:GridViewDataColumn.CellTemplate>
+                            </telerik:GridViewDataColumn>
+                            <telerik:GridViewDataColumn DataMemberBinding="{Binding FullInternalnum}" Header="№"></telerik:GridViewDataColumn>
+                            <telerik:GridViewDataColumn Width="4*" DataMemberBinding="{Binding Subject}" Header="Тема договора">
+                                <telerik:GridViewDataColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Subject, Converter={StaticResource SubjectShreder}}" TextWrapping="WrapWithOverflow"></TextBlock>
+                                    </DataTemplate>
+                                </telerik:GridViewDataColumn.CellTemplate>
+                            </telerik:GridViewDataColumn>
+                            <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Approvedat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Утверждено" />
+                            <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Startat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Начало" />
+                            <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Endsat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Окончание" />
+                            <telerik:GridViewDataColumn Width="2*" DataMemberBinding="{Binding ContractorPersonProfile}" Header="Руководитель">
+                                <telerik:GridViewDataColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ContractorPersonProfile}" TextWrapping="WrapWithOverflow"></TextBlock>
+                                    </DataTemplate>
+                                </telerik:GridViewDataColumn.CellTemplate>
+                            </telerik:GridViewDataColumn>
+
+                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding Contractorshortname}" Header="Контрагент">
+                                <telerik:GridViewDataColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Contractorshortname}" TextWrapping="WrapWithOverflow">
+
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </telerik:GridViewDataColumn.CellTemplate>
+                            </telerik:GridViewDataColumn>
+
+                            <telerik:GridViewDataColumn Width="*" DataMemberBinding="{Binding ManagerProfile}" Header="Руководитель от орг.">
+                                <telerik:GridViewDataColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding ManagerProfile}" TextWrapping="WrapWithOverflow"></TextBlock>
+                                    </DataTemplate>
+                                </telerik:GridViewDataColumn.CellTemplate>
+                            </telerik:GridViewDataColumn>
+
+
+                            <telerik:GridViewDataColumn Width="2*" DataMemberBinding="{Binding PriceMoneyModel.National.Factor.PricePure}" Header="Цена без НДС">
+                                <telerik:GridViewDataColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding PriceMoneyModel.National.Factor.PricePure}" TextWrapping="WrapWithOverflow"></TextBlock>
+                                    </DataTemplate>
+                                </telerik:GridViewDataColumn.CellTemplate>
+                            </telerik:GridViewDataColumn>
+
+                            <telerik:GridViewDataColumn Width="2*" DataMemberBinding="{Binding Ndsalgname}" Header="НДС">
+                                <telerik:GridViewDataColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <WrapPanel>
+                                            <Image Height="14" Width="14" Source="{Binding NdsAlgorithm, Converter={StaticResource NdsAlgorithmTypeToImage }}" ToolTip="{Binding Ndsalgname}"></Image>
+                                            <TextBlock Text="{Binding PriceMoneyModel.National.Factor.PriceNds, IsAsync=True}" TextWrapping="WrapWithOverflow"></TextBlock>
+                                        </WrapPanel>
+                                    </DataTemplate>
+                                </telerik:GridViewDataColumn.CellTemplate>
+                            </telerik:GridViewDataColumn>
+
+                            <telerik:GridViewDataColumn Width="2*" Header="Итого c НДС">
+                                <telerik:GridViewDataColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontWeight="DemiBold" Text="{Binding PriceMoneyModel.National.Factor.PriceWithNds}" TextWrapping="WrapWithOverflow"></TextBlock>
+                                    </DataTemplate>
+                                </telerik:GridViewDataColumn.CellTemplate>
+                            </telerik:GridViewDataColumn>
+
+                            <telerik:GridViewDataColumn Width="2*" Header="Выполнено">
+                                <telerik:GridViewDataColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontWeight="DemiBold" Text="{Binding FundsDisbursed}" TextWrapping="WrapWithOverflow"></TextBlock>
+                                    </DataTemplate>
+                                </telerik:GridViewDataColumn.CellTemplate>
+                            </telerik:GridViewDataColumn>
+
+                            <telerik:GridViewDataColumn Width="2*" Header="Остаток">
+                                <telerik:GridViewDataColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontWeight="DemiBold" Text="{Binding FundsLeft}" TextWrapping="WrapWithOverflow"></TextBlock>
+                                    </DataTemplate>
+                                </telerik:GridViewDataColumn.CellTemplate>
+                            </telerik:GridViewDataColumn>
+
+                        </telerik:RadGridView.Columns>
+
+
+                        <!--<telerik:RadGridView.RowDetailsTemplate>
+                <DataTemplate>
+                    <Controls:RadTabControl x:Name="RadTabControl1" Width="702" HorizontalAlignment="Center" Margin="8" VerticalAlignment="Center">
+                        <Controls:RadTabItem Header="Субподряды" DataContext="{Binding}" Margin="10,0,0,0" Height="24">
+
+                        </Controls:RadTabItem>
+                    </Controls:RadTabControl>
+                </DataTemplate>
+            </telerik:RadGridView.RowDetailsTemplate>-->
+
+                    </telerik:RadGridView>
+                </DataTemplate>
+
+
+
+
+                <Style x:Key="ActualConditionStyle" TargetType="telerik:GridViewRow">
+                    <!--<Setter Property="Foreground" Value="Green" />-->
+                </Style>
+
+                <Style x:Key="UnactualConditionStyle" TargetType="telerik:GridViewRow">
+                    <Setter Property="Foreground" Value="LightGray" />
+                </Style>
+
+
+                <converters:ConditionalStyleSelector x:Key="selector" ConditionConverter="{StaticResource ConditionContractConverter}">
+                    <converters:ConditionalStyleSelector.Rules>
+                        <converters:ConditionalStyleRule Style="{StaticResource ActualConditionStyle}">
+                            <converters:ConditionalStyleRule.Value>
+                                <sys:Boolean>True</sys:Boolean>
+                            </converters:ConditionalStyleRule.Value>
+                        </converters:ConditionalStyleRule>
+                        <converters:ConditionalStyleRule Style="{StaticResource UnactualConditionStyle}">
+                            <converters:ConditionalStyleRule.Value>
+                                <sys:Boolean>False</sys:Boolean>
+                            </converters:ConditionalStyleRule.Value>
+                        </converters:ConditionalStyleRule>
+                    </converters:ConditionalStyleSelector.Rules>
+                </converters:ConditionalStyleSelector>
+
+            </DockPanel.Resources>
+
+            <!--<Button DockPanel.Dock="Bottom" Click="Button_Click">Жми</Button>-->
+            <components:PersistentRadGridView x:Name="contractsDataGrid" AlternationCount="3" AutoGenerateColumns="False" 
+                             CanUserDeleteRows="False" CanUserFreezeColumns="False" IsReadOnly="True"
+                             ItemContainerStyle="{StaticResource alternatingWithTriggers}"
+                             ItemsSource="{Binding Contractrepositoryviews, Mode=Default}" 
+                             RowIndicatorVisibility="Collapsed" RowStyleSelector="{StaticResource selector}"
+                             SelectedItem="{Binding CurrentContractRepositoryView, Mode=OneWayToSource}" 
+                             SelectionMode="Single" SelectionUnit="FullRow" ShowColumnFooters="True"
+                             MouseDoubleClick="ContractsDataGridMouseDoubleClick">
+
+
+                <!--<telerik:RadGridView.ChildTableDefinitions>
+                <telerik:GridViewTableDefinition>
+
+                </telerik:GridViewTableDefinition>
+            </telerik:RadGridView.ChildTableDefinitions>-->
+
+                <!--<telerik:RadGridView.GroupRowStyle>
+                <Style TargetType="GridView:GridViewGroupRow">
+                    <Setter Property="ShowHeaderAggregates" Value="False" />
+                </Style>
+            </telerik:RadGridView.GroupRowStyle>-->
+
+                
+                <telerik:RadGridView.Resources>
+                    <converters:EnumDescriptionConverter x:Key="ErrorSeverityEnumDescription" />
+                </telerik:RadGridView.Resources>
+                
+                <telerik:RadGridView.GroupDescriptors>
+                    <telerik:GroupDescriptor Member="Maincontractsubject"
+                                     SortDirection="Ascending" 
+                                     DisplayContent="Документы договора">
+                        <telerik:GroupDescriptor.AggregateFunctions>
+                            <Data:CountFunction Caption="Документов:" />
+                            <aggregates:ContractFundsAggregatorSelector Caption="Вып.:" ResultFormatString="{}{0:c}" SourceField="FundsDisbursed.PriceOrDefault" />
+                            <aggregates:ContractFundsAggregatorSelector Caption="Ост.:" SourceField="FundsLeft.PriceOrDefault" ResultFormatString="{}{0:c}"></aggregates:ContractFundsAggregatorSelector>
+                           <!--<Data:SumFunction Caption="Ост.:" ResultFormatString="{}{0:c}" SourceField="FundsLeft.PriceOrDefault" />-->
+                        </telerik:GroupDescriptor.AggregateFunctions>
+                    </telerik:GroupDescriptor>
+                </telerik:RadGridView.GroupDescriptors>
+
+                <telerik:RadGridView.Columns>
+                    <!--<telerik:GridViewToggleRowDetailsColumn />-->
+
+                    <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding IntegralErrorsSeverity, Converter={StaticResource ErrorSeverityEnumDescription}}" Header="Стат." ToolTip="Статус ошибки">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Resources>
+                                        <converters:SeverityToImageSourceConverter x:Key="SeverityToImageSource" />
+                                    </StackPanel.Resources>
+                                    <Image Height="24" Margin="3" Width="24" Source="{Binding IntegralErrorsSeverity, Converter={StaticResource SeverityToImageSource}}">
+                                        <Image.ToolTip>
+                                            <ListBox ItemsSource="{Binding Errors}">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image Height="16" Margin="3" Width="16" Source="{Binding Severity, Converter={StaticResource SeverityToImageSource}}"/>
+                                                            <TextBlock Text="{Binding Message}" Margin="3"/>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+
+                                        </Image.ToolTip>
+                                    </Image>
+                                </StackPanel>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                        <telerik:GridViewDataColumn.AggregateFunctions>
+                            <Data:CountFunction Caption="Документов:" />
+                        </telerik:GridViewDataColumn.AggregateFunctions>
+                    </telerik:GridViewDataColumn>
+
+                    <telerik:GridViewDataColumn Width="Auto" Header="Закрыт" DataMemberBinding="{Binding IsClosedOnCurrentDate}">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Height="16" Margin="3" Width="16" Source="/MContracts;component/Resources/file_locked.png" Visibility="{Binding IsClosedOnCurrentDate, Converter={StaticResource BoolToVisibilityConverterStraight}}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
+                    <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding IsGeneral, Converter={StaticResource IsGeneralStateToString}}" Header="Г/СД" ToolTip="Генеральный или договор с соисполнителями">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Height="16" Margin="3" Width="16" Source="{Binding Converter={StaticResource ContractGeneralOrSubToImageConverter}}" ToolTip="{Binding  Converter={StaticResource ContractGeneralOrSubToTextConverter}}" />
+                                </StackPanel>
+                            </DataTemplate>
+
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
+                    <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding IsAgreement, Converter={StaticResource IsAgreementStateToString}}" Header="О/ДС" ToolTip="Оригинальный договор или доп. соглашение">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Height="16" Margin="3" Width="16" Source="{Binding Converter={StaticResource AgreementToImageConverter}}" ToolTip="{Binding  Converter={StaticResource AgreementToTextConverter}}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
+                    <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Statename}" Header="Сост." ToolTip="Состояние подписания">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Height="16" Margin="3" Width="16" Source="{Binding Converter={StaticResource ContractStateToImageConverter}}" ToolTip="{Binding  Statename}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
+
+
+                    <telerik:GridViewDataColumn DataMemberBinding="{Binding FullInternalnum}" Header="№" />
+
+                    <telerik:GridViewDataColumn DataMemberBinding="{Binding Contracttypename}" Header="Тип договора" UniqueName="Contracttype" />
+
+
+                    <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Subject}" Header="Тема договора">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Subject, Converter={StaticResource SubjectShreder}}" TextWrapping="WrapWithOverflow">
+                                    <TextBlock.ToolTip>
+                                        <TextBlock Width="200" Text="{Binding Subject}" TextWrapping="WrapWithOverflow" />
+                                    </TextBlock.ToolTip>
+                            </TextBlock>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
+                    <telerik:GridViewDataColumn Width="Auto" Header="Цена" DataMemberBinding="{Binding PriceMoneyModel.National.Factor.PriceWithNds}">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock FontWeight="DemiBold" Text="{Binding PriceMoneyModel.National.Factor.PriceWithNds}" TextWrapping="WrapWithOverflow"></TextBlock>
+                            </DataTemplate>
+
+                        </telerik:GridViewDataColumn.CellTemplate>
+                        <telerik:GridViewDataColumn.AggregateFunctions>
+                            <aggregates:ContractFundsAggregatorSelector  ResultFormatString="{}{0:c}" SourceField="PriceMoneyModel.National.Factor.PriceWithNdsMoneyValue.PriceOrDefault" />
+                        </telerik:GridViewDataColumn.AggregateFunctions>
+
+                    </telerik:GridViewDataColumn>
+
+
+                    <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding PriceMoneyModel.National.Factor.PricePure}" Header="Без НДС">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding PriceMoneyModel.National.Factor.PricePure}" TextWrapping="WrapWithOverflow"></TextBlock>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
+
+                    <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Ndsalgname}" Header="НДС">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <WrapPanel>
+                                    <Image Height="14" Width="14" Source="{Binding NdsAlgorithm, Converter={StaticResource NdsAlgorithmTypeToImage }}" ToolTip="{Binding Ndsalgname}"></Image>
+                                    <TextBlock Text="{Binding PriceMoneyModel.National.Factor.PriceNds, IsAsync=True}" TextWrapping="WrapWithOverflow"></TextBlock>
+                                </WrapPanel>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
+
+
+                    <telerik:GridViewDataColumn Width="Auto" Header="Выполнено" DataMemberBinding="{Binding FundsDisbursed}">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock FontWeight="DemiBold" Text="{Binding FundsDisbursed}" TextWrapping="WrapWithOverflow"></TextBlock>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                        <telerik:GridViewDataColumn.AggregateFunctions>
+                            <aggregates:ContractFundsAggregatorSelector Caption="Вып.:" ResultFormatString="{}{0:c}" SourceField="FundsDisbursed.PriceOrDefault" />
+                        </telerik:GridViewDataColumn.AggregateFunctions>
+
+                    </telerik:GridViewDataColumn>
+
+                    <telerik:GridViewDataColumn Width="Auto" Header="Остаток"  DataMemberBinding="{Binding FundsLeft}">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock FontWeight="DemiBold" Text="{Binding FundsLeft}" TextWrapping="WrapWithOverflow"></TextBlock>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                        <telerik:GridViewDataColumn.AggregateFunctions>
+                            <aggregates:ContractFundsAggregatorSelector Caption="Ост.:" ResultFormatString="{}{0:c}" SourceField="FundsLeft.PriceOrDefault" />
+                        </telerik:GridViewDataColumn.AggregateFunctions>
+
+                    </telerik:GridViewDataColumn>
+                    <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Approvedat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Подп." ToolTip="Дата подписания договора" />
+                    <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Startat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Нач." ToolTip="Дата начала работ по договору" />
+                    <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Endsat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Окон.(пл.)" ToolTip="Дата планового окончания работ по договору" Background="{Binding Converter={StaticResource ContractStateDataToForeground}}"/>
+                    <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Appliedat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Прим." ToolTip="Дата выступления в силу договора" />
+                    <telerik:GridViewDataColumn Width="Auto" x:Name="OutofcontrolatColumn" DataMemberBinding="{Binding Outofcontrolat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Снят с конт." ToolTip="Дата снятия договора с контроля" />
+                    <telerik:GridViewDataColumn Width="Auto" x:Name="BrokeatColumn" DataMemberBinding="{Binding Brokeat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Раст." ToolTip="Дата расторжения договора" />
+                    <telerik:GridViewDataColumn Width="Auto" x:Name="ReallyfinishedatColumn" DataMemberBinding="{Binding Reallyfinishedat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Окон.(ф.)" ToolTip="Дата фактического окончания работ по договору" />
+
+                    <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding ContractorPersonProfile}" Header="Руководитель">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding ContractorPersonProfile}" TextWrapping="WrapWithOverflow">
+                                    <TextBlock.ToolTip>
+                                        <TextBlock Width="100" Text="{Binding ContractorPersonProfile}" TextWrapping="WrapWithOverflow" />
+                                    </TextBlock.ToolTip>
+                                </TextBlock>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
+
+                    <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Contractorshortname}" Header="Контрагент">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Contractorshortname}" TextWrapping="WrapWithOverflow">
+                                    <TextBlock.ToolTip>
+                                        <TextBlock Width="100" Text="{Binding Contractorshortname}" TextWrapping="WrapWithOverflow" />
+                                    </TextBlock.ToolTip>
+                            </TextBlock>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
+
+                    <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Contractortype}" Header="Тип контр.">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Contractortype}" TextWrapping="WrapWithOverflow">
+                                    <TextBlock.ToolTip>
+                                        <TextBlock Width="100" Text="{Binding Contractortype}" TextWrapping="WrapWithOverflow" />
+                                    </TextBlock.ToolTip>
+                            </TextBlock>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
+
+                    <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding ManagerProfile}" Header="Руководитель от орг.">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding ManagerProfile}" TextWrapping="WrapWithOverflow">
+                                    <TextBlock.ToolTip>
+                                        <TextBlock Width="100" Text="{Binding ManagerProfile}" TextWrapping="WrapWithOverflow" />
+                                    </TextBlock.ToolTip>
+                            </TextBlock>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
+
+
+                    <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Maincontractsubject}" Header="Группа документов">
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Maincontractsubject, Converter={StaticResource SubjectShreder}}" TextWrapping="WrapWithOverflow">
+                                    <TextBlock.ToolTip>
+                                        <TextBlock Width="200" Text="{Binding Maincontractsubject}" TextWrapping="WrapWithOverflow" />
+                                    </TextBlock.ToolTip>
+                            </TextBlock>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+                    </telerik:GridViewDataColumn>
+
+
+                </telerik:RadGridView.Columns>
+
+
+                <!--<telerik:RadGridView.RowDetailsTemplate>
+                <DataTemplate>
+                    <Controls:RadTabControl x:Name="RadTabControl1" Width="702" HorizontalAlignment="Center" Margin="8" VerticalAlignment="Center">
+                        <Controls:RadTabItem Header="Субподряды" DataContext="{Binding}" Margin="10,0,0,0" Height="24">
+
+                        </Controls:RadTabItem>
+                    </Controls:RadTabControl>
+                </DataTemplate>
+            </telerik:RadGridView.RowDetailsTemplate>-->
+
+            </components:PersistentRadGridView>
+
+
+        </DockPanel>
+    </Grid>
+</UserControl>

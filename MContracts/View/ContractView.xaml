@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="MContracts.View.ContractView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:MContracts.Classes.Converters" 
+             xmlns:Model="clr-namespace:MCDomain.Model;assembly=MCDomain" mc:Ignorable="d" 
+             d:DesignHeight="975" d:DesignWidth="1098" Focusable="False" 
+             xmlns:my="clr-namespace:MContracts.Controls.Converters" 
+             xmlns:View="clr-namespace:MContracts.View">
+
+    <UserControl.Resources>
+
+
+
+
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Background="SteelBlue">
+        <DockPanel LastChildFill="True">
+
+            <StackPanel DockPanel.Dock="Left" Width="180" Visibility="{Binding LeftPanelVisibility}">
+                <View:ContractListView x:Name="generalsContractListView" DataContext="{Binding GeneralsViewModel}" Visibility="{Binding ListVisibility}"/>
+            </StackPanel>
+
+            <StackPanel DockPanel.Dock="Right" Width="180" Margin="0,0,0,0" Visibility="{Binding RightPanelVisibility}">
+                <View:ContractListView x:Name="agreementsContractListView" DataContext="{Binding AgreementsViewModel}"/>
+                <View:ContractListView x:Name="subContractsListView" DataContext="{Binding SubgeneralsViewModel}"/>
+            </StackPanel>
+
+            <StackPanel>
+                <View:ContractdocCardView x:Name="contractCarddocView" DataContext="{Binding ContractCardCardViewModel}"/>
+				 <View:ContractorsView x:Name="contractorsView" DataContext="{Binding ContractorsViewModel}"/>
+                <View:ContractFcView x:Name="contractFcView" DataContext="{Binding FcViewModel}"/>
+                <!--<View:ScheduleView x:Name="scheduleView" DataContext="{Binding ScheduleViewModel}" />
+                <View:StageResultsView x:Name="stageResultsView" DataContext="{Binding StageResultsViewModel}" />
+                <View:ActsView x:Name="actsView" DataContext="{Binding ActsViewModel}" />-->
+                <View:PaymentsView x:Name="paymentsView" DataContext="{Binding PaymentDocumentsViewModel}" />
+                <View:NtpProblemView x:Name="ntpProblemView" DataContext="{Binding NtpProblemViewModel}"/>
+                <View:ApprovalsView x:Name="approvalsView" DataContext="{Binding ApprovalsViewModel}"/>
+                <View:DocumentImageView x:Name="documentImageView" DataContext="{Binding ContractDocumentImageViewModel}"/>
+                <View:DocumentSetTransferView x:Name="documentSetTransferView" DataContext="{Binding DocumentSetTransferModel}"/>
+            </StackPanel>
+        </DockPanel>
+    </ScrollViewer>
+</UserControl>
+
+    
+    

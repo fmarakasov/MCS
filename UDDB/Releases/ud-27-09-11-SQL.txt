@@ -1,0 +1,22 @@
+alter table DEPARTMENT
+add responsibleid NUMBER(10);
+
+alter table DEPARTMENT
+  add constraint RESPONSIBLE_FK foreign key (RESPONSIBLEID)
+  references EMPLOYEE (ID);
+
+dELETE FROM DISPOSAL;
+DELETE FROM ROLE;
+insert into ROLE (id, name)
+values (1, 'Руководитель');
+insert into ROLE (id, name)
+values (2, 'Руководитель направления');
+insert into ROLE (id, name)
+values (3, 'Заместитель директора');
+insert into ROLE (id, name)
+values (-1, '(Не определена)');
+insert into ROLE (id, name)
+values (4, 'Ответственный по договорам');
+insert into ROLE (id, name)
+values (5, 'Куратор от договорного отдела');
+commit;

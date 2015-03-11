@@ -1,0 +1,187 @@
+﻿<Window x:Class="MContracts.Controls.Dialogs.MultiEditActWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:converters="clr-namespace:MContracts.Classes.Converters" 
+        xmlns:Dialogs="clr-namespace:MContracts.Controls.Dialogs"
+        Title="Редактирование актов" Height="500" Width="800">
+
+    <Window.Resources>
+
+        <converters:DateTimeToShortDateConverter x:Key="DateTimeToShortDateConverter"/>
+        <converters:StageConditionConverter x:Key="StageConditionConverter"/>
+        <converters:StageConditionToImageConverter x:Key="StageConditionToImageConverter"/>
+        <converters:LevelToMarginConverter x:Key="LevelToMarginConverter" LeftMargin="8" OtherMargin="0" />
+        <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
+        
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="3"></Setter>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="3"></Setter>
+            <Setter Property="Width" Value="350"></Setter>
+            <Setter Property="Height" Value="30"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="DatePicker">
+            <Setter Property="Margin" Value="3"></Setter>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="3"></Setter>
+            <Setter Property="Width" Value="250"></Setter>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="3"></Setter>
+            <Setter Property="Width" Value="24"></Setter>
+            <Setter Property="Height" Value="24"></Setter>
+        </Style>
+
+    </Window.Resources>    
+
+    <DockPanel x:Name="LayoutRoot" LastChildFill="True">
+
+        <DockPanel LastChildFill="False" Margin="2" DockPanel.Dock="Bottom" MinHeight="34">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                <Button Width="100" Content="OK" Margin="5" Click="OKButton_Click"/>
+                <Button Width="100" Content="Отмена" Margin="5" Click="Button_Click"/>
+            </StackPanel>
+        </DockPanel>
+
+        <DataGrid ItemsSource="{Binding Acts, Mode=OneWay}" DockPanel.Dock="Top" Style="{StaticResource DataGridDemoStyle}" AutoGenerateColumns="False" 
+                      x:Name="ActsDataGrid" HorizontalScrollBarVisibility="Disabled" IsReadOnly="True" MaxHeight="300" Margin="5">
+
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="№ договора" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding ContractNum}" Loaded="Label_Loaded"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="№ акта" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding ActNum}" Loaded="Label_Loaded"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Дата подписания" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding SignDate, Converter={StaticResource DateTimeToShortDateConverter}}" Loaded="Label_Loaded"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Этапы КП" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding StageNums}" Loaded="Label_Loaded"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Сумма c НДС" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Path=WithNdsPrice}" Loaded="Label_Loaded"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Сумма без НДС" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Path=PricePure}" Loaded="Label_Loaded"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="НДС" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Path=NdsPrice}" Loaded="Label_Loaded"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Аванс" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Path=Credited}" Loaded="Label_Loaded"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="К перечислению" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Path=TransferSum}" Loaded="Label_Loaded"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Дата договора" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Path=ContractSignDate, Converter={StaticResource DateTimeToShortDateConverter}}" Loaded="Label_Loaded"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Исполнитель" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Label Content="{Binding Path=Contractor}" Loaded="Label_Loaded"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+
+        </DataGrid>
+
+        <StackPanel>
+
+            <WrapPanel>
+                <TextBlock Text="НДС" Grid.Row="0"/>
+                <ComboBox ItemsSource="{Binding Ndses, Mode=OneTime}" SelectedItem="{Binding SelectedNds, Mode=TwoWay}" Grid.Column="1" Grid.Row="0"  />
+            </WrapPanel>
+
+            <WrapPanel>
+                <TextBlock Text="Алгоритм НДС" Grid.Row="1"/>
+                <ComboBox ItemsSource="{Binding Ndsalgorithms, Mode=OneTime}" SelectedItem="{Binding SelectedNdsalgorithm, Mode=TwoWay}" Grid.Column="1" Grid.Row="1"/>
+            </WrapPanel>
+
+            <WrapPanel>
+                <TextBlock Text="Валюта" Grid.Row="2"/>
+                <ComboBox ItemsSource="{Binding Currencies, Mode=OneTime}" SelectedItem="{Binding SelectedCurrency, Mode=TwoWay}" Grid.Column="1" Grid.Row="2"/>
+            </WrapPanel>
+
+            <WrapPanel>
+                <TextBlock Text="Единица измерения" Grid.Row="3"/>
+                <ComboBox ItemsSource="{Binding Currencymeasures, Mode=OneTime}" SelectedItem="{Binding SelectedCurrencymeasure, Mode=TwoWay}" Grid.Column="1" Grid.Row="3"/>
+            </WrapPanel>
+
+            <WrapPanel>
+                <TextBlock Text="Основание для Промгаза" Grid.Row="4" Grid.Column="0" />
+                <ComboBox ItemsSource="{Binding Enterpriseauthorities, Mode=OneTime}" SelectedItem="{Binding SelectedEnterpriseauthority, Mode=TwoWay}" Grid.Row="4" Grid.Column="1"/>
+            </WrapPanel>
+
+            <WrapPanel>
+                <TextBlock Text="Регион" Grid.Row="5" Grid.Column="0"/>
+                <ComboBox ItemsSource="{Binding Regions, Mode=OneTime}" SelectedItem="{Binding SelectedRegion, Mode=TwoWay}" Grid.Row="5" Grid.Column="1"/>
+            </WrapPanel>
+
+            <WrapPanel>
+                <TextBlock Text="Тип акта" Grid.Row="6" Grid.Column="0" />
+                <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="1">
+                    <ComboBox ItemsSource="{Binding Acttypes}" SelectedItem="{Binding SelectedActtype, Mode=TwoWay}"/>
+                    <Button ToolTip="Добавить тип акта" Click="Button_Click_3">
+                        <Image Source="/MContracts;component/Resources/Acttype_add.png"/>
+                    </Button>
+                    <Button ToolTip="Добавить контрагента" Click="Button_Click_2">
+                        <Image Source="/MContracts;component/Resources/Contractor_add.png"/>
+                    </Button>
+                </StackPanel>
+            </WrapPanel>
+
+        </StackPanel>
+
+    </DockPanel>
+</Window>

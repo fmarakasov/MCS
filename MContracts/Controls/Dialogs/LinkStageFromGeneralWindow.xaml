@@ -1,0 +1,243 @@
+﻿<Window x:Class="MContracts.Controls.Dialogs.LinkStageFromGeneralWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:converters="clr-namespace:MContracts.Classes.Converters" 
+        xmlns:Dialogs="clr-namespace:MContracts.Controls.Dialogs" 
+        Title="Связать этапы с этапами субподрядного договора" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+
+        <converters:DateTimeToShortDateConverter x:Key="DateTimeToShortDateConverter"/>
+        <converters:StageConditionConverter x:Key="StageConditionConverter"/>
+        <converters:StageConditionToImageConverter x:Key="StageConditionToImageConverter"/>
+        <converters:ContractdocConverter x:Key="ContractdocConverterExtractName" />
+        <converters:DateTimeToDateConverter x:Key="DateTimeToRusConverter" />
+        <converters:BoolToVisibilityConverter TrueVisibility="Visible" FalseVisibility="Collapsed" x:Key="BoolToVisibilityConverter"/>
+        <converters:NullToVisibilityConverter NullVisibility="Collapsed" NotNullVisibility="Visible" x:Key="NullToVisibilityConverter"/>
+
+
+        <Style TargetType="TabItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TabItem}">
+                        <Border>
+                            <Grid>
+                                <Grid/>
+                                <ContentPresenter ContentSource="Header" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value >
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock DockPanel.Dock="Right" Foreground="Red" FontSize="12" Margin="2, 0, 0, 0" FontWeight="Bold" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">!</TextBlock>
+                            <Border BorderBrush="Red" BorderThickness="1" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+                                <AdornedElementPlaceholder x:Name="adornedPlaceHolder"></AdornedElementPlaceholder>
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="MinWidth" Value="200"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value >
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock DockPanel.Dock="Right" Foreground="Red" FontSize="12" Margin="2, 0, 0, 0" FontWeight="Bold" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">!</TextBlock>
+                            <Border BorderBrush="Red" BorderThickness="1">
+                                <AdornedElementPlaceholder x:Name="adornedPlaceHolder"></AdornedElementPlaceholder>
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="MinWidth" Value="200"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="24"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="DatePicker">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value >
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock DockPanel.Dock="Right" Foreground="Red" FontSize="18" FontWeight="Bold" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">!</TextBlock>
+                            <Border BorderBrush="Red" BorderThickness="1">
+                                <AdornedElementPlaceholder x:Name="adornedPlaceHolder"></AdornedElementPlaceholder>
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="MinWidth" Value="200"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <TabControl x:Name="Wizzard">
+            <TabControl.Items>
+
+                <TabItem>
+                    <StackPanel>
+                        <TextBlock Text="Выберите субподрядный договор" FontSize="14" Margin="3" FontWeight="Bold"/>
+                        <ComboBox ItemsSource="{Binding Path=Subcontracts, Mode=OneWay}" SelectedItem="{Binding Path=SubContract, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="ComboBox_SelectionChanged" x:Name="SubContractsCB" Height="30">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderThickness="2" CornerRadius="2" BorderBrush="CornflowerBlue" Width="{Binding ActualWidth, ElementName=SubContractsCB}">
+                                        <StackPanel Margin="2">
+                                            <TextBlock Text="{Binding Converter={StaticResource ContractdocConverterExtractName}}" />
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="*"></RowDefinition>
+                                                    <RowDefinition Height="*"></RowDefinition>
+                                                </Grid.RowDefinitions>
+                                                <Image Grid.Row="0" Source="/MContracts;component/Images/Play.ico"  Width="20" Height="10" ToolTip="Дата начала"></Image>
+                                                <Image Grid.Row="1" Source="/MContracts;component/Resources/Apply.png" Width="20" Height="10" ToolTip="Дата окончания"></Image>
+                                                <Label Grid.Row="0" Grid.Column="1" FontWeight="Medium" Content="{Binding Startat, Converter={StaticResource DateTimeToRusConverter }}"></Label>
+                                                <Label Grid.Row="1" Grid.Column="1" FontWeight="Medium" Content="{Binding Endsat, Converter={StaticResource DateTimeToRusConverter }}"></Label>
+                                            </Grid>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock Text="Выберите календарный план субподрядного договора" FontSize="14" Margin="3" FontWeight="Bold"/>
+                        <ComboBox ItemsSource="{Binding Path=SubcontractSchedulecontracts, Mode=OneWay}" SelectedItem="{Binding Path=Selectedschedulecontract, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Height="30"/>
+                    </StackPanel>
+                </TabItem>
+                
+                <TabItem x:Name="StagesTabItem" >
+
+                    <ScrollViewer>
+
+                        <StackPanel>
+                            <TextBlock Text="Отметьте этапы, которые необходимо связать с этапом генерального договора" FontSize="14" Margin="3"/>
+                            <DockPanel LastChildFill="True">
+                                <TextBlock Text="{Binding GeneralStage}" FontSize="14" Margin="3" TextWrapping="WrapWithOverflow" DockPanel.Dock="Left"/>
+                            </DockPanel>
+                            <DockPanel LastChildFill="True">
+                                <StackPanel DockPanel.Dock="Left" Width="1"/>
+                                <StackPanel DockPanel.Dock="Right" Width="1"/>
+
+                                <DataGrid CanUserAddRows="False" SelectionMode="Single" SelectionUnit="FullRow"
+                                    HorizontalScrollBarVisibility="Disabled" Margin="3" ItemsSource="{Binding Path=Stages}" CanUserSortColumns="False"
+                                    HeadersVisibility="Column" AutoGenerateColumns="False" x:Name="StagesDataGrid">
+                                    <DataGrid.Columns>
+
+                                        <DataGridTemplateColumn Width="Auto">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox IsChecked="{Binding Path=IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Loaded="CheckBox_Loaded" Margin="2"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        
+                                        <DataGridTemplateColumn Header="№" Width="Auto">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Label Content="{Binding Stage.Schedulecontract}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        
+                                        <DataGridTemplateColumn Header="№" Width="Auto">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Label Content="{Binding Stage.Num}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn Width="Auto">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <Image Width="20" Height="20" Margin="2" ToolTip="{Binding Path=Stage.Stagecondition, Converter={StaticResource StageConditionConverter}}" Source="{Binding Path=Stagecondition, Converter={StaticResource StageConditionToImageConverter}}"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn Header="Содержание этапа" Width="6*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <DockPanel LastChildFill="True">
+                                                        <StackPanel DockPanel.Dock="Left" Width="1"/>
+                                                        <StackPanel DockPanel.Dock="Right" Width="1"/>
+                                                        <TextBlock Margin="2" Text="{Binding Path=Stage.Subject}" TextWrapping="WrapWithOverflow"/>
+                                                    </DockPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn Header="Начало" Width="2*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <DockPanel LastChildFill="True">
+                                                        <StackPanel DockPanel.Dock="Left" Width="1"/>
+                                                        <StackPanel DockPanel.Dock="Right" Width="1"/>
+                                                        <TextBlock Margin="2" Text="{Binding Path=Stage.Startsat, Converter={StaticResource DateTimeToShortDateConverter}}" TextWrapping="WrapWithOverflow"/>
+                                                    </DockPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                        <DataGridTemplateColumn Header="Окончание" Width="2*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <DockPanel LastChildFill="True">
+                                                        <StackPanel DockPanel.Dock="Left" Width="1"/>
+                                                        <StackPanel DockPanel.Dock="Right" Width="1"/>
+                                                        <TextBlock Margin="2" Text="{Binding Path=Stage.Endsat, Converter={StaticResource DateTimeToShortDateConverter}}" TextWrapping="WrapWithOverflow"/>
+                                                    </DockPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+
+                                         <DataGridTemplateColumn Width="3*" Header="Этапы ген. договора">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="Этап № " Visibility="{Binding Stage.GeneralStage, Converter={StaticResource NullToVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        <TextBlock Text="{Binding Path=Stage.GeneralStage.Num, UpdateSourceTrigger=PropertyChanged}"/>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                            </DockPanel>
+                        </StackPanel>
+
+                    </ScrollViewer>
+                </TabItem>
+
+            </TabControl.Items>
+        </TabControl>
+
+        <DockPanel Grid.Row="1">
+            <Dialogs:TabControlMover x:Name="Mover" DockPanel.Dock="Right"/>
+        </DockPanel>
+    </Grid>
+</Window>

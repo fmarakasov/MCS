@@ -1,0 +1,9 @@
+﻿<Dialogs:DialogShell x:Class="MContracts.Controls.Dialogs.CatalogEditorDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:Dialogs="clr-namespace:MContracts.Controls.Dialogs" xmlns:View="clr-namespace:MContracts.View"
+                     Title="RegionsEditor" Height="300" Width="300">
+    <Grid>
+        <View:CatalogView HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+    </Grid>
+</Dialogs:DialogShell>

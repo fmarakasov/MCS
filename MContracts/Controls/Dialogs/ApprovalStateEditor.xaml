@@ -1,0 +1,46 @@
+﻿<Dialogs:DialogShell
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:converters="clr-namespace:MContracts.Classes.Converters"
+                 xmlns:Dialogs="clr-namespace:MContracts.Controls.Dialogs" xmlns:MCDomain_Model="clr-namespace:MCDomain.Model;assembly=MCDomain" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="MContracts.Controls.Dialogs.ApprovalStateEditor"
+        Title="{Binding DisplayName}" Height="400" Width="500">
+
+    <Grid >
+    	<Grid.ColumnDefinitions>
+    		<ColumnDefinition Width="0.255*"/>
+    		<ColumnDefinition Width="*"/>
+    	</Grid.ColumnDefinitions>
+    	<Grid.RowDefinitions>
+    		<RowDefinition Height="20"/>
+    		<RowDefinition Height="45"/>
+    		<RowDefinition Height="0.211*"/>
+    		<RowDefinition Height="0.623*"/>
+    	</Grid.RowDefinitions>
+    	<TextBlock Margin="8" Grid.Row="1" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"><Run Language="ru-ru" Text="Состояние"/></TextBlock>
+    	<DockPanel Grid.Column="1" Margin="8" Grid.Row="1" LastChildFill="True">
+			<DatePicker DockPanel.Dock="Left" SelectedDate="{Binding Approval.Statedate}"></DatePicker>
+			<ComboBox Margin="10,0,0,0" ItemsSource="{Binding Approvalstates, Mode=OneWay}" SelectedItem="{Binding Approval.Approvalstate}">
+    		<ComboBox.ItemTemplate>
+    			<DataTemplate>
+    				<Border>
+    					<StackPanel Orientation="Horizontal">
+    						<StackPanel.Resources>
+    							<converters:IntToBrushConverter x:Key="ColorConverter"> </converters:IntToBrushConverter>			
+							</StackPanel.Resources>
+    						<Border Background="{Binding Color, Converter={StaticResource ColorConverter}}" Width="20" Height="20" Margin="3,3,5,3">
+    						
+							</Border>	
+								<TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="14" HorizontalAlignment="Stretch"></TextBlock>		
+						</StackPanel>			
+					</Border>			
+				</DataTemplate> 		
+			</ComboBox.ItemTemplate>
+			</ComboBox>
+		
+			</DockPanel>
+  	<TextBlock Margin="8" Grid.Row="2" TextWrapping="Wrap" TextAlignment="Center" HorizontalAlignment="Center" FontSize="16"><Run Language="ru-ru" Text="Описание"/></TextBlock>
+  	<TextBox Grid.Column="1" Margin="8" Grid.Row="2" Grid.RowSpan="2" TextWrapping="Wrap"   AcceptsReturn="True"
+  VerticalScrollBarVisibility="Visible" MaxLength="2000" Text="{Binding Approval.Statedescription}"/>
+         
+    </Grid>
+</Dialogs:DialogShell>

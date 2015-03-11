@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="MContracts.Controls.Dialogs.TabControlMover"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="50" d:DesignWidth="500">
+
+    <UserControl.Resources>
+    
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Height" Value="24"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <Button Content="Назад" Command="{Binding BackCommand}" x:Name="BackBtn"/>
+            <Button Content="Далее" Command="{Binding ForwardCommand}" CommandParameter="{Binding Content, ElementName=ForwardBtn}" x:Name="ForwardBtn"/>
+            <Button Content="Отмена" Click="CancelBtn_Click" x:Name="CancelBtn" Margin="20, 5, 5, 5"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

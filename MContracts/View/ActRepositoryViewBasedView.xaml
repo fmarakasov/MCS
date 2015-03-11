@@ -1,0 +1,110 @@
+﻿<UserControl x:Class="MContracts.View.ActRepositoryViewBasedView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:Controls1="clr-namespace:UIShared.Controls;assembly=UIShared"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:converters="clr-namespace:MContracts.Classes.Converters"
+             xmlns:components="clr-namespace:MContracts.Controls.Components" mc:Ignorable="d" 
+             Initialized="ActRepositoryViewBasedView_OnInitialized"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <converters:BooleanToStringConverter x:Key="SignConverter"  TrueMessage="Подписан" FalseMessage="Не подписан" DefaultMessage="Не задан"/>
+        <converters:ActSignedToImageConverter x:Key="ActSignedToImageConverter"/>
+    </UserControl.Resources>
+    <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <!--<Controls1:CommandsControl x:Name="commandsControl" DockPanel.Dock="Top" Margin="3"
+                                   DataContext="{Binding CommandsAggregator}"></Controls1:CommandsControl>-->
+        <components:PersistentRadGridView x:Name="ActsDataGrid" ItemsSource="{Binding Acts, Mode=OneWay}" 
+                             AlternationCount="3" AutoGenerateColumns="False" 
+                             CanUserDeleteRows="False" CanUserFreezeColumns="False" IsReadOnly="True"
+                             RowIndicatorVisibility="Collapsed" 
+                             SelectedItem="{Binding CurrentAct}" 
+                             SelectionUnit="FullRow" ShowColumnFooters="True"
+                             MouseDoubleClick="ActsDataGridMouseDoubleClick"
+                             SelectionMode="Extended" >
+         <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Width="Auto" IsReadOnly="True"  DataMemberBinding="{Binding Issigned}" Header="">
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Width="20" Height="20" Margin="2" ToolTip="{Binding Issigned, Converter={StaticResource SignConverter}}"
+                                   Source="{Binding Path=Issigned, Converter={StaticResource ActSignedToImageConverter}}"/>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn DataMemberBinding="{Binding Contractsubject}" Header="Договор" />
+                <telerik:GridViewDataColumn DataMemberBinding="{Binding MainContractSubject}" Header="Группа дог." />
+               
+                <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Num, Mode=OneWay}" Header="№">
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:CountFunction Caption="Актов:" />
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Signdate, StringFormat='{}{0:d}', Mode=OneWay}" Header="Дата подписания"/>
+                <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Actstagenumbers, Mode=OneTime}" Header="Этапы"/>
+                <telerik:GridViewDataColumn Width="Auto" TextAlignment="Right"  UniqueName="PricePure" FooterTextAlignment="Right">
+                    <telerik:GridViewColumn.Header>
+                        <!--<Binding Path="StagePriceWithNoNDSColumnTitle"/>-->
+                        Цена без НДС
+                    </telerik:GridViewColumn.Header>
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="2" Text="{Binding ActMoney.PureValue, Mode=OneWay, ConverterCulture=ru-ru, StringFormat=N2, TargetNullValue=0, FallbackValue=0}"  VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Right"/>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction  Caption="Без НДС" SourceField="ActMoney.PureValue" ResultFormatString="{}{0:N2}"/>
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+
+                <telerik:GridViewDataColumn Width="Auto" TextAlignment="Right"  FooterTextAlignment="Right" >
+                    <telerik:GridViewDataColumn.Header>
+                        <!--<Binding Path="StagePriceWithNDSColumnTitle"/>-->
+                        Цена с НДС
+                    </telerik:GridViewDataColumn.Header>
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="2" Text="{Binding ActMoney.PriceWithNdsValue, Mode=OneWay, ConverterCulture=ru-ru, StringFormat=N2, TargetNullValue=0, FallbackValue=0}"   VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Right"/>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction Caption="Вкл. НДС"  SourceField="ActMoney.PriceWithNdsValue" ResultFormatString="{}{0:N2}"/>
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn Width="Auto" TextAlignment="Right"  FooterTextAlignment="Right">
+                    <telerik:GridViewDataColumn.Header>
+                        <!--<Binding Path="NDSColumnTitle" />-->
+                        НДС
+                    </telerik:GridViewDataColumn.Header>
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="2" Text="{Binding ActMoney.NdsValue, Mode=OneWay, StringFormat=N2,  ConverterCulture=ru-ru, TargetNullValue=0, FallbackValue=0}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Right"/>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction Caption="НДС" SourceField="ActMoney.NdsValue" ResultFormatString="{}{0:N}"/>
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+               
+                <telerik:GridViewDataColumn Width="Auto" TextAlignment="Right"   FooterTextAlignment="Right">
+                    <telerik:GridViewDataColumn.Header>
+                        <!--<Binding Path="TransferColumnTitle" />-->
+                        К перечислению
+                    </telerik:GridViewDataColumn.Header>
+                    <telerik:GridViewDataColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="2" Text="{Binding TransferSumMoney.PriceWithNdsValue, Mode=OneWay, StringFormat=N2, TargetNullValue=0, FallbackValue=0}" VerticalAlignment="Center" HorizontalAlignment="Stretch" TextAlignment="Right"/>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellTemplate>
+                    <telerik:GridViewDataColumn.AggregateFunctions>
+                        <telerik:SumFunction Caption="К перечисл."  SourceField="TransferSumMoney.PriceWithNdsValue" ResultFormatString="{}{0:C}" />
+                    </telerik:GridViewDataColumn.AggregateFunctions>
+                </telerik:GridViewDataColumn>
+         
+            </telerik:RadGridView.Columns>   
+        </components:PersistentRadGridView>
+        
+    </DockPanel>    
+</UserControl>

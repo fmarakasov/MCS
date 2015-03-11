@@ -1,0 +1,47 @@
+﻿<UserControl x:Class="MContracts.Controls.PaymentDocumentsViewControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"      
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"             
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="618">
+
+
+    <Border CornerRadius="3" BorderThickness="1">
+
+        <telerik:RadGridView Margin="3" MaxHeight="400" 
+                                     ItemsSource="{Binding Paymentdocuments, Mode=OneTime}" 
+                                     AutoGenerateColumns="False"
+                                     CanUserInsertRows="False" CanUserDeleteRows="False" 
+                                     SelectedItem="{Binding SelectedPaymentDocument}"
+                                     ShowGroupPanel="False" ShowColumnFooters="False">
+            <telerik:RadGridView.Columns>
+                <telerik:GridViewDataColumn Header="№" Width="Auto" 
+                                            DataMemberBinding="{Binding Path=Paymentdocument.Num, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, Mode=TwoWay}" TextWrapping="WrapWithOverflow"/>
+                <telerik:GridViewDataColumn Header="Дата" Width="Auto"
+                                            DataMemberBinding="{Binding Path=Paymentdocument.Paymentdate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, StringFormat=d}" />
+                <telerik:GridViewComboBoxColumn Header="Тип платёжного документа" 
+                                                IsGroupable="True" 
+                                                GroupMemberPath="Paymentdocument.Prepaymentdocumenttype.Name" 
+                                                Width="Auto" 
+                                                DataMemberBinding="{Binding Path=Paymentdocument.Prepaymentdocumenttype, Mode=TwoWay}" 
+                                                ItemsSource="{Binding Path=DataContext.Prepaymentdocumenttypes, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                SelectedValueMemberPath="{Binding Path=Paymentdocument.Prepaymentdocumenttype, Mode=TwoWay}"/>
+                <telerik:GridViewDataColumn Header="Cумма, руб." Width="Auto" DataMemberBinding="{Binding Path=Paymentdocument.Paymentsum, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True}" >
+                    <!--<telerik:GridViewColumn.Header>
+                        <Binding Path="DataContext.SumColumnTitle">
+                            <Binding.RelativeSource>
+                                <RelativeSource
+                                     Mode="FindAncestor"
+                                     AncestorType="{x:Type UserControl}"/>
+                            </Binding.RelativeSource>
+                        </Binding>
+
+                    </telerik:GridViewColumn.Header>-->
+                </telerik:GridViewDataColumn>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+
+    </Border>
+</UserControl>

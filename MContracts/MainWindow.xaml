@@ -1,0 +1,590 @@
+﻿<telerik:RadRibbonWindow x:Class="MContracts.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:MContracts.Controls"
+        xmlns:converters="clr-namespace:MContracts.Classes.Converters" 
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        xmlns:telerikRibbon="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.RibbonView"
+                         WindowState="Maximized"
+                         xmlns:viewModel="clr-namespace:MContracts.ViewModel"
+                         Initialized="MainWindowInitialized" telerik:StyleManager.Theme="Vista">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/MContracts;component/Styles/WorkspacesTabControlStyle.xaml" />
+                <ResourceDictionary>
+                    <SolidColorBrush x:Key="RedBrush" Color="Red"/>
+                    <SolidColorBrush x:Key="TransparentBrush" Color="Transparent"/>
+                    <converters:BoolToBrushConverter TrueBrush="{StaticResource TransparentBrush}" FalseBrush="{StaticResource RedBrush}" x:Key="BoolToBrushConverter"/>
+                    <converters:ContractToButtonImageConverter x:Key="ContractToButtonImageConverter"/>
+                    <converters:ContractToButtonTextConverter x:Key="ContractToButtonTextConverter"/>
+                    <converters:ContractdocConverter x:Key="ContractdocConverter" />
+                    <converters:BoolToVisibilityConverter x:Key="ConvertWorkspaceEditableToVisibility" TrueVisibility="Collapsed" FalseVisibility="Visible"></converters:BoolToVisibilityConverter>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+
+        <Grid.Resources>
+            <converters:TypeCheckConverter x:Key="HasContractHolderConverter"  IsStrict="False" DesiredType="viewModel:IContractdocRefHolder"/>
+            <converters:TypeCheckConverter x:Key="ContractDocRegistryConverter" IsStrict="False" DesiredType="viewModel:ContractRepositoryViewBasedViewModel"/>
+            <converters:NegativeBoolConverter x:Key="NonBusyConverter" />
+        </Grid.Resources>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" x:Name="RibbonRow"/>
+            <RowDefinition Height="*" x:Name="WorkspacesRow"/>
+        </Grid.RowDefinitions>
+           <telerikRibbon:RadRibbonView  Grid.Row="0" 
+                                         IsEnabled="{Binding ActiveWorkspace.IsBusy, Converter={StaticResource NonBusyConverter}}" 
+                                         VerticalAlignment="Stretch" HorizontalAlignment="Stretch" x:Name="MainRibbon" 
+                                         ApplicationName="{Binding DisplayName}" Title="{Binding ActiveWorkspace.DisplayName}" ApplicationButtonImageSource="./Resources/folder_actions_setup.ico">
+
+            <telerikRibbon:RadRibbonView.Resources>
+                <Style x:Key="AboutBlockStyle" TargetType="{x:Type TextBlock}">
+                    <Setter Property="FontSize" Value="16"></Setter>
+                    <Setter Property="FontStretch" Value="Expanded"></Setter>
+                </Style>
+                <Style x:Key="AboutBlockValueStyle" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource AboutBlockStyle}">
+                    <Setter Property="FontWeight" Value="Bold"></Setter>
+                </Style>
+            </telerikRibbon:RadRibbonView.Resources>
+            <!--Backstage-->
+            <telerikRibbon:RadRibbonView.ApplicationButtonContent>
+            	<TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0 4 0 0" />
+                
+
+            </telerikRibbon:RadRibbonView.ApplicationButtonContent>
+
+            <telerikRibbon:RadRibbonView.Backstage>
+                <telerikRibbon:RadRibbonBackstage>
+                    <telerikRibbon:RadRibbonBackstageItem Header="Настройки и утилиты">
+                      <StackPanel Margin="10" HorizontalAlignment="Left">
+                          <Expander Header="Статистика по договорам" FontSize="14" IsExpanded="True">
+                              <StackPanel Margin="10">
+                              <WrapPanel>
+                                  <WrapPanel.Resources>
+                                      <converters:NegativeBoolConverter x:Key="IsBusyConverter" />
+                                  </WrapPanel.Resources>
+                                  <Button HorizontalAlignment="Left" IsEnabled="{Binding UpdateStatisticsReady}" Width="150" Height="50" Command="{Binding UpdateStatisticsCommand}">Обновить статистику</Button>
+                                        <telerik:RadBusyIndicator Margin="5,0,0,0" BusyContent="Выполняется обновление" telerik:StyleManager.Theme="Metro" Height="50" IsIndeterminate="True" IsBusy="{Binding UpdateStatisticsReady, Converter={StaticResource IsBusyConverter}}"></telerik:RadBusyIndicator> 
+                              </WrapPanel>
+                                    <TextBlock Margin="0,10,0,0" FontSize="11" Width="320" 
+                                               TextWrapping="WrapWithOverflow">Обновление статистики включает пересчёт сумм по выполнению этапов договоров и может занять некоторое время, в зависимости от объёма данных в системе. Обычно пересчёт происходит автоматически при изменениях в данных. Если вы считаете, что суммы отображаются неправильно - воспользуйтесь этой функцией. По окончании процесса обновления потребуется перезапустить приложение.</TextBlock>
+                                  </StackPanel>
+                          </Expander>
+                            <Expander Header="Настройки" FontSize="14" IsExpanded="True">
+                                <StackPanel Margin="10">
+                                    <Button HorizontalAlignment="Left" Width="150" Height="50" Command="{Binding OpenToolsCommand}">Параметры...</Button>
+                                    <TextBlock Margin="0,10,0,0" FontSize="11" Width="320" 
+                                               TextWrapping="WrapWithOverflow">Вызывает диалог настройки параметров приложения. Все настройки сохраняются в профиле пользователя, запустившего приложение.</TextBlock>
+                                </StackPanel>
+                                <!--<StackPanel Margin="10" HorizontalAlignment="Left" x:Name="utilitesPanel" Loaded="WindowsFormsHost1_OnLoaded">
+                                    <WrapPanel Margin="0,0,0,10">
+                                    <Button Height="30" Width="130" Command="{Binding SaveSettingsCommand}">Сохранить изменения</Button>
+                                    <Button Height="30" Width="130" Margin="2,0,0,0" Command="{Binding RevertSettingsCommand}">Отменить изменения</Button>
+                                    </WrapPanel>
+                                     
+                                </StackPanel>-->
+                            </Expander>
+
+                        </StackPanel>
+                    </telerikRibbon:RadRibbonBackstageItem>
+
+
+                
+
+                    <telerikRibbon:RadRibbonBackstageItem Header="О программе">
+                        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Border VerticalAlignment="Stretch" BorderBrush="Beige" BorderThickness="2" HorizontalAlignment="Stretch">
+                                <Image Source="./Resources/Promgaz.png" VerticalAlignment="Top" Margin="10"></Image>
+                            </Border>
+                            <StackPanel Grid.Column="1" Margin="10">
+                                <TextBlock Text="{Binding DisplayName}" Style="{StaticResource AboutBlockValueStyle}"></TextBlock>
+                                <TextBlock Margin="0,5,0,0" Text="{Binding CompanyInfo, StringFormat=Лицензией на использование обладает  {0}}" Style="{StaticResource AboutBlockStyle}"/>
+                                <TextBlock Text="{Binding CopyrightInfo, StringFormat=Авторские права © {0}}" Style="{StaticResource AboutBlockStyle}"/>
+                                <TextBlock Text="{Binding CompanyInfo, StringFormat=Создано по заказу {0} }" Style="{StaticResource AboutBlockStyle}"/>
+                            </StackPanel>
+                        </Grid>
+                    </telerikRibbon:RadRibbonBackstageItem>
+                    <telerikRibbon:RadRibbonBackstageItem IsGroupSeparator="True"></telerikRibbon:RadRibbonBackstageItem>
+                    <telerikRibbon:RadRibbonBackstageItem Header="Выход">
+                        <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Перед выходом вы можете посмотреть все рабочие области, изменения в которых не сохранены." Style="{StaticResource AboutBlockValueStyle}"></TextBlock>
+                            <ListBox Grid.Row="1" ItemsSource="{Binding Workspaces}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Margin="0,5,0,5">
+                                            <Grid.Resources>
+                                                <converters:BoolToVisibilityConverter x:Key="ModifiedToVisibilityConverter" TrueVisibility="Collapsed" FalseVisibility="Visible" />
+                                            </Grid.Resources>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="200"></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding DisplayName}" Style="{StaticResource AboutBlockStyle}"></TextBlock>
+                                            <Button Grid.Column="1" Margin="2,0,0,0" Padding="4,2,4,2" Content="Сохранить" IsEnabled="{Binding IsModified}" Command="{Binding SaveCommand}"></Button>
+                                            <!--<Button Grid.Column="2" Margin="1,0,0,0" Content="Перейти" Command="{Binding ShowCommand}"></Button>-->
+                                            <Button Grid.Column="3" Margin="2,0,0,0" Padding="4,2,4,2" Content="Закрыть" Command="{Binding CloseCommand}" IsEnabled="{Binding IsClosable}" ></Button>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <WrapPanel Grid.Row="2" Margin="10">
+                                <Button Height="30" Padding="4,2,4,2" Command="{Binding SaveWorkspacesAndQuitApplicationCommand}">Сохранить изменения и выйти</Button>
+                                <Button Height="30" Padding="4,2,4,2" Command="{Binding QuitApplicationCommand}" Margin="5,0,0,0">Выйти без сохранения</Button>
+
+                            </WrapPanel>
+                        </Grid>
+
+                    </telerikRibbon:RadRibbonBackstageItem>
+                    <!--<telerikRibbon:RadRibbonBackstageItem Header="Выход"></telerikRibbon:RadRibbonBackstageItem>-->
+                </telerikRibbon:RadRibbonBackstage>
+            </telerikRibbon:RadRibbonView.Backstage>
+
+
+
+            <!--Quick Access Toolbar Items-->
+            <!--<telerikRibbon:RadRibbonView.QuickAccessToolBar>
+                <telerikRibbon:QuickAccessToolBar>
+                    <telerikRibbon:RadRibbonButton Text="Новый договор" Command="{Binding NewContractCommand}" Size="Small" SmallImage="/MContracts;component/Images/Add_16.png" telerik:KeyTipService.AccessText="1"/>
+                            </telerikRibbon:QuickAccessToolBar>
+            </telerikRibbon:RadRibbonView.QuickAccessToolBar>-->
+
+
+
+            <!--Contextual Groups-->
+            <telerikRibbon:RadRibbonView.ContextualGroups>
+                <telerikRibbon:RadRibbonContextualGroup x:Name="ContractdocTools" Color="Coral" Header="Договор" 
+                                                        IsActive="{Binding ActiveWorkspace, Converter={StaticResource HasContractHolderConverter}}" />
+                <telerikRibbon:RadRibbonContextualGroup x:Name="ContractRegTools" Color="DarkSeaGreen" Header="Реестр договоров" 
+                                                        IsActive="{Binding ActiveWorkspace, Converter={StaticResource ContractDocRegistryConverter}}" />
+            </telerikRibbon:RadRibbonView.ContextualGroups>
+
+
+
+            <telerikRibbon:RadRibbonTab Header="Основные"  x:Name="MainTab">
+                <telerikRibbon:RadRibbonGroup Header="Реестры" telerikRibbon:ScreenTip.Title="Получите доступ ко всем реестрам">
+                    <telerikRibbon:RadRibbonButton Text="Договора"  Command="{Binding ShowContractRepositoryCommand}" LargeImage="/MContracts;component/Images/Document_Text.png" Size="Large"   />
+                    <telerikRibbon:RadRibbonButton Text="Акты"  Command="{Binding ShowActRepositoryCommand}" LargeImage="/MContracts;component/Images/Document_Text.png" Size="Large"   />
+                    <telerikRibbon:RadRibbonButton Text="Передача договоров"  Command="{Binding ShowContractTransferRepositoryCommand}" LargeImage="/MContracts;component/Images/Document_Text.png" Size="Large"   />
+                    <!--<telerikRibbon:RadRibbonButton Text="Передача актов"  Command="{Binding ShowContractRepositoryCommand}" LargeImage="/MContracts;component/Images/Document_Text.png" Size="Large"   />-->
+                    <telerikRibbon:RadRibbonButton Text="Распоряжения" Command="{Binding ShowDisposalsRepositoryCommand}" LargeImage="/MContracts;component/Images/Document_Text.png" Size="Large" />
+                    <telerikRibbon:RadRibbonButton Text="Приказы" Command="{Binding ShowOrdersRepositoryCommand}" LargeImage="/MContracts;component/Images/Document_Text.png" Size="Large" />
+
+                </telerikRibbon:RadRibbonGroup>
+            </telerikRibbon:RadRibbonTab>
+
+            <!--Contracts management-->
+            <telerikRibbon:RadRibbonTab Header="Реестр договоров"  x:Name="ContractTabItem" ContextualGroupName="ContractRegTools" telerik:KeyTipService.AccessText="Р">
+                <telerikRibbon:RadRibbonGroup Header="Основные" telerikRibbon:ScreenTip.Title="Основные операции над договорами" telerik:KeyTipService.AccessText="FO">
+                    <telerikRibbon:RadRibbonButton  Command="{Binding NewContractCommand}" Size="Large" Text="Новый договор" LargeImage="/MContracts;component/Resources/window_new.png"  />
+                    <telerikRibbon:RadRibbonButton Text="Новое ДС" Size="Large" LargeImage="/MContracts;component/Resources/view_right.png" Command="{Binding NewAgreementCommand}" />
+                    <telerikRibbon:RadRibbonButton Text="Новый СД" Size="Large" LargeImage="/MContracts;component/Resources/view_bottom.png" Command="{Binding NewSubgeneralCommand}" />
+                    <!--<telerikRibbon:RadRibbonButton Text="Редактор связей" Size="Large" Command="{Binding ShowRelationsEditorCommand}" LargeImage="/MContracts;component/Resources/hyperlink_blue.png" />-->
+                </telerikRibbon:RadRibbonGroup>
+
+                <telerikRibbon:RadRibbonGroup Header="Фильтр договоров">
+                    <controls:FilterContracts HorizontalAlignment="Stretch"  x:Name="filterContracts1" VerticalAlignment="Top"/>
+                </telerikRibbon:RadRibbonGroup>
+
+               
+
+            </telerikRibbon:RadRibbonTab>
+
+            <telerikRibbon:RadRibbonTab Header="{Binding ActiveWorkspace.ContractCaption}" x:Name="SelectedContractTabItem" ContextualGroupName="ContractdocTools" >
+
+                <telerikRibbon:RadRibbonGroup  Visibility="{Binding ActiveWorkspace.IsUnchangable, Converter={StaticResource ConvertWorkspaceEditableToVisibility}}">
+                    <Border CornerRadius="2" BorderBrush="{Binding Error, Converter={StaticResource BoolToBrushConverter}}" BorderThickness="2" ToolTip="{Binding Error}">
+                        <telerikRibbon:RadRibbonButton ToolTip="Сохранить"
+                                                       LargeImage="/MContracts;component/Resources/stock_save.png" Command="{Binding SaveActiveWorkspaceCommand}" Text="Сохранить" Margin="1" Size="Large"   />
+                    </Border>
+                </telerikRibbon:RadRibbonGroup>
+
+                <telerikRibbon:RadRibbonGroup>
+
+
+                    <Border>
+                        <telerikRibbon:RadRibbonButton Command="{Binding OpenContractCommand}" Text="Открыть" Size="Large" LargeImage="/MContracts;component/Resources/open.png"  />
+                    </Border>
+                    <Border>
+                        <telerikRibbon:RadRibbonButton Command="{Binding DeleteOrCancelContractCommand}" Text="{Binding SelectedContract, Converter={StaticResource ContractToButtonTextConverter}}" LargeImage="{Binding SelectedContract, Converter={StaticResource ContractToButtonImageConverter}}" x:Name="DeleteOrCancelButton"  Size="Large" />
+                    </Border>
+
+                    <Border>
+                        <telerikRibbon:RadRibbonButton ToolTip="Открыть редактор календарного плана договора" LargeImage="/MContracts;component/Images/config_date.png" Command="{Binding OpenContractScheduleCommand}" Text="Календарный план" Margin="1"  Size="Large"/>
+                    </Border>
+                    <Border>
+                        <telerikRibbon:RadRibbonButton ToolTip="Открыть редактор результатов" LargeImage="/MContracts;component/Resources/money_safe1.png" Command="{Binding OpenScheduleResultsCommand}" Text="Результаты по этапам" Margin="1"  Size="Large"/>
+                    </Border>
+                    <Border>
+                        <telerikRibbon:RadRibbonButton ToolTip="Открыть реестр актов договора" LargeImage="/MContracts;component/Images/text_editor.png" Command="{Binding OpenContractActsCommand}" Text="Акты" Margin="1"  Size="Large"/>
+                    </Border>
+                    <!--<Border>
+                    <telerikRibbon:RadRibbonButton Text="Новое ДС" Size="Large" LargeImage="/MContracts;component/Resources/view_right.png" Command="{Binding NewAgreementCommand}" />
+                   </Border>
+                    <Border>
+                        <telerikRibbon:RadRibbonButton Text="Новый СД" Size="Large" LargeImage="/MContracts;component/Resources/view_bottom.png" Command="{Binding NewSubgeneralCommand}" />
+                    </Border>-->
+
+                    <!--<Border>
+                        <telerikRibbon:RadRibbonDropDownButton Text="Акты приемки-передачи" >
+                            <telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                                <telerik:RadContextMenu BorderThickness="0">
+                                    <telerik:RadMenuItem Header="Приёмки и передачи актов к договорам"  Command="{Binding CreateTransferContractsReport_8_2_Command}"/>
+                                    <telerik:RadMenuItem Header="Приёмки и передачи договоров" Command="{Binding CreateTransferActsContractsReport_8_1_Command}"/>
+                                </telerik:RadContextMenu>
+                            </telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                        </telerikRibbon:RadRibbonDropDownButton>
+                    </Border>-->
+                </telerikRibbon:RadRibbonGroup>
+            </telerikRibbon:RadRibbonTab>
+
+            <telerikRibbon:RadRibbonTab Header="Отчетность" >
+                <telerikRibbon:RadRibbonGroup Header="">
+                    <telerikRibbon:RadRibbonDropDownButton Text="Текущий тематический план" Size="Large" >
+                        <telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                            <telerik:RadContextMenu BorderThickness="0">
+                                <telerik:RadMenuItem  Header="Год" Command="{Binding YearTemplanCommand}"/>
+                                <telerik:RadMenuItem  Header="Квартал" Command="{Binding QuarterTemplanCommand}"/>
+                            </telerik:RadContextMenu>
+                        </telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                    </telerikRibbon:RadRibbonDropDownButton>
+
+                    <telerikRibbon:RadRibbonDropDownButton Text="Текущая справка" Size="Large" >
+                        <telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                            <telerik:RadContextMenu BorderThickness="0">
+                                <telerik:RadMenuItem  Header="По договорам" Command="{Binding CreateInformationReportCommand}"/>
+                                <telerik:RadMenuItem  Header="По договорам на переходный период" Command="{Binding CreateExcelContractsPeriodReportCommand}" />
+                                <telerik:RadMenuItem  Header="О сдаче работ" Command ="{Binding CreateExcelHandingWorkReportCommand}"/>
+                                <telerik:RadMenuItem  Header="По договорам с соисполнителями" Command="{Binding CreateExcelSubContractReportCommand}"/>
+                                <telerik:RadMenuItem  Header="О ходе подписания договоров" Command = "{Binding CreateWorkPorgressReportCommand}" />
+                            </telerik:RadContextMenu>
+                        </telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                    </telerikRibbon:RadRibbonDropDownButton>
+
+               
+
+
+
+
+                    <telerikRibbon:RadRibbonDropDownButton Text="Оперативные сведения о выполнении работ" Size="Large" >
+                        <telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                            <telerik:RadContextMenu BorderThickness="0">
+                                <telerik:RadMenuItem  Header="Год" Command="{Binding CreateYearExcelEfficientInformationReportCommand}"/>
+                                <telerik:RadMenuItem  Header="Месяц" Command="{Binding CreateMonthExcelEfficientInformationReport}"/>
+                                <telerik:RadMenuItem  Header="Квартал"/>
+                                <telerik:RadMenuItem  Header="Полугодие"/>
+                            </telerik:RadContextMenu>
+                        </telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                    </telerikRibbon:RadRibbonDropDownButton>
+
+                    <telerikRibbon:RadRibbonDropDownButton Text="Реестр действующих догворов" Size="Large" >
+                        <telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                            <telerik:RadContextMenu BorderThickness="0">
+                                <telerik:RadMenuItem  Header="Год" Command="{Binding ContractInActionRegisterReportCommand}"/>
+
+                                <!--<telerik:RadMenuItem  Header="Квартал" Command="{Binding ContractInActionRegisterReportForQuarterCommand}"/> -->
+                            </telerik:RadContextMenu>
+                        </telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                    </telerikRibbon:RadRibbonDropDownButton>
+
+                    <!-- <telerikRibbon:RadRibbonDropDownButton Text="Другие" Size="Large" Height="0" VerticalAlignment="Top" >
+                        <telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                            <telerik:RadContextMenu BorderThickness="0">
+                                <telerik:RadMenuItem  Header="О заключенных договорах" Command="{Binding CreateContractInformationReportCommand}"/>
+                            </telerik:RadContextMenu>
+                        </telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                    </telerikRibbon:RadRibbonDropDownButton>-->
+
+                    <telerikRibbon:RadRibbonDropDownButton Text="Справки по НИОКР" Size="Large" >
+                        <telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                            <telerik:RadContextMenu BorderThickness="0">
+                                <telerik:RadMenuItem  Header="НТР-У" Command="{Binding NIOKRNTRUImplementationReportCommand}"/>
+                                <telerik:RadMenuItem  Header="Экономический эффект" Command="{Binding EconEffectReportCommand}"/>
+                                <telerik:RadMenuItem  Header="НИОКР по приоритетным проблемам" Command="{Binding NIOKRTroubleReportCommand}"/>
+                            </telerik:RadContextMenu>
+                        </telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                    </telerikRibbon:RadRibbonDropDownButton>
+
+                    <telerikRibbon:RadRibbonDropDownButton Text="Информация о договорах">
+                        <telerikRibbon:RadRibbonDropDownButton.DropDownContent >
+                            <telerik:RadContextMenu BorderThickness="0">
+                                <telerik:RadMenuItem Header="О заключенных договорах" Command="{Binding CreateContractInformationReportCommand}" />
+                            </telerik:RadContextMenu>
+                        </telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                    </telerikRibbon:RadRibbonDropDownButton>
+
+                </telerikRibbon:RadRibbonGroup>
+            </telerikRibbon:RadRibbonTab>
+
+            <!---Справочники-->
+            <telerikRibbon:RadRibbonTab Header="Справочники" x:Name="CatalogTabItem">
+                <telerikRibbon:RadRibbonGroup Header="Действия">
+                    <telerikRibbon:RadRibbonButton ToolTip="Сохранить изменения" Command="{Binding SaveActiveWorkspaceCommand}" LargeImage="/MContracts;component/Resources/stock_save.png" Text="Сохранить" Size="Large" />
+                </telerikRibbon:RadRibbonGroup>
+                <telerikRibbon:RadRibbonGroup Header="">
+
+                    <telerikRibbon:RadRibbonDropDownButton Text="Контрагенты" LargeImage="/MContracts;component/Resources/stock_people.png" Size="Large">
+                        <telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                            <telerik:RadContextMenu BorderThickness="0">
+                                <telerik:RadMenuItem   Header="Контрагенты" Command="{Binding ContractorsShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/bank.png" Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+
+                                <telerik:RadMenuItem   Header="Типы контрагентов" Command="{Binding ContractortypesShowCommand}"/>
+
+                                <telerik:RadMenuItem   Header="Должности"  Command="{Binding PositionsShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/frontrow.png" Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+
+                                <telerik:RadMenuItem   Header="Должности контрагентов"  Command="{Binding ContractorpositionsShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/frontrow_person.png" Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+
+                                <telerik:RadMenuItem   Header="Свойства" Command="{Binding PropertiesShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/Properties.png" Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+                                <telerik:RadMenuItem   Header="Свойства контрагентов" Command="{Binding ContractorpropertiesShowCommand}"/>
+                                <telerik:RadMenuItem   Header="Персоны"  Command="{Binding PersonsShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/persons.png" Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+
+                                <telerik:RadMenuItem   Header="Ученые степени"   Command="{Binding DegreesShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/Degree.png" Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+
+                                <telerik:RadMenuItem   Header="Функциональные заказчики"  Command="{Binding FunctionalcustomersShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/User group.png" Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+
+                                <telerik:RadMenuItem   Header="Типы функциональных заказчиков"  Command="{Binding FunctionalcustomertypesShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/Types.png" Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+
+                                <telerik:RadMenuItem   Header="Представители функциональных заказчиков" Command="{Binding FunccustomerpersonsShowCommand}"/>
+                                <telerik:RadMenuItem   Header="Схемы визирования функционального заказчика" Command="{Binding SightfuncpersonschemesShowCommand}" Visibility="Hidden">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/OrgChartHS.png"  Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+                                <telerik:RadMenuItem   Header="Основания" Command="{Binding AuthoritiesShowCommand}" Visibility="Hidden">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/x-office-document.png"   Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+                            </telerik:RadContextMenu>
+                        </telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+
+                    </telerikRibbon:RadRibbonDropDownButton>
+
+                    <telerikRibbon:RadRibbonDropDownButton Text="Документы" LargeImage="/MContracts;component/Images/New_document.bmp" Size="Large">
+                        <telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                            <telerik:RadContextMenu BorderThickness="0">
+                                <telerik:RadMenuItem   Header="Документы"  Command="{Binding DocumentsShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/Images\New_document.bmp"   Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+                                <telerik:RadMenuItem   Header="Типы актов приемки-передачи" Command="{Binding TransferacttypesShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/Types.png"    Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+
+                                <telerik:RadMenuItem   Header="Типы актов приемки-передачи для документов" Command="{Binding TransferacttypedocumentsShowCommand}"/>
+
+                                <telerik:RadMenuItem   Header="Типы актов сдачи-приёмки"  Command="{Binding ActtypesShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/emblem-documents.png"    Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+
+                                <telerik:RadMenuItem   Header="Типы платежных документов" Command="{Binding PrepaymentdocumenttypesShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/Prepaimentdocuments.png"    Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+                            </telerik:RadContextMenu>
+                        </telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                    </telerikRibbon:RadRibbonDropDownButton>
+
+
+
+                    <telerikRibbon:RadRibbonDropDownButton Text="Проблемы" LargeImage="/MContracts;component/Resources/Trouble.png" Size="Large">
+                        <telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                            <telerik:RadContextMenu BorderThickness="0">
+                                <telerik:RadMenuItem Header="Проблемы"   Command="{Binding TroublesShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/Trouble.png" Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+                                <telerik:RadMenuItem Header="Перечни проблем" Command="{Binding TroublesregistresShowCommand}" />
+                            </telerik:RadContextMenu>
+                        </telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+
+                    </telerikRibbon:RadRibbonDropDownButton>
+
+
+
+                    <telerikRibbon:RadRibbonDropDownButton Text="Промгаз" LargeImage="/MContracts;component/Resources/gaz_sotr.png" Size="Large">
+                        <telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                            <telerik:RadContextMenu BorderThickness="0">
+                                <telerik:RadMenuItem Header="Отделы" Command="{Binding DepartmentsShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/gaz_sotr.png" Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+                                <telerik:RadMenuItem Header="Сотрудники" Command="{Binding EmployeesShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/gaz_sotr.png" Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+
+                                <telerik:RadMenuItem Header="Роли" Command="{Binding RolesShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/loginmanager.png" Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+                            </telerik:RadContextMenu>
+                        </telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+
+                    </telerikRibbon:RadRibbonDropDownButton>
+
+                    <telerikRibbon:RadRibbonDropDownButton  Text="НДС" LargeImage="/MContracts;component/Resources/NDS.png" Size="Large">
+                        <telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                            <telerik:RadContextMenu BorderThickness="0">
+                                <telerik:RadMenuItem   Header="НДС"  Command="{Binding NdsesShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/NDS.png" Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+                                <telerik:RadMenuItem   Header="Алгоритмы вычисления НДС"  Command="{Binding NdsalgorithmesShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/edu_mathematics.png" Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+                                </telerik:RadMenuItem>
+                            </telerik:RadContextMenu>
+                        </telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+
+                    </telerikRibbon:RadRibbonDropDownButton>
+
+                    <telerikRibbon:RadRibbonDropDownButton  Text="Экономическая эффективность" LargeImage="/MContracts;component/Resources/money_calculator.png" Size="Large">
+                        <telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                            <telerik:RadContextMenu BorderThickness="0">
+                                <telerik:RadMenuItem   Header="Типы экономической эффективности" Command="{Binding EconomefficiencytypesShowCommand}">
+                                    <telerik:RadMenuItem.Icon>
+                                        <Image Source="/MContracts;component/Resources/table-money.png"  Stretch="Uniform" />
+                                    </telerik:RadMenuItem.Icon>
+
+                                </telerik:RadMenuItem>
+                                <telerik:RadMenuItem   Header="Параметры экономической эффективности" Command="{Binding EconomefficiencyparametersShowCommand}"/>
+
+                                <telerik:RadMenuItem   Header="Параметры типов экономической эффективности" Command="{Binding EfficienceparameterTypesShowCommand}"/>
+                            </telerik:RadContextMenu>
+                        </telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+
+                    </telerikRibbon:RadRibbonDropDownButton>
+
+                    <telerikRibbon:RadRibbonDropDownButton  Text="НТП" LargeImage="/MContracts;component/Resources/agt_update_critical.png" Size="Large">
+                        <telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                            <telerik:RadContextMenu BorderThickness="0">
+                                <telerik:RadMenuItem  Header="Виды НТП" Command="{Binding NtpviewsShowCommand}"/>
+                                <telerik:RadMenuItem  Header="Подвиды НТП" Command="{Binding NtpsubviewsShowCommand}"/>
+                            </telerik:RadContextMenu>
+                        </telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+
+                    </telerikRibbon:RadRibbonDropDownButton>
+
+                    <telerikRibbon:RadRibbonDropDownButton  Text="Согласование" LargeImage="/MContracts;component/Resources/agreement_dicts.png" Size="Large">
+                        <telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                            <telerik:RadContextMenu BorderThickness="0">
+                                <telerik:RadMenuItem  Header="Места нахождения" Command="{Binding LocationsShowCommand}"/>
+                                <telerik:RadMenuItem  Header="Типы писем" Command="{Binding MissiveTypesShowCommand}"/>
+                                <telerik:RadMenuItem  Header="Цели направления на согласование" Command="{Binding ApprovalGoalsShowCommand}"/>
+                                <telerik:RadMenuItem  Header="Состояния согласования" Command="{Binding ApprovalStatesShowCommand}"/>
+                            </telerik:RadContextMenu>
+                        </telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+
+                    </telerikRibbon:RadRibbonDropDownButton>
+
+                    <telerikRibbon:RadRibbonDropDownButton  Text="Отчетность" LargeImage="/MContracts;component/Resources/emblem-documents.png" Size="Large">
+                        <telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+                            <telerik:RadContextMenu BorderThickness="0">
+                                <telerik:RadMenuItem  Header="Цвета для тематического плана на год" Command="{Binding YearreportcolorsShowCommand}"/>
+                            </telerik:RadContextMenu>
+                        </telerikRibbon:RadRibbonDropDownButton.DropDownContent>
+
+                    </telerikRibbon:RadRibbonDropDownButton>
+
+                    <telerikRibbon:RadRibbonButton   Text="Регионы" LargeImage="/MContracts;component/Resources/keyboard_layout.png" Command="{Binding RegionsShowCommand}" Size="Large" />
+                    <telerikRibbon:RadRibbonButton   Text="Состояния договоров" LargeImage="/MContracts;component/Resources/States.png" Command="{Binding ContractStatesShowCommand}" Size="Large" />
+                    <telerikRibbon:RadRibbonButton   Text="Типы договоров" LargeImage="/MContracts;component/Resources/condition_catalog.png" Command="{Binding ContractTypesShowCommand}" Size="Large" />
+                    <telerikRibbon:RadRibbonButton   Text="Валюты" LargeImage="/MContracts;component/Resources/bmicon.png" Command="{Binding CurrenciesShowCommand}" Size="Large" />
+                    <telerikRibbon:RadRibbonButton   Text="Единицы измерения" LargeImage="/MContracts;component/Resources/stock_draw-dimension-line.png" Command="{Binding CurrencymeasuresShowCommand}" Size="Large" />
+                    <telerikRibbon:RadRibbonButton   Text="Виды работ" LargeImage="/MContracts;component/Resources/emblem-work.png"  Command="{Binding WorktypesShowCommand}" Size="Large" />
+                    <telerikRibbon:RadRibbonButton   Text=" "  Command="{Binding SaveLogFileCommand}" Size="Large" />
+                </telerikRibbon:RadRibbonGroup>
+            </telerikRibbon:RadRibbonTab>
+
+            <!---Отчетность-->
+
+            <!--<telerikRibbon:RadRibbonTab Header="Сервис">
+                <telerikRibbon:RadRibbonGroup Header="Настройка">
+                    <telerikRibbon:RadRibbonButton ToolTip="Настройка" Command="{Binding OpenToolsCommand}" Text="Настройка" Size="Large"  />
+                    <telerik:RadRibbonDropDownButton Text="Утилиты">
+                        <telerik:RadRibbonDropDownButton.DropDownContent>
+                            <telerik:RadContextMenu BorderThickness="0">
+                                <telerik:RadMenuItem  Header="Обновить статистику..." Command="{Binding UpdateStatisticsCommand}"/>
+                            </telerik:RadContextMenu>
+                        </telerik:RadRibbonDropDownButton.DropDownContent>
+                    </telerik:RadRibbonDropDownButton>
+                </telerikRibbon:RadRibbonGroup>
+
+            </telerikRibbon:RadRibbonTab>-->
+
+     
+        </telerikRibbon:RadRibbonView>
+        
+        <telerik:RadBusyIndicator Grid.Row="1" BusyContent="{Binding ActiveWorkspace.BusyContent}" IsBusy="{Binding ActiveWorkspace.IsBusy}"
+				IsIndeterminate="True">
+
+            <Border Grid.Row="1">
+             <TabControl ItemsSource="{Binding Workspaces}"  x:Name="Workspaces" />
+         
+        </Border>
+        </telerik:RadBusyIndicator>
+    </Grid>
+
+</telerik:RadRibbonWindow>

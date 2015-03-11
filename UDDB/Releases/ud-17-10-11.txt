@@ -1,0 +1,16 @@
+alter table PREPAYMENT rename column "Percent" to "PercentValue";
+alter table department drop column ResponsibleID;
+alter table DEPARTMENT modify managerid null;
+alter table DEPARTMENT modify directedbyid null;
+
+DROP TABLE ResponsibleForOrder CASCADE CONSTRAINTS;
+CREATE TABLE ResponsibleForOrder (
+  ID           number(10) NOT NULL, 
+  DepartmentID number(10) NOT NULL, 
+  EmployeeID   number(10) NOT NULL, 
+  PRIMARY KEY (ID));
+COMMENT ON TABLE ResponsibleForOrder IS 'Ответственный по приказу';
+
+ALTER TABLE ResponsibleForOrder ADD CONSTRAINT DepartmentResponsibleOrder_FK FOREIGN KEY (DepartmentID) REFERENCES Department (ID);
+ALTER TABLE ResponsibleForOrder ADD CONSTRAINT EmployeeResponsibleOrder_FK FOREIGN KEY (EmployeeID) REFERENCES Employee (ID);
+create sequence seq_ResponsibleForOrder;

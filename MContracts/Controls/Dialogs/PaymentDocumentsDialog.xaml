@@ -1,0 +1,19 @@
+﻿<Window x:Class="MContracts.Controls.Dialogs.PaymentDocumentsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:View="clr-namespace:MContracts.View"
+        Title="PaymentDocumentsDialog" Height="300" Width="300">
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5">
+        <Grid.RowDefinitions>
+                
+        	<RowDefinition Height="0.159*"/>
+        	<RowDefinition Height="*"/>
+        	<RowDefinition Height="0.143*"/>
+                
+        </Grid.RowDefinitions>
+    	<View:PaymentsView  x:Name="PaymentsViewCtrl"  Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
+    <StackPanel Height="30" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5" >
+    	<Button Width="100" IsDefault="True" Click="Button_Click">OK</Button>   
+	<Button Width="100" IsCancel="True" Margin="0,0,10,0">Отмена</Button>
+	</StackPanel>
+    </Grid>
+</Window>

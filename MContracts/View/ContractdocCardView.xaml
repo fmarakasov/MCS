@@ -1,0 +1,384 @@
+﻿<UserControl x:Class="MContracts.View.ContractdocCardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:View="clr-namespace:MContracts.View"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:MContracts.Classes.Converters" 
+             xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:classes="clr-namespace:MContracts.Classes"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" mc:Ignorable="d" 
+             d:DesignHeight="980" d:DesignWidth="956">
+
+    <UserControl.Resources>
+        <converters:ContractConditionConverter x:Key="ContractConditionConverter" />
+        <converters:PersonConverter x:Key="ContractPersonConverter" />
+        <converters:DateTimeToDateConverter x:Key="DateTimeToDateConverter" />
+        <!--<converters:ContractdocConverter x:Key="ContractdocConverterExtractName" />-->
+        <converters:ValidToColorConverter x:Key="DocValidToColorConverter"  ValidBrush="Green" NotValidBrush="Red" DefaultBrush="{x:Null}"/>
+        <converters:ValidToColorConverter x:Key="DocActiveToColorConverter"  ValidBrush="Green" NotValidBrush="Black" DefaultBrush="OrangeRed"/>
+        <converters:BoolToDoubleConverter x:Key="BoolToOpacityConverter" TrueValue="1" FalseValue="0.5" DefaultValue="1"/>
+        <converters:BooleanToStringConverter x:Key="BooleanToActiveStringConverter" TrueMessage="Действующий"  FalseMessage="Завершён" DefaultMessage="Не задано"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterCollapsed" TrueVisibility="Visible" FalseVisibility="Collapsed" />
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterHide" TrueVisibility="Visible" FalseVisibility="Hidden"/>
+
+
+        <Style TargetType="DatePicker">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value >
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock DockPanel.Dock="Right" Foreground="Red" FontSize="18" FontWeight="Bold" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">*</TextBlock>
+                            <Border BorderBrush="GreenYellow" BorderThickness="1">
+                                <AdornedElementPlaceholder x:Name="adornedPlaceHolder"></AdornedElementPlaceholder>
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style TargetType="Button" x:Key="ActionButtonStyle">
+            <Setter Property="Margin" Value="1"/>
+            <Setter Property="Width" Value="18"/>
+            <Setter Property="Height" Value="18"/>
+        </Style>
+
+
+
+
+
+        <Style TargetType="Control">
+            <Setter Property="FontSize" Value="14"></Setter>
+
+        </Style>
+
+        <Style TargetType="GroupBox">
+            <Setter Property="Foreground" Value="Green"></Setter>
+            <Setter Property="Padding" Value="2"></Setter>
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="FontWeight" Value="Medium"></Setter>
+            <Setter Property="Foreground" Value="Black"></Setter>
+        </Style>
+
+
+        <DataTemplate x:Key="titleText">
+            <TextBlock Text="{Binding}" 
+             Foreground="Green" 
+             FontSize="16" 
+             FontWeight="Normal"
+             FontStyle="Italic" 
+             TextWrapping="Wrap"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="contentText">
+            <TextBlock Text="{Binding}"
+             Foreground="Brown"
+             FontSize="12"
+             FontWeight="Normal"
+             FontFamily="Arial Narrow" 
+             TextWrapping="Wrap"/>
+        </DataTemplate>
+
+
+        <DataTemplate x:Key="ContractorItemTemplate">
+            <!--<Border Margin="5" BorderThickness="1" BorderBrush="SteelBlue" CornerRadius="2"  >-->
+            <StackPanel>
+                <WrapPanel>
+                    <Label FontWeight="Bold" Content="{Binding Path=Name}"></Label>
+                    <Label Margin="10,0,0,0" FontWeight="Thin" Content="{Binding Path=Contractortype}"></Label>
+                </WrapPanel>
+                <!--<Label Margin="5,10,0,0" Content="{Binding Path=Address}"></Label>
+                <Label Margin="5,10,0,0" Content="{Binding Path=Banking}"></Label>-->
+            </StackPanel>
+            <!--</Border>-->
+        </DataTemplate>
+
+
+        <converters:RemoveExtraSpaceConverter x:Key="RemoveExtraSpaceConverter1" />
+        <converters:EnumDescriptionConverter x:Key="PrepaymentCalcTypeConverter1" />
+    </UserControl.Resources>
+    <Expander IsExpanded="{Binding IsMaximized, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" x:Name="CardContract" Background="{StaticResource Expander-Background-Contract-Brush}" Foreground="DarkBlue" FontWeight="Bold">
+        <Expander.Content>
+
+            <Border BorderBrush="Black" BorderThickness="2" CornerRadius="5" Margin="3" Padding="2" Background="{StaticResource Expander-Background-Brush}">
+                <StackPanel>
+                    <DockPanel Margin="0,5,5,0" HorizontalAlignment="Stretch">
+                        <DockPanel.Resources>
+                            <Style TargetType="CheckBox">
+                                <Style.Triggers>
+                                    <Trigger Property="CheckBox.IsChecked" Value="True">
+                                        <Setter Property="Control.Foreground" Value="Green"></Setter>
+                                        <Setter Property="CheckBox.ToolTip" Value="Состояние договора: активный"></Setter>
+                                    </Trigger>
+                                    <Trigger Property="CheckBox.IsChecked" Value="False">
+                                        <Setter Property="Control.Foreground" Value="Black"></Setter>
+                                        <Setter Property="CheckBox.ToolTip" Value="Состояние договора: завершён"></Setter>
+                                    </Trigger>
+                                    <Trigger Property="CheckBox.IsChecked" Value="{x:Null}">
+                                        <Setter Property="Control.Foreground" Value="Gold"></Setter>
+                                        <Setter Property="CheckBox.ToolTip" Value="Состояние договора: не указано"></Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DockPanel.Resources>
+
+                        <Label DockPanel.Dock="Left" VerticalAlignment="Center">Предмет договора</Label>
+                        <!--<ComboBox ToolTip="Состояние работ по договору"  DockPanel.Dock="Right" HorizontalAlignment="Right" Width="150" VerticalAlignment="Center" Text="{Binding Converter={StaticResource BooleanToActiveStringConverter}, Path=Active}"
+                                              SelectedItem="{Binding Converter={StaticResource BooleanToActiveStringConverter}, Path=Active}" BorderBrush="{Binding Active, Converter={StaticResource ResourceKey=DocActiveToColorConverter}}" Visibility="Hidden">
+
+
+                            <System:String>Действующий</System:String>
+                            <System:String>Завершён</System:String>
+
+
+                        </ComboBox>-->
+                    </DockPanel>
+
+                    <TextBox Margin="5,0,5,0"  TextWrapping="WrapWithOverflow" Text="{Binding Path=Subject, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RemoveExtraSpaceConverter1}}" FontSize="14">
+                    </TextBox>
+
+                    <DockPanel LastChildFill="True">
+                        <GroupBox Header="Номер и тип договора" Margin="0,10,0,0" DockPanel.Dock="Left">
+                            <StackPanel>
+                                <Label >Номер договора</Label>
+                                <TextBox Text="{Binding Path=Internalnum, ValidatesOnDataErrors=True, Converter={StaticResource RemoveExtraSpaceConverter1}}" FontWeight="Bold" Margin="0,0,10,0"></TextBox>
+                                <Label Visibility="Collapsed">Номер, присвоенный исполнителем</Label>
+                                <TextBox Text="{Binding Path=Contractornum, Converter={StaticResource RemoveExtraSpaceConverter1}, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,10,0" Visibility="Collapsed"></TextBox>
+                                <Label>Тип договора</Label>
+                                <ComboBox ItemsSource="{Binding Path=Contracttypes}" SelectedItem="{Binding Path=Contracttype, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,10,0"></ComboBox>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Даты и состояние договора" Margin="0,10,0,0">
+
+                            <Grid Margin="0,10,0,0">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="3"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="3"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="3"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="3"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+
+                                <Label Grid.Column="0" Grid.Row="0">Дата начала работ</Label>
+                                <DatePicker Grid.Column="1" Grid.Row="0" SelectedDate="{Binding Path=Startat, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" ></DatePicker>
+                                <Label Grid.Column="0" Grid.Row="2">Дата окончания работ</Label>
+                                <Label Grid.Column="0" Grid.Row="3" Grid.RowSpan="2" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="10">Открытая дата</Label>
+
+                                <StackPanel  Grid.Column="1" Grid.Row="2" Grid.RowSpan="3">
+                                    <StackPanel Orientation="Horizontal">
+                                        <DatePicker SelectedDate="{Binding Path=ContractObject.Endsat, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Width="112.513" ></DatePicker>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                                        <TextBox Text="{Binding ContractObject.Delta, StringFormat=N0, ConverterCulture=ru-ru, TargetNullValue={x:Static System:String.Empty}}"  Width="72.513"></TextBox>
+                                        <Label Content="дней" Margin="3,0,0,0" VerticalAlignment="Stretch"/>
+                                    </StackPanel>
+                                    <TextBox ToolTip="Укажите комментарий к открытой дате договора" Margin="0,3,0,0" Text="{Binding ContractObject.Deltacomment}" MaxWidth="200"
+									IsEnabled="{Binding ContractObject.Endsat}" TextWrapping="WrapWithOverflow"/>
+                                </StackPanel>
+                                <CheckBox Margin="5,0,0,0" Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Content="Охраноспособность" IsChecked="{Binding Path=Protectability}" VerticalAlignment="Center"></CheckBox>
+                                <telerik:RadDropDownButton x:Name="bAddDisposal" Content="Распоряжение"  Margin="5,0,0,0" Grid.Row="8" >
+                                    <telerik:RadDropDownButton.DropDownContent>
+                                        <telerik:RadMenu FlowDirection="LeftToRight">
+                                            <telerik:RadMenuItem Header="Добавить"  Command="{Binding Path=AddDisposalCommand}"/>
+                                            <telerik:RadMenuItem Header="Редактировать" Command="{Binding Path=EditDisposalCommand}"/>
+                                            <telerik:RadMenuItem Header="Удалить" Command="{Binding Path=DeleteDisposalCommand}" />
+                                        </telerik:RadMenu>
+                                    </telerik:RadDropDownButton.DropDownContent>
+                                </telerik:RadDropDownButton>
+                                <Label Content="{Binding Path=DisposalName, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="8"  Grid.Column="1" Grid.ColumnSpan="2"/>
+                                <Grid Grid.Column="2" Margin="5, 0, 0, 0" Grid.Row="0" Grid.RowSpan="6" x:Name="StateGrid">
+
+                                    <Grid.Resources>
+                                        <Style TargetType="ComboBox">
+                                            <Style.Triggers>
+                                                <Trigger Property="Validation.HasError" Value="True">
+                                                    <Setter Property="ToolTip">
+                                                        <Setter.Value>
+                                                            <Binding Path="(Validation.Errors).CurrentItem.ErrorContent" RelativeSource="{x:Static RelativeSource.Self}" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                            <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
+                                        </Style>
+                                        <Style TargetType="DatePicker">
+                                            <Style.Triggers>
+                                                <Trigger Property="Validation.HasError" Value="True">
+                                                    <Setter Property="ToolTip">
+                                                        <Setter.Value>
+                                                            <Binding Path="(Validation.Errors).CurrentItem.ErrorContent" RelativeSource="{x:Static RelativeSource.Self}" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                            <Setter Property="Validation.ErrorTemplate" Value="{x:Null}"/>
+                                        </Style>
+                                    </Grid.Resources>
+
+                                    <Grid.BindingGroup>
+                                        <BindingGroup>
+                                            <BindingGroup.ValidationRules>
+                                                <classes:ContractdocValidationRule ValidationStep="UpdatedValue" ValidatesOnTargetUpdated="True"/>
+                                            </BindingGroup.ValidationRules>
+                                        </BindingGroup>
+                                    </Grid.BindingGroup>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="138"/>
+                                        <ColumnDefinition Width="124"/>
+                                        <ColumnDefinition Width="158"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="0*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="3"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="3"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="3"></RowDefinition>
+                                        <RowDefinition Height="16*" />
+                                    </Grid.RowDefinitions>
+
+                                    <Label Margin="5,0,0,0">Дата применения</Label>
+                                    <DatePicker Grid.Column="1" SelectedDateChanged="OnCommitBindingGroup" SelectedDate="{Binding Path=Appliedat, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,5,0"></DatePicker>
+
+                                    <Label Grid.Row="2" Margin="5,0,0,0">Дата утверждения</Label>
+                                    <DatePicker Grid.Column="1" Grid.Row="2" SelectedDateChanged="OnCommitBindingGroup" SelectedDate="{Binding Path=Approvedat, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,5,0"></DatePicker>
+
+                                    <Label Grid.Row="4" Margin="5,0,0,0">Состояние договора</Label>
+                                    <ComboBox Grid.Row="4" SelectionChanged="OnCommitBindingGroup" Grid.Column="1" ItemsSource="{Binding Path=States}" SelectedItem="{Binding Path=Contractstate, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True}" Margin="5,0,5,0"></ComboBox>
+
+
+                                    <Label Margin="5,0,0,0"  Grid.Column="2">Дата факт. завершения</Label>
+                                    <DatePicker Grid.Column="3" SelectedDateChanged="OnCommitBindingGroup" SelectedDate="{Binding Path=Reallyfinishedat, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,5,0"></DatePicker>
+
+                                    <Label Grid.Row="2" Margin="5,0,0,0" Grid.Column="2">Дата расторжения</Label>
+                                    <DatePicker Grid.Column="3" Grid.Row="2" SelectedDateChanged="OnCommitBindingGroup" SelectedDate="{Binding Path=Brokeat, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,5,0"></DatePicker>
+
+                                    <TextBlock  Grid.Row="4" Margin="9,0,0,0" Grid.Column="2" Foreground="Black" Text="Заменено новой редакцией с" TextWrapping="WrapWithOverflow"/>
+                                    <DatePicker Grid.Column="3" Grid.Row="4" SelectedDateChanged="OnCommitBindingGroup" SelectedDate="{Binding Path=Outofcontrolat, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,5,0"></DatePicker>
+
+                                </Grid>
+                            </Grid>
+
+                        </GroupBox>
+                    </DockPanel>
+                    <GroupBox Header="Цена договора"  Margin="0,10,0,0">
+                        <StackPanel>
+                            <WrapPanel>
+                                <Label>Цена</Label>
+                                <TextBox Width="200" Margin="5,0,0,0">
+                                    <TextBox.Text>
+                                        <Binding Path="FormatedPrice">
+                                            <Binding.ValidationRules>
+                                                <ExceptionValidationRule></ExceptionValidationRule>
+                                            </Binding.ValidationRules>
+                                        </Binding>
+                                    </TextBox.Text>
+                                </TextBox>
+                                <!--<Button ToolTip="Получить из КП"  Margin="2,0,0,0"  Command="{Binding SyncFromScheduleCommand}" Visibility="{Binding CanSyncPriceFromSchedule, Converter={StaticResource BoolToVisibilityConverterCollapsed}}">
+                                    <Image Source="/MContracts;component/Resources/arrow_refresh.png" Height="16" ></Image>
+                                </Button>-->
+                                <ComboBox Margin="5,0,0,0" Width ="50" ItemsSource="{Binding Path=Currencymeasures}" SelectedItem="{Binding Path=Currencymeasure, ValidatesOnDataErrors=True}"></ComboBox>
+                                <Label>Валюта</Label>
+                                <ComboBox Width="100" ItemsSource="{Binding Path=Currencies}" SelectedItem="{Binding Path=Currency, ValidatesOnDataErrors=True}"></ComboBox>
+                                <Label IsEnabled="{Binding Path=ForeignCurrencyVisibility}">Курс</Label>
+                                <TextBox Width="50" Text="{Binding Path=ContractObject.Currencyrate, StringFormat=\{0:N\}, ValidatesOnDataErrors=True}" IsEnabled="{Binding Path=ForeignCurrencyVisibility}"></TextBox>
+                                <Label IsEnabled="{Binding Path=ForeignCurrencyVisibility}">Дата курса</Label>
+                                <DatePicker SelectedDate="{Binding Path=Ratedate}" IsEnabled="{Binding Path=ForeignCurrencyVisibility, ValidatesOnDataErrors=True}"></DatePicker>
+
+                                <Button x:Name="bQueryRate"  Margin="5,0,0,0" Command="{Binding Path=QueryCurrencyRateCommand}">Запросить ЦБР</Button>
+                            </WrapPanel>
+                            <DockPanel LastChildFill="True">
+                                <StackPanel DockPanel.Dock="Left">
+                                    <Label>НДС</Label>
+                                    <ComboBox HorizontalAlignment="Left" Width="150" ItemsSource="{Binding Path=Ndsalgorithms}" SelectedItem="{Binding Path=Ndsalgorithm, ValidatesOnDataErrors=True}"></ComboBox>
+                                </StackPanel>
+                                <StackPanel Margin="5,0,0,0" Visibility="{Binding HasNds, Converter={StaticResource BoolToVisibilityConverterHide}}">
+                                    <Label>Ставка НДС</Label>
+                                    <ComboBox HorizontalAlignment="Left" Width="150" ItemsSource="{Binding Path=Ndses}" SelectedItem="{Binding Path=ContractObject.Nds, ValidatesOnDataErrors=True, NotifyOnSourceUpdated=True}"></ComboBox>
+                                </StackPanel>
+                                <StackPanel Margin="15,0,0,0" >
+                                    <Label>Тип акта</Label>
+                                    <ComboBox HorizontalAlignment="Left" Width="300" ItemsSource="{Binding Path=Acttypes}" SelectedItem="{Binding Path=ContractObject.Acttype, ValidatesOnDataErrors=True, NotifyOnSourceUpdated=True}"></ComboBox>
+                                </StackPanel>
+
+                            </DockPanel>
+                            <StackPanel Orientation="Horizontal" Background="LightGray" Margin="0,5">
+                                <StackPanel.Resources>
+                                    <Style x:Key="MoneyText" TargetType="Label">
+                                        <Setter Property="Foreground" Value="Black"></Setter>
+                                        <Setter Property="FontWeight" Value="Bold"></Setter>
+                                        <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <StackPanel Orientation="Horizontal" DataContext="{Binding ContractMoneyInfo}" HorizontalAlignment="Left">
+                                    <Label Content="{Binding PricePure}" Style="{StaticResource MoneyText}"></Label>
+                                    <Label Content="{Binding PriceNds}" Style="{StaticResource MoneyText}"></Label>
+                                    <Label Content="{Binding PriceWithNds}" Style="{StaticResource MoneyText}"></Label>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" DataContext="{Binding RublesMoneyInfo}" Visibility="Hidden">
+                                    <Label>(</Label>
+                                    <Label>Цена без НДС</Label>
+                                    <Label Content="{Binding PricePure}" Style="{StaticResource MoneyText}"></Label>
+                                    <Label>НДС</Label>
+                                    <Label Content="{Binding PriceNds}" Style="{StaticResource MoneyText}"></Label>
+                                    <Label>Цена с НДС</Label>
+                                    <Label Content="{Binding PriceWithNds}" Style="{StaticResource MoneyText}"></Label>
+                                    <Label>)</Label>
+                                </StackPanel>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox>
+                        <GroupBox.Header>
+                            <WrapPanel>
+                                <Label FontWeight="Bold" Foreground="Green">Аванс</Label>
+                                <ComboBox ItemsSource="{Binding Path=PrepaymentCalcTypes, Mode=OneTime}" SelectedItem="{Binding Path=ContractObject.PrepaymentPrecentCalcType, Converter={StaticResource PrepaymentCalcTypeConverter1}}"></ComboBox>
+                            </WrapPanel>
+                        </GroupBox.Header>
+                        <StackPanel IsEnabled="{Binding Path=IsPrepaymentViewEnabled}">
+                            <View:PrepaymentView x:Name="prepaymentControl" DataContext="{Binding PrepaymentViewModel}"/>
+                        </StackPanel>
+                    </GroupBox>
+                    <GroupBox Header="Примечания">
+                        <TextBox Margin="5" Text="{Binding Path=Description, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource RemoveExtraSpaceConverter1}}" TextWrapping="WrapWithOverflow"></TextBox>
+                    </GroupBox>
+                </StackPanel>
+            </Border>
+
+        </Expander.Content>
+        <Expander.Header>
+            <DockPanel>
+                <Image Source="/MContracts;component/Images/contract.png" Height="26" Width="30" DockPanel.Dock="Left"></Image>
+                <Label Content="Основные сведения" DockPanel.Dock="Left"></Label>
+                <Image x:Name="GeneraldocIcon" Visibility="{Binding Converter={StaticResource BoolToVisibilityConverterCollapsed}, Path=IsGeneral}" Source="/MContracts;component/Resources/star.icl.ico" Height="26" Width="45" ToolTip="Генеральный договор" DockPanel.Dock="Left"></Image>
+                <Image x:Name="AgreementIcon" Visibility="{Binding Converter={StaticResource BoolToVisibilityConverterCollapsed}, Path=IsAgreement}" Height="17" Width="31" ToolTip="Дополнительное соглашение" DockPanel.Dock="Left" Source="/MContracts;component/Resources/stargreen.ico"></Image>
+                <WrapPanel VerticalAlignment="Stretch" Visibility="{Binding Converter={StaticResource BoolToVisibilityConverterCollapsed}, Path=IsAgreement}" Margin="2,0,0,0" >
+                    <TextBox ToolTip="Номер соглашения" Text="{Binding Path=ContractObject.Agreementnum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Height="20" Width="30" VerticalAlignment="Center"></TextBox>
+                    <Label Margin="5,0,0,0">Эта редакция заменяет</Label>
+                    <Label ToolTip="Если эта редакция договора отменяет действие предыдущей, то укажите дату с которой предыдущая редакция перестаёт действовать" 
+                           VerticalAlignment="Center" Content="{Binding ContractObject.OriginalContract}"></Label>
+                    <Label>с</Label>
+                    <DatePicker VerticalAlignment="Center" Margin="4,0,0,0" SelectedDate="{Binding ContractObject.OriginalContract.Outofcontrolat}"></DatePicker>
+                </WrapPanel>
+                <Image x:Name="SubcontractIcon" Visibility="{Binding Converter={StaticResource BoolToVisibilityConverterCollapsed}, Path=IsSubContract}" Height="26" Width="45" ToolTip="Соисполнители" DockPanel.Dock="Left" Source="/MContracts;component/Resources/subcontract.ico"></Image>
+            </DockPanel>
+        </Expander.Header>
+    </Expander>
+
+</UserControl>

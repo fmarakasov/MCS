@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="MContracts.View.DocumentSetTransferView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="clr-namespace:UIShared.Controls;assembly=UIShared"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:converters="clr-namespace:MContracts.Classes.Converters"
+             mc:Ignorable="d" 
+             DataContextChanged="DocumentSetTransferView_OnDataContextChanged"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Expander Name="FcExpanderControl" IsExpanded="{Binding IsMaximized, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Background="{StaticResource Expander-Background-FC-Brush}" MaxHeight="300" >
+        <Expander.Resources>
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" TrueVisibility="Visible" FalseVisibility="Collapsed" />
+        </Expander.Resources>
+        <Expander.Header>
+            <WrapPanel >
+                <Image Source="/MContracts;component/Resources/stock_signature.png" Width="30"></Image>
+                <Label>Опись документов</Label>
+                <controls:CommandsControl x:Name="commandsControl" Visibility="{Binding IsExpanded, RelativeSource={RelativeSource AncestorType=Expander}, Converter={StaticResource BoolToVisibilityConverter}}"></controls:CommandsControl>
+                <TextBlock Text="{Binding Transferact}"></TextBlock>
+            </WrapPanel>
+        </Expander.Header>
+        <Expander.Content>
+            <Border BorderThickness="4" CornerRadius="4" Padding="2" 
+                    Background="{StaticResource ResourceKey=Expander-Acttran-Background-Brush}">
+             
+                <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                     <telerik:RadGridView FrozenColumnCount="1" ItemsSource="{Binding DocumentSet}" ShowGroupPanel="False" CanUserDeleteRows="False"  AutoGenerateColumns="False" CanUserInsertRows="False">
+                         <telerik:RadGridView.Columns>
+                            <telerik:GridViewDataColumn Header="Документ" Width="Auto" DataMemberBinding="{Binding Path=Document, Mode=OneTime}" />
+                            <telerik:GridViewDataColumn Header="Число страниц" Width="Auto" DataMemberBinding="{Binding Path=Pagescount, Mode=TwoWay}" />
+                        </telerik:RadGridView.Columns>
+                     </telerik:RadGridView>
+                </DockPanel>
+             
+            </Border>
+        </Expander.Content>
+    </Expander>
+</UserControl>

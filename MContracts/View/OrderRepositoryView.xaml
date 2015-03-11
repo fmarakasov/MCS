@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="MContracts.View.OrderRepositoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:MContracts.Classes.Converters"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <converters:CurrencyConverter x:Key="CurrencyConverter1" />
+        <converters:DateTimeToDateConverter x:Key="DateTimeToDateConverter" />
+        <converters:DateTimeToShortDateConverter x:Key="DateTimeToShortDateConverter"/>
+        <converters:ContractdocConverter x:Key="ContractdocConverter"/>
+        <converters:ContractToVisibilityConverter x:Key="ContractToVisibilityConverter"/>
+
+
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <TextBlock VerticalAlignment="Center" Margin="5, 0, 0, 0" x:Name="PropertyTextBlock" Text="{Binding Name}" FontSize="12" FontWeight="Bold"/>
+            <Button ToolTip="Добавить приказ"  Command="{Binding NewOrderCommand}" Width="30" Height="30">
+                <Image Source="/MContracts;component/Resources/disposal-new.png"/>
+            </Button>
+            <Button ToolTip="Редактировать приказ" Command="{Binding EditOrderCommand}" Width="30" Height="30">
+                <Image Source="/MContracts;component/Resources/disposal-edit.png" />
+            </Button>
+            <Button ToolTip="Удалить приказ" Command="{Binding DeleteOrderCommand}" Width="30" Height="30" >
+                <Image Source="/MContracts;component/Resources/disposal-delete.png" />
+            </Button>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1">
+            <StackPanel>
+                <telerik:RadGridView ItemsSource="{Binding Orders, Mode=OneWay}" 
+                                     SelectedItem="{Binding SelectedResponsibleassignmentorder}" 
+                                     AutoGenerateColumns="False" 
+                                     x:Name="OrdersDataGrid" SelectionMode="Extended"  
+                                     SelectionUnit="FullRow"
+                                     IsReadOnly="True"
+                                     ShowColumnFooters="False"
+                                     ShowColumnHeaders="True"
+                                     ShowGroupPanel="False"
+                                     RowIndicatorVisibility="Collapsed">
+
+                    <telerik:RadGridView.Columns>
+                        <telerik:GridViewDataColumn Header="№ приказа" DataMemberBinding="{Binding Ordernum}" Width="100" />
+                        <telerik:GridViewDataColumn Header="Дата приказа" DataMemberBinding="{Binding Orderdate, Converter={StaticResource DateTimeToShortDateConverter}}" Width="*" />
+                    </telerik:RadGridView.Columns>
+                </telerik:RadGridView>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

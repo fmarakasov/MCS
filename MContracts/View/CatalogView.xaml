@@ -1,0 +1,344 @@
+﻿<UserControl x:Class="MContracts.View.CatalogView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:classes="clr-namespace:MContracts.Classes" 
+             xmlns:ViewModel="clr-namespace:MContracts.ViewModel" 
+             xmlns:converters="clr-namespace:MContracts.Classes.Converters"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="572">
+
+    <UserControl.Resources>
+
+        <converters:DateTimeToShortDateConverter x:Key="DateTimeToShortDateConverter"/>
+        <converters:BooleanToStringConverter TrueMessage="Да" FalseMessage="Нет"  DefaultMessage="Не задано" x:Key="BooleanToStringConverter"/>
+        <converters:BooleanToStringConverter TrueMessage="Мужской" FalseMessage="Женский"  DefaultMessage="Не задано" x:Key="SexToStringConverter"/>
+        <converters:LevelToMarginConverter x:Key="LevelToMarginConverter" LeftMargin="8" OtherMargin="0" />
+
+        <classes:TelerikColumnCollection x:Key="ContractType">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" Header="Наименование" />
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Reportorder}" SortMemberPath="Reportorder" Header="Позиция в отчёте" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="ContractState">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Prepaymentdocumenttype">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Nds">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Percents}" SortMemberPath="Percents" Header="Процент" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Year}" SortMemberPath="Year" Header="Год" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Ndsalgorithm">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Pricetooltip}" Header="Подсказка" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Currency">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Culture}" Header="Культура" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Code}" Header="Код" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Highsmallname}" Header="Аббревиатура единицы валюты" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Lowsmallname}" Header="Аббревиатура минимальной единицы валюты" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Currencyi}" Header="Склонение валюты в именительном падеже единственном числе" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Currencym}" Header="Склонение валюты в родительном падеже множественном числе" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Currencyr}" Header="Склонение валюты в родительном падеже единственном числе" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Smalli}" Header="Склонение минимальной единицы валюты в именительном падеже единственном числе" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Smallr}" Header="Склонение минимальной единицы валюты в родительном падеже единственном числе" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Smallm}" Header="Склонение минимальной единицы валюты в родительном падеже множественном числе" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Degree">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+ 
+        <classes:TelerikColumnCollection x:Key="Authority">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Acttype">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Typename}" SortMemberPath="Typename" Header="Наименование" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Contractor}" SortMemberPath="Contractor.Name" Header="Контрагент" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Active, Converter={StaticResource BooleanToStringConverter}}" Header="Признак активности" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Worktype">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Shortname}" SortMemberPath="Shortname" Header="Краткое наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Economefficiencytype">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Economefficiencyparameter">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Efficienceparametertype">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Economefficiencytype}" SortMemberPath="Economefficiencytype" Header="Тип" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Economefficiencyparameter}" Header="Параметр" SortMemberPath="Economefficiencyparameter"  Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Ntpview">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Contractortype">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="3*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Reportorder}" SortMemberPath="Reportorder" Header="Позиция в отчёте" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Position">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Role">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Property">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Region">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Troublesregistry">
+            <telerik:GridViewDataColumn Header="Наименование" DataMemberBinding="{Binding Name}" Width="2*" SortMemberPath="Name" TextWrapping="WrapWithOverflow"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Shortname}" SortMemberPath="Shortname" Header="Краткое наименование" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Approvedat, Converter={StaticResource DateTimeToShortDateConverter}}" Header="Дата утверждения" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Ordernum}" Header="Номер приказа" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Validfrom, Converter={StaticResource DateTimeToShortDateConverter}}" Header="Дата начала действия" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Validto, Converter={StaticResource DateTimeToShortDateConverter}}" Header="Дата окончания действия" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Ntpsubview">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" Header="Наименование" SortMemberPath="Name" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Shortname}" Header="Краткое наименование" SortMemberPath="Shortname" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Ntpview}" Header="Вид НТП" SortMemberPath="Ntpview" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Currencymeasure">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" Header="Наименование" SortMemberPath="Name" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Factor}" Header="Кратность" SortMemberPath="Factor" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Contractor">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" TextWrapping="WrapWithOverflow" Width="2*" SortMemberPath="Name"  Header="Наименование"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Shortname}" TextWrapping="WrapWithOverflow" Header="Краткое наименование" SortMemberPath="Shortname" Width="2*"/>
+            <telerik:GridViewDataColumn Header="Тип" Width="2*" DataMemberBinding="{Binding Contractortype}" TextWrapping="WrapWithOverflow"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Zip}" Header="Индекс" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Address}" Header="Адрес" Width="*"/>
+            <telerik:GridViewDataColumn Header="Р/с" Width="2*" DataMemberBinding="{Binding Account}" TextWrapping="WrapWithOverflow"/>
+            <telerik:GridViewDataColumn Header="Корр. счёт" Width="2*" DataMemberBinding="{Binding Correspaccount}" TextWrapping="WrapWithOverflow"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Inn}" Header="ИНН" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Bik}" Header="БИК" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Kpp}" Header="КПП" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Okpo}" Header="ОКПО" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Okonh}" Header="ОКОНХ" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Ogrn}" Header="ОГРН" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Okato}" Header="ОКАТО" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Okved}" Header="ОКВЭД" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Contractorpropertiy">
+            <telerik:GridViewDataColumn Width="2*" SortMemberPath="Name"  Header="Контрагент" DataMemberBinding="{Binding Contractor}" TextWrapping="WrapWithOverflow"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Property}" Header="Свойство" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Value}" Header="Значение" Width="*"/>
+        </classes:TelerikColumnCollection>
+        
+        <classes:TelerikColumnCollection x:Key="Enterpriseauthority">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Authority}" Header="Основание" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Employee}" Header="Выдано на сотрудника" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Num}" Header="Номер" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Validfrom}" Header="Начало действия" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Validto}" Header="Окончание действия" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Isvalid}" Header="Действует" Width="*"/>
+           
+    
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Person">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Familyname}" Header="Фамилия" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Firstname}" Header="Имя" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Middlename}" Header="Отчество" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Sex, Converter={StaticResource SexToStringConverter}}" Header="Пол" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Contractorposition}" Header="Должность контрагента" Width="2*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Degree}" SortMemberPath="Degree.Name" Header="Степень" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Contractheadauthority, Converter={StaticResource BooleanToStringConverter}}" Header="Право подписи от первого лица" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Actsignauthority, Converter={StaticResource BooleanToStringConverter}}" Header="Право подписи актов" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Valid, Converter={StaticResource BooleanToStringConverter}}" Header="Актуальные данные" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Funccustomerperson">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Functionalcustomer}" Header="Функциональный заказчик" SortMemberPath="Name" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Person}" Header="Представитель" SortMemberPath="Factor" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Contractorposition">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Contractor}" SortMemberPath="Contractor.Name" Header="Контрагент" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Position}" SortMemberPath="Position.Name" Header="Должность" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Employee">
+            <telerik:GridViewDataColumn Header="Фамилия" Width="*" DataMemberBinding="{Binding Familyname}" TextWrapping="WrapWithOverflow"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Firstname}" Header="Имя" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Middlename}" Header="Отчество" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Sex, Converter={StaticResource SexToStringConverter}}" Header="Пол" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Trouble">
+            <telerik:GridViewDataColumn Header="№" Width="*" SortMemberPath="Num">
+                <telerik:GridViewDataColumn.CellTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding Num}" Margin="{Binding Level, Converter={StaticResource LevelToMarginConverter}}" VerticalAlignment="Top"/>
+                    </DataTemplate>
+                </telerik:GridViewDataColumn.CellTemplate>
+            </telerik:GridViewDataColumn>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Troublesregistry.Name}" SortMemberPath="Troublesregistry.Name" Header="Реестр проблем" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Functionalcustomertype">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Document">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Transferacttype">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Transferacttypedocument">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Transferacttype}" SortMemberPath="Transferacttype.Name" Header="Тип" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Document}" SortMemberPath="Document.Name" Header="Документ" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Functionalcustomer">
+            <telerik:GridViewDataColumn Header="Наименование" Width="*" SortMemberPath="Name">
+                <telerik:GridViewDataColumn.CellTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding Name}" Margin="{Binding Level, Converter={StaticResource LevelToMarginConverter}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top"/>
+                    </DataTemplate>
+                </telerik:GridViewDataColumn.CellTemplate>
+            </telerik:GridViewDataColumn>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Functionalcustomertype}" SortMemberPath="Functionalcustomertype.Name" Header="Тип" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Contractor}" SortMemberPath="Contractor.Name" Header="Организация" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Sightfuncpersonscheme">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Num}" Header="Номер" SortMemberPath="Num" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Funccustomerperson}" Header="Представитель функционального заказчика" SortMemberPath="Funccustomerperson" Width="2*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Active, Converter={StaticResource BooleanToStringConverter}}" Header="Признак активности" SortMemberPath="Ntpview" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Location">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="MissiveType">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Yearreportcolor">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding UserQuarter}" SortMemberPath="Quarter" Header="Квартал" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+
+        <classes:TelerikColumnCollection x:Key="ApprovalGoal">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="ApprovalState">
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Name}" SortMemberPath="Name" Header="Наименование" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+        <classes:TelerikColumnCollection x:Key="Department">
+            <telerik:GridViewDataColumn Header="Наименование" Width="*" SortMemberPath="Name">
+                <telerik:GridViewDataColumn.CellTemplate>
+                    <DataTemplate>
+                        <Label Content="{Binding Name}" Margin="{Binding Level, Converter={StaticResource LevelToMarginConverter}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top"/>
+                    </DataTemplate>
+                </telerik:GridViewDataColumn.CellTemplate>
+            </telerik:GridViewDataColumn>            
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Director}" SortMemberPath="Director.Name" Header="Заместитель директора" Width="*"/>
+            <telerik:GridViewDataColumn DataMemberBinding="{Binding Manager}" SortMemberPath="Manager.Name" Header="Руководитель отдела" Width="*"/>
+        </classes:TelerikColumnCollection>
+
+
+        <Style TargetType="Button" x:Key="ActionButtonStyle">
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="Width" Value="24"/>
+            <Setter Property="Height" Value="24"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Button x:Name="CreateButton" Command="{Binding AddCommand}" Style="{StaticResource ActionButtonStyle}" ToolTip="Добавить элемент">
+                <Image Source="/MContracts;component/Images/Add_16.png" />
+            </Button>
+            <Button x:Name="EditButton" Command="{Binding EditCommand}" Style="{StaticResource ActionButtonStyle}" ToolTip="Редактировать элемент">
+                <Image Source="/MContracts;component/Resources/Signed.png" />
+            </Button>
+            <Button x:Name="RemoveButton" Command="{Binding DeleteCommand}" Style="{StaticResource ActionButtonStyle}" ToolTip="Удалить элемент">
+                <Image Source="/MContracts;component/Images/Delete_16.png" />
+            </Button>
+            <StackPanel Orientation="Horizontal" Visibility="{Binding IsHierarchical}">
+                <Separator/>
+                <Button x:Name="OutdentButton" Style="{StaticResource ActionButtonStyle}" Command="{Binding DataContext.OutdentCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" ToolTip="На уровень вниз">
+                    <Image Source="/MContracts;component/Resources/Outdent.png"/>
+                </Button>
+                <Button x:Name="IndentButton" Style="{StaticResource ActionButtonStyle}" Command="{Binding DataContext.IndentCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" ToolTip="На уровень вверх">
+                    <Image Source="/MContracts;component/Resources/Indent.png" />
+                </Button>
+                <Separator/>
+                <Button x:Name="UpButton" Style="{StaticResource ActionButtonStyle}" Command="{Binding DataContext.UpCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" ToolTip="Переместить вверх">
+                    <Image Source="/MContracts;component/Resources/Up.png" />
+                </Button>
+                <Button x:Name="DownButton" Style="{StaticResource ActionButtonStyle}" Command="{Binding DataContext.DownCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" ToolTip="Переместить вниз">
+                    <Image Source="/MContracts;component/Resources/Down.png" />
+                </Button>
+                <Separator/>
+            </StackPanel>
+            <!--<Button Content="Test" Click="Button_Click" Margin="30, 0, 0, 0"/>-->
+
+        </StackPanel>
+            <telerik:RadGridView AlternationCount="3" AutoGenerateColumns="False" Grid.Row="1"
+                        VerticalAlignment="Stretch"
+                        CanUserDeleteRows="False" CanUserFreezeColumns="False" IsReadOnly="True"
+                        ItemsSource="{Binding Path=CollectionView, Mode=OneWay}" 
+                        RowIndicatorVisibility="Collapsed" 
+                        Margin="3" DockPanel.Dock="Top" SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" 
+                        SelectionMode="Single" SelectionUnit="FullRow" x:Name="dataGrid" 
+                        MouseDoubleClick="dataGrid_MouseDoubleClick" KeyDown="dataGrid_KeyDown" 
+                        CanUserSortColumns="True" RowLoaded="DataGrid_OnRowLoaded"  RowActivated="dataGrid_RowActivated"
+                        ScrollMode="RealTime" 
+						ScrollViewer.CanContentScroll="True" 
+                        ScrollViewer.HorizontalScrollBarVisibility="Auto" 
+						ScrollViewer.VerticalScrollBarVisibility="Auto"
+                        UseLayoutRounding="False">
+                        
+
+            <!--<DataGrid CanUserAddRows="False" Margin="3" DockPanel.Dock="Top" SelectedItem="{Binding Path=SelectedItem, Mode=TwoWay}" SelectionMode="Single" 
+                        SelectionUnit="FullRow" HeadersVisibility="Column" IsReadOnly="True" AutoGenerateColumns="False" x:Name="dataGrid" 
+                        SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}" MouseDoubleClick="dataGrid_MouseDoubleClick" KeyDown="dataGrid_KeyDown" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible" CanUserSortColumns="True" Height="400" />--> 
+            </telerik:RadGridView>    
+
+    </Grid>
+</UserControl>

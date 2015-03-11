@@ -1,0 +1,166 @@
+﻿<Window x:Class="MContracts.Controls.Dialogs.AddOrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" Title="Приказы" Height="550" Width="800" ResizeMode="NoResize" 
+        WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+
+           <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="3"></Setter>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value >
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock DockPanel.Dock="Right" Foreground="Red" FontSize="12" Margin="2, 0, 0, 0" FontWeight="Bold" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">!</TextBlock>
+                            <Border BorderBrush="Red" BorderThickness="1" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+                                <AdornedElementPlaceholder x:Name="adornedPlaceHolder"></AdornedElementPlaceholder>
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="3"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+        </Style>
+
+        <Style TargetType="DatePicker">
+            <Setter Property="Margin" Value="3"></Setter>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="3"></Setter>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="3"></Setter>
+            <Setter Property="Width" Value="24"></Setter>
+            <Setter Property="Height" Value="24"></Setter>
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value >
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
+                            <TextBlock DockPanel.Dock="Right" Foreground="Red" FontSize="12" Margin="2, 0, 0, 0" FontWeight="Bold" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">!</TextBlock>
+                            <Border BorderBrush="Red" BorderThickness="1" ToolTip="{Binding ElementName=adornedPlaceHolder, Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+                                <AdornedElementPlaceholder x:Name="adornedPlaceHolder"></AdornedElementPlaceholder>
+                            </Border>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+    </Window.Resources>
+    <DockPanel x:Name="LayoutRoot" LastChildFill="True">
+
+        <DockPanel LastChildFill="False" Margin="2" DockPanel.Dock="Bottom" MinHeight="34">
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+                <Button Width="100" Content="OK" Margin="5" Click="Button_Click" Command="{Binding OkPressedAction}"/>
+                <Button Width="100" Content="Отмена" Margin="5" Click="Button_Click_1"/>
+            </StackPanel>  
+        </DockPanel>
+
+        <StackPanel>
+
+            <Expander Header="Общие" IsExpanded="True" Background="FloralWhite" BorderThickness="1" BorderBrush="Black" Margin="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="3*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="№ приказа" VerticalAlignment="Bottom" Height="19" />
+                    <TextBox  x:Name="txtOrdernum" Text="{Binding Path=Order.Ordernum, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="{Binding IsSigned}" Grid.Column="1" Grid.Row="0" Width="150" HorizontalAlignment="Left"/>
+                    <TextBlock Text="Дата приказа" Grid.Column="0" Grid.Row="1"/>
+                    <DatePicker Grid.Column="1" Grid.Row="1" SelectedDate="{Binding Path=Order.Orderdate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" Width="150" HorizontalAlignment="Left" x:Name="dtmOrderDate"/>
+                </Grid>
+            </Expander>
+
+
+            <Expander Header="Назначения" IsExpanded="True" Background="FloralWhite" BorderThickness="1" BorderBrush="Black" Margin="2" >
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button x:Name="CreateResponsibleForOrderButton" Command="{Binding CreateResponsibleForOrderCommand}" >
+                            <Image Source="/MContracts;component/Resources/chart_organisation_add.png" ToolTip="Добавить назначение"/>
+                        </Button>
+                        <Button x:Name="RemoveResponsibleForOrderButton" Command="{Binding DeleteResponsibleForOrderCommand}" >
+                            <Image Source="/MContracts;component/Resources/chart_organisation_delete.png" ToolTip="Удалить назначение"/>
+                        </Button>
+                    </StackPanel>
+                    <telerik:RadGridView CanUserInsertRows="False" SelectionMode="Single" SelectionUnit="FullRow" 
+                                         Margin="3" ItemsSource="{Binding Path=ResponsibleForOrderEntities}" SelectedItem="{Binding Path=SelectedResponsibleForOrder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                         CanUserSortColumns="False" ShowColumnHeaders="True" 
+                                         AutoGenerateColumns="False" x:Name="ResponsiblesDataGrid" 
+                                         Height="300" SelectionChanged="ResponsiblesDataGrid_SelectionChanged" ShowGroupPanel="False" RowIndicatorVisibility="Collapsed">
+                        <telerik:RadGridView.Columns>
+                            <telerik:GridViewDataColumn Header="Отдел" Width="300" DataMemberBinding="{Binding Department, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="WrapWithOverflow">
+                                
+                                <telerik:GridViewDataColumn.CellEditTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <ComboBox Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedItem="{Binding Department, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding DataContext.Departments, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneWay}" SelectionChanged="ComboBox_SelectionChanged" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </telerik:GridViewDataColumn.CellEditTemplate>
+                            </telerik:GridViewDataColumn>
+
+                            <telerik:GridViewDataColumn Header="Ответственный" Width="Auto" 
+                                                        DataMemberBinding ="{Binding Employee, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                <telerik:GridViewDataColumn.CellEditTemplate>
+                                    <DataTemplate>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <ComboBox Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedItem="{Binding Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding DataContext.DepartmentEmployees, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneWay, NotifyOnTargetUpdated=True, NotifyOnSourceUpdated=True}"  />
+                                    </Grid>
+                                </DataTemplate>
+                                </telerik:GridViewDataColumn.CellEditTemplate>                                    
+                            </telerik:GridViewDataColumn>
+
+                            <telerik:GridViewDataColumn Header="Тип договора" Width="Auto" 
+                                                            DataMemberBinding ="{Binding Contracttype, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <telerik:GridViewDataColumn.CellEditTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <ComboBox Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectedItem="{Binding Contracttype, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  ItemsSource="{Binding DataContext.Contracttypes, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneWay}"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </telerik:GridViewDataColumn.CellEditTemplate>
+                            </telerik:GridViewDataColumn>
+                        </telerik:RadGridView.Columns>
+                     </telerik:RadGridView>
+                </StackPanel>
+            </Expander >
+        </StackPanel>
+    </DockPanel>
+</Window>

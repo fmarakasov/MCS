@@ -1,0 +1,6 @@
+/*
+    UPDATE PREPAYMENT COLUMNS 
+*/
+
+ALTER TABLE Contractdoc MODIFY PrepaymentSum NUMBER(18,2);
+ALTER TABLE Prepayment MODIFY Sum NUMBER(18,2);

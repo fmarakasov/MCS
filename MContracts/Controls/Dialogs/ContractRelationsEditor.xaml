@@ -1,0 +1,86 @@
+﻿<telerik:RadWindow x:Class="MContracts.Controls.Dialogs.ContractRelationsEditor" 
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+                   xmlns:converters="clr-namespace:MContracts.Classes.Converters" 
+                   xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" 
+                   Height="600" Width="800" Header="{Binding DisplayName}"
+                   WindowStartupLocation="CenterOwner"
+                   Loaded="RadWindow_Loaded">
+    <Grid>
+        <Grid.Resources>
+            <converters:StringShrederConverter x:Key="SubjectShreder" MaxLength="50" />
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibility" FalseVisibility="Hidden" TrueVisibility="Visible"/>
+            <converters:ContractToSubContractConverter x:Key="SubContractConverter"/>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="40"></RowDefinition>
+        </Grid.RowDefinitions>
+        <telerik:RadTabControl>
+
+            <telerik:RadTabItem Header="Доп. соглашения">
+                <telerik:RadGridView AutoGenerateColumns="False" ItemsSource="{Binding Agreements}">
+                    <telerik:RadGridView.Columns>
+
+                        <telerik:GridViewDataColumn DataMemberBinding="{Binding Internalnum}" Header="№" IsReadOnly="True" />
+                        <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Subject}" Header="Тема договора" IsReadOnly="True">
+                            <telerik:GridViewDataColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Subject, Converter={StaticResource SubjectShreder}}" TextWrapping="WrapWithOverflow">
+                                <TextBlock.ToolTip>
+                                     <TextBlock Width="100" Text="{Binding Subject}" TextWrapping="WrapWithOverflow" />
+                                </TextBlock.ToolTip>
+                            </TextBlock>
+                                </DataTemplate>
+                            </telerik:GridViewDataColumn.CellTemplate>
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Approvedat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Подп." ToolTip="Дата подписания договора" />
+                        <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Startat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Нач." ToolTip="Дата начала работ по договору" />
+                        <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Endsat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Окон.(пл.)" ToolTip="Дата планового окончания работ по договору" />
+                        <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Appliedat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Прим." ToolTip="Дата выступления в силу договора" />
+                        <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Outofcontrolat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Снят с конт." ToolTip="Дата снятия договора с контроля">
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Brokeat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Раст." ToolTip="Дата расторжения договора" />
+                        <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Reallyfinishedat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Окон.(ф.)" ToolTip="Дата фактического окончания работ по договору" />
+                    </telerik:RadGridView.Columns>
+                </telerik:RadGridView>
+            </telerik:RadTabItem>
+            <telerik:RadTabItem Header="Договора с соисп." Visibility="{Binding IsGeneral, Converter={StaticResource BoolToVisibility}}">
+                <telerik:RadGridView AutoGenerateColumns="False" 
+                                     ItemsSource="{Binding SubcontractCandidates}" SelectionMode="Extended" 
+                                     SelectionUnit="FullRow" RowIndicatorVisibility="Collapsed" >
+                    <telerik:RadGridView.Columns>
+                        <telerik:GridViewCheckBoxColumn DataMemberBinding="{Binding IsSelected}" Header="СД" AutoSelectOnEdit="True" IsThreeState="False"></telerik:GridViewCheckBoxColumn>
+                            <telerik:GridViewDataColumn DataMemberBinding="{Binding Internalnum}" Header="№" IsReadOnly="True" />
+                        <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Subject}" Header="Тема договора" IsReadOnly="True">
+                            <telerik:GridViewDataColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Subject, Converter={StaticResource SubjectShreder}}" TextWrapping="WrapWithOverflow">
+                                <TextBlock.ToolTip>
+                                     <TextBlock Width="100" Text="{Binding Subject}" TextWrapping="WrapWithOverflow" />
+                                </TextBlock.ToolTip>
+                            </TextBlock>
+                                </DataTemplate>
+                            </telerik:GridViewDataColumn.CellTemplate>
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Approvedat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Подп." ToolTip="Дата подписания договора" IsReadOnly="True" />
+                        <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Startat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Нач." ToolTip="Дата начала работ по договору" IsReadOnly="True"/>
+                        <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Endsat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Окон.(пл.)" ToolTip="Дата планового окончания работ по договору" IsReadOnly="True"/>
+                        <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Appliedat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Прим." ToolTip="Дата выступления в силу договора" IsReadOnly="True"/>
+                        <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Outofcontrolat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Снят с конт." ToolTip="Дата снятия договора с контроля" IsReadOnly="True">
+                        </telerik:GridViewDataColumn>
+                        <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Brokeat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Раст." ToolTip="Дата расторжения договора" IsReadOnly="True"/>
+                        <telerik:GridViewDataColumn Width="Auto" DataMemberBinding="{Binding Reallyfinishedat, StringFormat='{}{0:dd.MM.yyyy}'}" Header="Окон.(ф.)" ToolTip="Дата фактического окончания работ по договору" IsReadOnly="True"/>
+                    </telerik:RadGridView.Columns>
+                </telerik:RadGridView>
+
+            </telerik:RadTabItem>
+        </telerik:RadTabControl>
+
+        <StackPanel Grid.Row="1" HorizontalAlignment="Right" Orientation="Horizontal">
+            <telerik:RadButton x:Name="OkBtn" Margin="10 0 10 0" Command="{Binding SaveRelationsCommand}" Content="Сохранить" MinWidth="70" VerticalAlignment="Center" />
+            <!--<telerik:RadButton x:Name="CancelBtn" Content="Отмена" MinWidth="70" VerticalAlignment="Center" Margin="10 0 0 0" Click="CancelBtn_Click" />-->
+        </StackPanel>
+
+    </Grid>
+</telerik:RadWindow>

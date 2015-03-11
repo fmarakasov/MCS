@@ -1,0 +1,87 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MContracts.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="RightPanelVisibility" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LeftPanelVisibility" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="ReportTemplateFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Templates\</Value>
+    </Setting>
+    <Setting Name="ContractPepiodInformationTemplate_3" Type="System.String" Scope="User">
+      <Value Profile="(Default)">3_ContractQuarterInformation.xlt</Value>
+    </Setting>
+    <Setting Name="ContractQuarterPlanReport_4" Type="System.String" Scope="User">
+      <Value Profile="(Default)">4_ContractQuarterPlanReport.xlt</Value>
+    </Setting>
+    <Setting Name="SubContractRegisterReport_5" Type="System.String" Scope="User">
+      <Value Profile="(Default)">5_SubContractRegisterReport.xlt</Value>
+    </Setting>
+    <Setting Name="HandingWorkReport_6" Type="System.String" Scope="User">
+      <Value Profile="(Default)">6_HandingWorkReport.xlt</Value>
+    </Setting>
+    <Setting Name="YearEfficientInformationReport_7" Type="System.String" Scope="User">
+      <Value Profile="(Default)">7_YearEfficientInformationReport.xlt</Value>
+    </Setting>
+    <Setting Name="Act1Report" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Act1.dot</Value>
+    </Setting>
+    <Setting Name="PageSize" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="LoadInactiveContracts" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="DefaultPrepaymentPercent" Type="System.Single" Scope="User">
+      <Value Profile="(Default)">30</Value>
+    </Setting>
+    <Setting Name="ContractInformationTemplate_2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">2_ContractInformation.xlt</Value>
+    </Setting>
+    <Setting Name="YearPlanReport_1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">1_YearPlanReport.xlt</Value>
+    </Setting>
+    <Setting Name="InformationConcludedContracts" Type="System.String" Scope="User">
+      <Value Profile="(Default)">InformationConcludedContracts.xlt</Value>
+    </Setting>
+    <Setting Name="WorkProgressReport" Type="System.String" Scope="User">
+      <Value Profile="(Default)">WorkProgressReport.xlt</Value>
+    </Setting>
+    <Setting Name="UserReportFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MaxTabHeaderLength" Type="System.String" Scope="User">
+      <Value Profile="(Default)">20</Value>
+    </Setting>
+    <Setting Name="Act2Report" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Act2.dot</Value>
+    </Setting>
+    <Setting Name="Act3Report" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Act3.dot</Value>
+    </Setting>
+    <Setting Name="Act4Report" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Act4.dot</Value>
+    </Setting>
+    <Setting Name="NIOKRImplementationReport" Type="System.String" Scope="User">
+      <Value Profile="(Default)">NIOKRImplementationReport.xlt</Value>
+    </Setting>
+    <Setting Name="DocumentDefFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ContractInActionYearRegister_1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ContractInActionYearRegister.xlt</Value>
+    </Setting>
+    <Setting Name="NIOKREconEfficiencyReport" Type="System.String" Scope="User">
+      <Value Profile="(Default)">NIOKREconEfficiencyReport.xlt</Value>
+    </Setting>
+    <Setting Name="TroubleNIOKRReport" Type="System.String" Scope="User">
+      <Value Profile="(Default)">TroubleNIOKRReport.xlt</Value>
+    </Setting>
+    <Setting Name="EconEffectNIOKRReport" Type="System.String" Scope="User">
+      <Value Profile="(Default)">EconEffectNIOKRReport.xlt</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

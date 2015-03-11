@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Contractdoc_this_Subject" xml:space="preserve">
+    <value>Subject</value>
+  </data>
+  <data name="Contractdoc_this_no_subject_error" xml:space="preserve">
+    <value>Предмет договора должен быть указан</value>
+  </data>
+  <data name="Contractdoc_this_no_internalnum_error" xml:space="preserve">
+    <value>Номер договора должен быть указан</value>
+  </data>
+  <data name="Contractdoc_this_Contracttype" xml:space="preserve">
+    <value>Contracttype</value>
+  </data>
+  <data name="Contractdoc_this_Internalnum" xml:space="preserve">
+    <value>Internalnum</value>
+  </data>
+  <data name="Contractdoc_this_no_contracttype_error" xml:space="preserve">
+    <value>Тип договора должен быть указан</value>
+  </data>
+  <data name="Contractdoc_this_Currency" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="Contractdoc_this_no_currency_error" xml:space="preserve">
+    <value>Валюта договора должена быть указана</value>
+  </data>
+  <data name="Contractdoc_this_Currencymeasure" xml:space="preserve">
+    <value>Currencymeasure</value>
+  </data>
+  <data name="Contractdoc_this_no_measure_error" xml:space="preserve">
+    <value>Единица измерения валюты договора должена быть указана</value>
+  </data>
+  <data name="Contractdoc_this_Contractor" xml:space="preserve">
+    <value>Contractor</value>
+  </data>
+  <data name="Contractdoc_this_no_contractor_error" xml:space="preserve">
+    <value>Контрагент договора должен быть указан</value>
+  </data>
+  <data name="Contractdoc_this_Person" xml:space="preserve">
+    <value>Person</value>
+  </data>
+  <data name="Contractdoc_this_no_person_error" xml:space="preserve">
+    <value>Руководитель договора должен быть указан</value>
+  </data>
+  <data name="Contractdoc_this_Disposal" xml:space="preserve">
+    <value>Disposal</value>
+  </data>
+  <data name="Contractdoc_this_no_disposal_error" xml:space="preserve">
+    <value>Основание договора должено быть указано</value>
+  </data>
+  <data name="Contractdoc_this_Nds" xml:space="preserve">
+    <value>Nds</value>
+  </data>
+  <data name="Contractdoc_this_no_nds_error" xml:space="preserve">
+    <value>Ставка НДС должна быть указана</value>
+  </data>
+  <data name="Contractdoc_this_Ndsalgorithm" xml:space="preserve">
+    <value>Ndsalgorithm</value>
+  </data>
+  <data name="Contractdoc_this_no_nds_algorithm_error" xml:space="preserve">
+    <value>Алгоритм НДС должн быть указан</value>
+  </data>
+  <data name="Contractdoc_this_Startat" xml:space="preserve">
+    <value>Startat</value>
+  </data>
+  <data name="Contractdoc_this_no_startat_error" xml:space="preserve">
+    <value>Дата начала выполнения работ должна быть указана</value>
+  </data>
+  <data name="Contractdoc_this_Endsat" xml:space="preserve">
+    <value>Endsat</value>
+  </data>
+  <data name="Contractdoc_this_no_endsat_error" xml:space="preserve">
+    <value>Дата окончания выполнения работ должна быть указана</value>
+  </data>
+  <data name="Contractdoc_this_endsat_less_startat_error" xml:space="preserve">
+    <value>Дата начала должна быть меньше даты окончания</value>
+  </data>
+  <data name="Contractdoc_this_Approvedat" xml:space="preserve">
+    <value>Approvedat</value>
+  </data>
+  <data name="Contractdoc_this_approvedat_error" xml:space="preserve">
+    <value>Дата подписания договора должна быть между датами начала и окончания договора</value>
+  </data>
+  <data name="Contractdoc_this_Currencyrate" xml:space="preserve">
+    <value>Currencyrate</value>
+  </data>
+  <data name="Contractdoc_this_Ratedate" xml:space="preserve">
+    <value>Ratedate</value>
+  </data>
+  <data name="Contractdoc_this_no_rate_and_ratedate_error" xml:space="preserve">
+    <value>Для договоров в иностранной валюте должны быть указаны курс и дата курса</value>
+  </data>
+  <data name="Contractdoc_this_Prepaymentndsalgorithm" xml:space="preserve">
+    <value>Prepaymentndsalgorithm</value>
+  </data>
+  <data name="Contractdoc_this_no_prepayment_nds_algorithm_error" xml:space="preserve">
+    <value>Алгоритм НДС аванса должен быть указан</value>
+  </data>
+  <data name="Contractdoc_this_Prepaymentsum" xml:space="preserve">
+    <value>Prepaymentsum</value>
+  </data>
+  <data name="Contractdoc_this_prepayment_sum_must_not_exceed_total_error" xml:space="preserve">
+    <value>Сумма аванса не может быть больше цены договора</value>
+  </data>
+  <data name="Contractdoc_this_prepayments_not_equals_total_error" xml:space="preserve">
+    <value>Сумма авансов по годам должна быть равна общей сумме по годам</value>
+  </data>
+  <data name="Contractdoc_this_Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Contractdoc_this_no_price_error" xml:space="preserve">
+    <value>Цена договора должна быть указана</value>
+  </data>
+  <data name="Contractdoc_this_Contractstate" xml:space="preserve">
+    <value>Contractstate</value>
+  </data>
+  <data name="Contractdoc_this_no_contractstate_error" xml:space="preserve">
+    <value>Состояние подписания договора должно быть задано</value>
+  </data>
+  <data name="Contractdoc_this_Appliedat" xml:space="preserve">
+    <value>Appliedat</value>
+  </data>
+  <data name="Contractdoc_this_appliedat_less_startat_error" xml:space="preserve">
+    <value />
+  </data>
+	<data name="Contractdoc_this_data_mustbe_specified">
+		<value xml:space="preserve">Это поле является обязательным для заполнения.</value>
+	</data>
+	<data name="Contractdoc_this_sign_date_error">
+		<value xml:space="preserve">Для подписанного договора должна быть задана дата подписания</value>
+	</data>
+	<data name="Contractdoc_this_currency_and_measure_error">
+		<value xml:space="preserve">Единица измерения цены и валюта должны быть заданы</value>
+	</data>
+	<data name="Contractdoc_this_foreign_currency_rate_error">
+		<value xml:space="preserve">Для договора в иностранной валюте требуется курс</value>
+	</data>
+	<data name="Contractdoc_this_not_nullable_field_error">
+		<value xml:space="preserve">Это поле является обязательным для заполнения.</value>
+	</data>
+	<data name="Contractdoc_this_Prepaymentpercent">
+		<value xml:space="preserve">Prepaymentpercent</value>
+	</data>
+	<data name="Contractdoc_this_Contractstate_mastbe_signed_if_approved_error">
+		<value xml:space="preserve">Договор должен находится в состоянии подписан, если задана дата подписания</value>
+	</data>
+  <data name="Importer_this_Region_bound_row_values_error">
+    <value xml:space="preserve">Номер начальной строки области данных должен быть меньше номера конечной</value>
+  </data>
+  <data name="Importer_this_Region_bound_column_values_error">
+    <value xml:space="preserve">Номер начального столбца области данных должен быть меньше номера конечного</value>
+  </data>
+	<data name="PrepaymentDataErrorHandler_HandlePrepaymentError_PrepaymentPercentMustNotExceed0or100">
+		<value xml:space="preserve">Процент аванса должен быть числом от 0 до 100.</value>
+	</data>
+</root>

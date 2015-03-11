@@ -1,0 +1,301 @@
+﻿<UserControl x:Class="MContracts.View.DisposalContentView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:Controls="clr-namespace:MContracts.Controls"
+             xmlns:converters="clr-namespace:MContracts.Classes.Converters" mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="400">
+    
+    <UserControl.Resources>
+        <converters:StringShrederConverter x:Key="StageShreder" MaxLength="100" />
+    </UserControl.Resources>
+    <Grid>
+
+
+        <StackPanel>
+
+            <Expander Header="Общие" IsExpanded="True" Background="FloralWhite" BorderThickness="1" BorderBrush="Black" Margin="2" VerticalAlignment="Top">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="130" />
+                        <ColumnDefinition Width="264" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="№ распоряжения" VerticalAlignment="Bottom" Height="19" Margin="3" />
+                    <TextBox  x:Name="txtDisposalnum" Text="{Binding Path=Disposal.Num, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="{Binding IsSigned}" Grid.Column="1" Grid.Row="0" Width="150" HorizontalAlignment="Left" Margin="3"/>
+                    <TextBlock Text="Дата распоряжения" Grid.Column="0" Grid.Row="1" Margin="3"/>
+                    <DatePicker Grid.Column="1" Grid.Row="1" SelectedDate="{Binding Path=Disposal.Approveddate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, ValidatesOnDataErrors=True}" Width="150" HorizontalAlignment="Left" x:Name="dtmDisposalDate" Margin="3"/>
+                </Grid>
+            </Expander>
+
+
+            <Expander Header="Назначения" IsExpanded="True" Background="FloralWhite" VerticalAlignment="Stretch" BorderThickness="1" BorderBrush="Black" Margin="2" Height="Auto">
+                <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Horizontal">
+            <Button Name="btnAddContractdoc" HorizontalAlignment="Center" Command="{Binding Path=DataContext.AddResponsibleContractdocCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                    <Image Source="/MContracts;component/Resources/window_new.png" ToolTip="Добавить этап" Width="20" Height="20"/>
+            </Button>
+            <Button Name="btnDeleteContractdpc" HorizontalAlignment="Center" Command="{Binding Path=DataContext.DeleteResponsibleContractdocCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                <Image Source="/MContracts;component/Resources/deletedcontract.png" ToolTip="Удалить этап" Width="20" Height="20"/>
+            </Button>
+        </StackPanel>
+            
+        <telerik:RadGridView ShowGroupPanel="False" RowIndicatorVisibility="Collapsed" AutoGenerateColumns="False" 
+                             CanUserDeleteRows="False" CanUserInsertRows="False" CanUserSortColumns="True"
+                             ItemsSource="{Binding Path=ContractStageResponsibleDTOList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                             SelectedItem="{Binding Path=ContractStageResponsibleDto, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             RowDetailsVisibilityMode="VisibleWhenSelected" Name="ContractRespGrid" LoadingRowDetails="ContractRespGrid_LoadingRowDetails" RowActivated="ContractRespGrid_RowActivated" UnloadingRowDetails="ContractRespGrid_UnloadingRowDetails" MouseDown="ContractRespGrid_MouseDown"
+                             VerticalAlignment="Stretch" SelectionChanged="ContractRespGrid_SelectionChanged" >
+
+            <telerik:RadGridView.RowDetailsTemplate> 
+                <DataTemplate>
+                    <Border>
+                        <StackPanel Orientation="Vertical" Margin="30,2,2,2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                            <StackPanel Orientation="Horizontal">
+                                <Button Name="btnAddRespStage" HorizontalAlignment="Center" Command="{Binding Path=DataContext.AddResponsibleStageCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <Image Source="/MContracts;component/Resources/chart_organisation_add.png" ToolTip="Добавить этап" Width="20" Height="20"/>
+                                </Button>
+                                <Button Name="btnAddAllRespStage" HorizontalAlignment="Center" Command="{Binding Path=DataContext.AddAllResponsibleStageCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <Image Source="/MContracts;component/Resources/edit_add.png" ToolTip="Добавить все этапы" Width="20" Height="20"/>
+                                </Button>
+                                <Button Name="btnDeleteRespStage" HorizontalAlignment="Center" Command="{Binding Path=DataContext.DeleteResponsibleStageCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <Image Source="/MContracts;component/Resources/chart_organisation_delete.png" ToolTip="Удалить этап" Width="20" Height="20"/>
+                                </Button>
+                                <Button Name="btnDeleteAllRespStage" HorizontalAlignment="Center" Command="{Binding Path=DataContext.DeleteAllResponsibleStageCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <Image Source="/MContracts;component/Resources/deleteresp.png" ToolTip="Удалить все этапы, отраженные в таблице" Width="20" Height="20"/>
+                                 </Button>
+
+                                            <Button Name="btnCopySelectedResponsibleStage" HorizontalAlignment="Center" Command="{Binding Path=DataContext.CopySelectedStageResponsiblesCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                    <Image Source="/MContracts;component/Resources/copyresp.png" ToolTip="Скопировать ответственных выделенного этапа для всех этапов, представленных в таблице" Width="20" Height="20"/>
+                                </Button>
+                            </StackPanel>
+                                <telerik:RadGridView ShowGroupPanel="False" RowIndicatorVisibility="Collapsed" 
+                                                     AutoGenerateColumns="False" IsFilteringAllowed="True"
+                                    CanUserDeleteRows="False" CanUserInsertRows="False" CanUserSortColumns="True" 
+                                    ItemsSource="{Binding Path=DataContext.CurrentContractStageResponsibleDTOBindingList, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" 
+                                    SelectedItem="{Binding Path=DataContext.CurrentStageResponsibleDTO, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                      x:Name="StageRespGrid" SelectionChanged="StageRespGrid_SelectionChanged" MaxHeight="320" Loaded="StageRespGrid_Loaded" Filtered="StageRespGrid_Filtered">
+
+
+                                            <telerik:RadGridView.Columns>
+
+                                                <telerik:GridViewDataColumn Header="КП" IsReadOnly="True" DataMemberBinding="{Binding Path=Schedulecontract.Appnum, Mode=OneWay}"/>
+                                                <telerik:GridViewDataColumn Header="Э" IsReadOnly="True" DataMemberBinding="{Binding Path=Stage.Num, Mode=OneWay}"/>
+
+                                                <telerik:GridViewComboBoxColumn Header="Календарный план" ItemsSource="{Binding Path=Contractdoc.Schedulecontracts, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                    SelectedValueMemberPath="{Binding Path=Schedulecontract, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                                    DataMemberBinding="{Binding Path=Schedulecontract, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsFilterable="True"/>
+
+                                        <telerik:GridViewDataColumn DataMemberBinding="{Binding Path=Stage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="300" TextWrapping="WrapWithOverflow" IsFilterable="True">
+                                            <telerik:GridViewDataColumn.Header>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Label Content="Этап" Foreground="White" />
+                                                    <TextBox Width="100" Text="{Binding Path=DataContext.StageNumSubstring, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="3"/>
+                                                </StackPanel>
+                                            </telerik:GridViewDataColumn.Header>
+                                            
+                                            
+                                            <telerik:GridViewDataColumn.CellEditTemplate>
+                                                <DataTemplate>
+                                                            <ComboBox ItemsSource="{Binding Path=DataContext.AllStages, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, 
+                                                              RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                              SelectedItem="{Binding Path=Stage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="300"
+                                                              VerticalAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" Margin="4" />
+                                                              
+                                                                
+                                                            
+
+                                                              
+                                                </DataTemplate>
+                                            </telerik:GridViewDataColumn.CellEditTemplate>
+
+                                    </telerik:GridViewDataColumn>
+                                    <telerik:GridViewDataColumn Width="500">
+                                        <telerik:GridViewDataColumn.Header>
+
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label Content="Ответственные по этапу" ForceCursor="False" Foreground="White" />
+                                                    <Button Name="btnAddResp" HorizontalAlignment="Center" Command="{Binding Path=DataContext.AddStageResponsibleCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                                    <Image Source="/MContracts;component/Resources/symbol_add.png" ToolTip="Добавить ответственного" Width="20" Height="20"/>
+                                                </Button>
+                                                <Button Name="btnDeleteResp" HorizontalAlignment="Center" Command="{Binding Path=DataContext.DeleteStageResponsibleCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                                    <Image Source="/MContracts;component/Resources/symbol_remove.png" ToolTip="Удалить ответственного" Width="20" Height="20"/>
+                                                </Button>
+                                                <Button Name="btnSelectEmp" HorizontalAlignment="Center" Command="{Binding Path=DataContext.ShowEmployeesStageCommand,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                                    <Image Source="/MContracts;component/Resources/employee.png" ToolTip="Выбрать сотрудника" Width="20" Height="20"/>
+                                                </Button>
+                                                    <Button Name="btnDeleteAllStResp" HorizontalAlignment="Center" Command="{Binding Path=DataContext.DeleteAllStageResponsiblesCommand,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                                    <Image Source="/MContracts;component/Resources/purge.png" ToolTip="Очистить отвественных" Width="20" Height="20"/>
+                                                </Button>
+                                                        </StackPanel>
+
+                                        </telerik:GridViewDataColumn.Header>
+
+
+                                            <telerik:GridViewDataColumn.CellTemplate>
+                                                <DataTemplate>
+                                                   <TextBlock TextWrapping="Wrap" Text="{Binding Path=Stage.DisposalPersons, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"/>
+                                                </DataTemplate>
+                                            </telerik:GridViewDataColumn.CellTemplate>
+
+                                            <telerik:GridViewDataColumn.CellEditTemplate>
+                                            <DataTemplate>
+                                                <telerik:RadGridView ShowGroupPanel="False" RowIndicatorVisibility="Collapsed"  Width="350" HorizontalAlignment="Left"
+                                                         CanUserDeleteRows="True" CanUserInsertRows="True"
+                                                         AutoGenerateColumns="False"
+                                                         ItemsSource="{Binding Path=Stage.ResponsiblesBindingList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                         SelectedItem="{Binding Path=DataContext.LastSelectedResponsible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                                    <telerik:RadGridView.Columns>
+                                                        <telerik:GridViewDataColumn Width="200"  Header="Роль">
+                                                            <telerik:GridViewDataColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <Label Content="{Binding Path=Role, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                                </DataTemplate>
+                                                            </telerik:GridViewDataColumn.CellTemplate>
+                                                            <telerik:GridViewDataColumn.CellEditTemplate>
+                                                                <DataTemplate>
+                                                                    <ComboBox ItemsSource="{Binding Path=DataContext.Roles, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                                            SelectedItem="{Binding Path=Role, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                                                </DataTemplate>
+                                                            </telerik:GridViewDataColumn.CellEditTemplate>
+                                                        </telerik:GridViewDataColumn>
+
+                                                        <telerik:GridViewDataColumn Width="*"  Header="ФИО">
+                                                            <telerik:GridViewDataColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <Label Content="{Binding Path=Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                                </DataTemplate>
+                                                            </telerik:GridViewDataColumn.CellTemplate>
+                                                            <telerik:GridViewDataColumn.CellEditTemplate>
+                                                                <DataTemplate>
+                                                                    <ComboBox ItemsSource="{Binding Path=DataContext.Employees, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                                            SelectedItem="{Binding Path=Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                                </DataTemplate>
+                                                            </telerik:GridViewDataColumn.CellEditTemplate>
+                                                        </telerik:GridViewDataColumn>
+                                                    </telerik:RadGridView.Columns>
+                                                </telerik:RadGridView>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellEditTemplate>
+                                    </telerik:GridViewDataColumn>
+                                </telerik:RadGridView.Columns>
+                            
+                        </telerik:RadGridView>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </telerik:RadGridView.RowDetailsTemplate>
+
+            <telerik:RadGridView.Columns>
+                    <telerik:GridViewDataColumn Width="200">
+                        <telerik:GridViewDataColumn.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <Label Content="Договор" Foreground="White" />
+                                <TextBox Width="100" Text="{Binding Path=DataContext.ContractdocNumSubstring, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="3"/>
+                            </StackPanel>
+                            
+                        </telerik:GridViewDataColumn.Header>
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                 <TextBlock Text="{Binding Path=Contractdoc.Num, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" TextWrapping="WrapWithOverflow" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+
+                        <telerik:GridViewDataColumn.CellEditTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding Path=DataContext.Contractdocs, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                          SelectedItem="{Binding Path=Contractdoc, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="3" Name="cmbxContractdoc" SelectionChanged="cmbxContractdoc_SelectionChanged" />
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellEditTemplate>
+                    </telerik:GridViewDataColumn>
+                <telerik:GridViewDataColumn Width="*">
+                    <telerik:GridViewDataColumn.Header>
+                        
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Ответственные по договору" ForceCursor="False" Foreground="White" />
+                                <Button Name="btnAddResp" HorizontalAlignment="Center" Command="{Binding Path=DataContext.AddContractResponsibleCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                <Image Source="/MContracts;component/Resources/symbol_add.png" ToolTip="Добавить ответственного" Width="20" Height="20"/>
+                            </Button>
+                                <Button Name="btnDeleteResp" HorizontalAlignment="Center" Command="{Binding Path=DataContext.DeleteContractResponsibleCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                <Image Source="/MContracts;component/Resources/symbol_remove.png" ToolTip="Добавить ответственного" Width="20" Height="20"/>
+                            </Button>
+                            <Button Name="btnSelectEmp" HorizontalAlignment="Center" Command="{Binding Path=DataContext.ShowEmployeesContractCommand,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                <Image Source="/MContracts;component/Resources/employee.png" ToolTip="Выбрать сотрудника" Width="20" Height="20"/>
+                            </Button>
+                                        
+                            <Button Name="btnDeleteAllSСontrResp" HorizontalAlignment="Center" Command="{Binding Path=DataContext.DeleteAllContractResponsiblesCommand,  Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                <Image Source="/MContracts;component/Resources/purge.png" ToolTip="Очистить отвественных" Width="20" Height="20"/>
+                            </Button>
+
+                                        <!--<Button Name="btnSave" HorizontalAlignment="Center" Command="{Binding Path=DataContext.SaveCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                <Image Source="/MContracts;component/Resources/save.png" ToolTip="Удалить этап" Width="20" Height="20"/>
+                            </Button>-->
+                        </StackPanel>
+                        
+                    </telerik:GridViewDataColumn.Header>
+
+                        <telerik:GridViewDataColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock TextTrimming="CharacterEllipsis" Text="{Binding Path=Contractdoc.DisposalPersons, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch"/>
+                            </DataTemplate>
+                        </telerik:GridViewDataColumn.CellTemplate>
+
+
+                        <telerik:GridViewDataColumn.CellEditTemplate>
+                        <DataTemplate>
+                                        <telerik:RadGridView ShowGroupPanel="False" RowIndicatorVisibility="Collapsed" HorizontalAlignment="Left"
+                             CanUserDeleteRows="False" CanUserInsertRows="False"
+                             AutoGenerateColumns="False" Width="450"
+                             ItemsSource="{Binding Path=Contractdoc.ResponsiblesBindingList, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                   SelectedItem="{Binding Path=DataContext.LastSelectedResponsible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                            <telerik:RadGridView.Columns>
+                                    <telerik:GridViewDataColumn Width="200"  Header="Роль">
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Label Content="{Binding Path=Role, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                        <telerik:GridViewDataColumn.CellEditTemplate>
+                                            <DataTemplate>
+                                                <ComboBox ItemsSource="{Binding Path=DataContext.Roles, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                                        SelectedItem="{Binding Path=Role, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellEditTemplate>
+                                    </telerik:GridViewDataColumn>
+
+                                    <telerik:GridViewDataColumn Width="*"  Header="ФИО">
+                                        <telerik:GridViewDataColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Label Content="{Binding Path=Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellTemplate>
+                                        <telerik:GridViewDataColumn.CellEditTemplate>
+                                            <DataTemplate>
+                                                <ComboBox ItemsSource="{Binding Path=DataContext.Employees, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                                                                        SelectedItem="{Binding Path=Employee, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" StaysOpenOnEdit="True"/>
+                                            </DataTemplate>
+                                        </telerik:GridViewDataColumn.CellEditTemplate>
+                                    </telerik:GridViewDataColumn>
+                                 </telerik:RadGridView.Columns>
+                            </telerik:RadGridView>
+                        </DataTemplate>
+                    </telerik:GridViewDataColumn.CellEditTemplate>
+                </telerik:GridViewDataColumn>
+            </telerik:RadGridView.Columns>
+        </telerik:RadGridView>
+        </StackPanel>
+             </Expander>
+        </StackPanel>
+    </Grid>
+            
+</UserControl>
